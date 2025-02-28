@@ -11,7 +11,13 @@ tile_file = open('data/tiles.json',)
 tiles = json.load(tile_file)
 tile_file.close()
 tile_list = tiles["tiles"]
-available_tiles: list[str] = [tile['id'] for tile in tile_list]
+# available_tiles: list[str] = [tile['id'] for tile in tile_list]
+# available_tiles = []
+# for tile in tile_list:
+#     probability = tile['probability']
+#     available_tiles.extend(tile['id'] for tile in range(probability))
+available_tiles = [tile["id"] for tile in tile_list for _ in range(tile["probability"])]
+# print(available_tiles)
 
 
 def no_empty_tiles(schema, empty_tile) -> bool:
@@ -141,7 +147,7 @@ def build_schema(map_width: int, map_height: int, available_tiles: list[str]):
                         schema[y][x] = tile
                         valid_tile_placement = True
                     else: 
-                        valid_remaining_tiles.remove(tile)
+                        valid_remaining_tiles = [j for j in valid_remaining_tiles if j != tile]
             if no_empty_tiles(schema, empty_tile):
                 complete_schema = True
     except:
@@ -195,8 +201,6 @@ def write_map_to_file(map):
 # TODO: add probability to tiles to improve build
 
 # TODO: add function to rebuild map if all rooms don't join up
-
-# TODO: add handler to perform functions
 
 # TODO: add tests on tiles.json to check uniqueness of name, id, config
 
