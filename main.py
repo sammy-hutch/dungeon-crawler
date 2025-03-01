@@ -5,7 +5,7 @@ from libs.mapmaker import map_maker
 
 # pygame setup
 pygame.init()
-screen = pygame.display.set_mode((1280, 720))
+screen = pygame.display.set_mode((1024, 1024))
 clock = pygame.time.Clock()
 running = True
 

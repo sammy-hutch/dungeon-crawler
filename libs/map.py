@@ -25,9 +25,6 @@ class Map:
             row = [item.strip('"') for item in line.strip().split(',')]
             self.tiles.append(row)
         
-        for row in self.tiles:
-            print(row)
-        
         # Set the size
         self.tile_size = tile_size
     

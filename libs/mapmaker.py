@@ -2,9 +2,10 @@ from random import randrange, choice
 import json
 import logging
 
-
+# TODO: make these into env vars
 map_width = 10
 map_height = 10
+map_coverage_threshold = 0.3 # minimum pct of map which largest navigable tile group needs to cover
 
 # handle tile data file
 tile_file = open('data/tiles.json',)
@@ -18,6 +19,8 @@ tile_list = tiles["tiles"]
 #     available_tiles.extend(tile['id'] for tile in range(probability))
 available_tiles = [tile["id"] for tile in tile_list for _ in range(tile["probability"])]
 # print(available_tiles)
+ignored_tile_types = ["w"]
+
 
 
 def no_empty_tiles(schema, empty_tile) -> bool:
@@ -78,7 +81,7 @@ def get_corner(tile_id: str, directions: list[str]):
 # TODO: add exceptions/logging
 def tile_borders_match(tile, schema, x, y, empty_tile) -> bool:
     """
-    Checks if the current tile's borders match the neighbouring tiles' borders.
+    Helper function to check if the current tile's borders match the neighbouring tiles' borders.
 
     Args:
         tile (str): id of currently selected tile
@@ -112,6 +115,107 @@ def tile_borders_match(tile, schema, x, y, empty_tile) -> bool:
     if w_tile != empty_tile and get_edge(tile, "W") != get_edge(w_tile, "E"): return False
     if nw_tile != empty_tile and get_corner(tile, ["N", "W"]) != get_corner(nw_tile, ["S", "E"]): return False
     return True
+
+def navigable_tile_dict(basic_map, ignored_tile_types):
+    """
+    Helper function which produces dict of navigable tiles
+
+    Args:
+        basic_map (list[list[str]]): matrix of tiles
+        ignored_tile_types (list[str]): list of values in matrix which are non navigable and thus should be ignored
+    
+    Returns:
+        tile_groups (list[dict()]): a list of dict entries where each entry is a navigable tile in the map. entries include:
+            group: the grouping of tiles to which this particular tile belongs
+            y: the y-coordinate of the tile in the map
+            x: the x-coordinate of the tile in the map
+    """
+    tile_groups = []
+    group_counter = 0
+
+    ## enumerate through each tile in the basic map
+    for y_index, row in enumerate(basic_map):
+        for x_index, tile in enumerate(row):
+
+            ## only consider non-wall tiles
+            if tile not in ignored_tile_types:
+                current_tile = {"group": 0, "y": y_index, "x": x_index}
+                neighbour_groups = []
+
+                ## check if bordering any neighbour tiles
+                for neighbour in tile_groups:
+                    # W neighbour
+                    if neighbour["y"] == y_index and neighbour["x"] == x_index - 1:
+                        neighbour_groups.append(neighbour["group"])
+                    # NW neighbour
+                    if neighbour["y"] == y_index - 1 and neighbour["x"] == x_index - 1:
+                        neighbour_groups.append(neighbour["group"])
+                    # N neighbour
+                    if neighbour["y"] == y_index - 1 and neighbour["x"] == x_index:
+                        neighbour_groups.append(neighbour["group"])
+                    # NE neighbour
+                    if neighbour["y"] == y_index - 1 and neighbour["x"] == x_index + 1:
+                        neighbour_groups.append(neighbour["group"])
+                
+                ## add tile to existing group and update neighbour values
+                if neighbour_groups:
+                    current_tile["group"] = min(neighbour_groups)
+                    for group in neighbour_groups:
+                        for tile in tile_groups:
+                            if tile["group"] == group and tile["group"] != current_tile["group"]:
+                                tile["group"] = current_tile["group"]
+                    tile_groups.append(current_tile)
+                ## else create new group if no adjacent groups
+                else:
+                    group_counter += 1
+                    current_tile["group"] = group_counter
+                    tile_groups.append(current_tile)
+    
+    return tile_groups
+
+
+def tile_group_volumes(tile_groups):
+    """
+    Helper function to count how many tiles in each tile group.
+
+    Args:
+        tile_groups: product of navigable_tile_dict() function
+    Returns:
+        groups: dict of group number (key) and that group's volume (value)
+    """
+
+    groups = {}
+    for tile in tile_groups:
+        if tile["group"] in groups:
+            groups[tile["group"]] += 1
+        else:
+            groups.update({tile["group"]: 1})
+    print(groups)
+    print(f"number of groups: {len(groups)}")
+
+    return groups
+
+def map_stair_placement_count(tile_groups, group_index):
+    """
+    Helper function which counts how many valid locations there are for stairs to be placed in a given tile group
+
+    Args:
+        tile_groups: product of navigable_tiles_dict() helper function
+        group_index: the tile group for which to check
+    """
+    # create list of only the tiles for the relevant group
+    group = [entry for entry in tile_groups if entry.get('group') == group_index]
+
+    for current_tile in group:
+        x = current_tile["x"]
+        y = current_tile["y"]
+        for comparison_tile in group:
+            # TODO: check against all cardinal neighbours. if all 8 are in group, it is valid location
+            #for now set to return to avoid code error
+            return
+
+
+    
 
 
 def build_schema(map_width: int, map_height: int, available_tiles: list[str]):
@@ -185,6 +289,31 @@ def build_basic_map(schema: list[list[str]], tile_list: json):
 
     return basic_map
 
+def map_accessibility_checks(basic_map, map_coverage_threshold):
+    ## function to hold various accessibility checks for the map, including:
+    # check to see if largest tile group covers at least x pct of map
+    # TODO: check to see if there are at least 2 valid locations for stairs in the largest tile group
+    ## if any check fails, map_accessibility_checks fails and map needs to be rebuilt
+
+    map_tile_count_y = len(basic_map)
+    map_tile_count_x = len(basic_map[0])
+    map_size = map_tile_count_y * map_tile_count_x
+    print(map_size)
+
+    tile_groups = navigable_tile_dict(basic_map, ignored_tile_types)
+    group_volumes = tile_group_volumes(tile_groups)
+
+    largest_group_key = max(group_volumes, key=group_volumes.get)
+    largest_group_volume = group_volumes[largest_group_key]
+
+    # map_coverage_check
+    if  largest_group_volume / map_size < map_coverage_threshold:
+        print(f"map coverage check not passed. map size: {map_size}. largest group: {largest_group_volume}")
+        return False
+    else:
+        print(f"map coverage check passed. map size: {map_size}. largest group: {largest_group_volume}")
+
+
 def write_map_to_file(map):
     try:
         with open('maps/start.map', 'w') as map_file:
@@ -207,6 +336,7 @@ def write_map_to_file(map):
 def map_maker():
     schema = build_schema(map_width, map_height, available_tiles)
     basic_map = build_basic_map(schema, tile_list)
+    map_accessibility_checks(basic_map, map_coverage_threshold)
     write_map_to_file(basic_map)
 
 if __name__ == "__main__":
@@ -225,5 +355,7 @@ if __name__ == "__main__":
     print("basic map:")
     for row in basic_map:
         print(row)
+    
+    map_accessibility_checks(basic_map, map_coverage_threshold)
     
     write_map_to_file(basic_map)

@@ -163,7 +163,7 @@
         {
             "name":"divider_1a",
             "id": "017",
-            "probability": 40,
+            "probability": 60,
             "config":[
                 ["f","f","f"],
                 ["w","w","w"],
@@ -173,7 +173,7 @@
         {
             "name":"divider_1b",
             "id": "018",
-            "probability": 40,
+            "probability": 60,
             "config":[
                 ["f","w","f"],
                 ["f","w","f"],
