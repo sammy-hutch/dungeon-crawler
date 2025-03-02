@@ -195,24 +195,74 @@ def tile_group_volumes(tile_groups):
 
     return groups
 
-def map_stair_placement_count(tile_groups, group_index):
+def set_stair_placement(tile_groups, group_index):
     """
-    Helper function which counts how many valid locations there are for stairs to be placed in a given tile group
+    Helper function which sets the entry and exit stairs in a given tile group.
 
     Args:
         tile_groups: product of navigable_tiles_dict() helper function
         group_index: the tile group for which to check
     """
+    # in future, logic could be adjusted to make it any pair which is above a certain distance apart,
+    # not necessarily the furthest pair
+
     # create list of only the tiles for the relevant group
     group = [entry for entry in tile_groups if entry.get('group') == group_index]
 
+    # check if location is valid for stairs (surrounded by room tiles)
+    valid_stair_locations = []
     for current_tile in group:
         x = current_tile["x"]
         y = current_tile["y"]
+        neighbours = 0
         for comparison_tile in group:
             # TODO: check against all cardinal neighbours. if all 8 are in group, it is valid location
-            #for now set to return to avoid code error
-            return
+            if (
+                   (comparison_tile["x"] == x     and comparison_tile["y"] == y - 1) # N
+                or (comparison_tile["x"] == x + 1 and comparison_tile["y"] == y - 1) # NE
+                or (comparison_tile["x"] == x + 1 and comparison_tile["y"] == y)     # E
+                or (comparison_tile["x"] == x + 1 and comparison_tile["y"] == y + 1) # SE
+                or (comparison_tile["x"] == x     and comparison_tile["y"] == y + 1) # S
+                or (comparison_tile["x"] == x - 1 and comparison_tile["y"] == y + 1) # SW
+                or (comparison_tile["x"] == x - 1 and comparison_tile["y"] == y)     # W
+                or (comparison_tile["x"] == x - 1 and comparison_tile["y"] == y - 1) # NW
+            ):
+                neighbours += 1
+        if neighbours == 8:
+            valid_stair_locations.append(current_tile)
+    
+    # find the distance between each pair of locations
+    location_diffs = []
+    for i, curr_tile in enumerate(valid_stair_locations):
+        for j, comp_tile in enumerate(valid_stair_locations):
+            if j > i: # only take later items in list to only compare each pair once
+                x = abs(comp_tile["x"] - curr_tile["x"])  # find x diff
+                y = abs(comp_tile["y"] - curr_tile["y"])  # find y diff
+                diff =  round((x**2 + y**2)**0.5)  # find straight-line distance
+                entry = {
+                    "x1": curr_tile["x"], 
+                    "y1": curr_tile["y"], 
+                    "x2": comp_tile["x"], 
+                    "y2": comp_tile["y"],
+                    "diff": diff
+                    }
+                location_diffs.append(entry)
+
+    # Find the pair of locations which are furthest apart
+    max_diff = max(d["diff"] for d in location_diffs)
+    candidates = [d for d in location_diffs if d["diff"] == max_diff]
+    furthest_pair = choice(candidates)
+    pair_list = [
+        {"x1": furthest_pair["x1"], "y1": furthest_pair["y1"]},
+        {"x2": furthest_pair["x2"], "y2": furthest_pair["y2"]}
+        ]
+    entry_stair = choice(pair_list)
+    exit_stair = [tile for tile in pair_list if tile != entry_stair]
+    print(f"entry stair location: {entry_stair}")
+    print(f"exit stair location: {exit_stair}")
+
+
+
 
 
     
@@ -293,6 +343,7 @@ def map_accessibility_checks(basic_map, map_coverage_threshold):
     ## function to hold various accessibility checks for the map, including:
     # check to see if largest tile group covers at least x pct of map
     # TODO: check to see if there are at least 2 valid locations for stairs in the largest tile group
+    ## IMPORTANT: NEED TO CHECK BEFORE ASSIGNING STAIR LOCATIONS, OTHERWISE CAN HIT ERRORS
     ## if any check fails, map_accessibility_checks fails and map needs to be rebuilt
 
     map_tile_count_y = len(basic_map)
@@ -312,6 +363,8 @@ def map_accessibility_checks(basic_map, map_coverage_threshold):
         return False
     else:
         print(f"map coverage check passed. map size: {map_size}. largest group: {largest_group_volume}")
+    
+    set_stair_placement(tile_groups, largest_group_key)
 
 
 def write_map_to_file(map):
