@@ -1,4 +1,4 @@
-from random import randrange, choice
+from random import randrange, choice, shuffle
 import json
 import logging
 
@@ -195,16 +195,14 @@ def tile_group_volumes(tile_groups):
 
     return groups
 
-def set_stair_placement(tile_groups, group_index):
+def valid_stair_placements(tile_groups, group_index):
     """
-    Helper function which sets the entry and exit stairs in a given tile group.
+    Helper function which creates a list of valid stair placements.
 
     Args:
         tile_groups: product of navigable_tiles_dict() helper function
         group_index: the tile group for which to check
     """
-    # in future, logic could be adjusted to make it any pair which is above a certain distance apart,
-    # not necessarily the furthest pair
 
     # create list of only the tiles for the relevant group
     group = [entry for entry in tile_groups if entry.get('group') == group_index]
@@ -248,24 +246,35 @@ def set_stair_placement(tile_groups, group_index):
                     }
                 location_diffs.append(entry)
 
-    # Find the pair of locations which are furthest apart
-    max_diff = max(d["diff"] for d in location_diffs)
-    candidates = [d for d in location_diffs if d["diff"] == max_diff]
+    # Check if there is at least one pair at a valid distance
+    valid_pairs = [p for p in location_diffs if p["diff"] >= 5]
+    return valid_pairs
+
+def set_stair_placement(location_pairs):
+    """
+    Function to set the location of the entry and exit stairs.
+
+    Args:
+        location_pairs: list of valid stair pair locations. Output of valid_stair_placements() function.
+    Returns:
+        stair_placements: dict with coordinates of entry and exit stairs
+    """
+    # in future, logic could be adjusted to make it any pair which is above a certain distance apart,
+    # not necessarily the furthest pair
+    
+    max_diff = max(d["diff"] for d in location_pairs)
+    candidates = [d for d in location_pairs if d["diff"] == max_diff]
     furthest_pair = choice(candidates)
     pair_list = [
-        {"x1": furthest_pair["x1"], "y1": furthest_pair["y1"]},
-        {"x2": furthest_pair["x2"], "y2": furthest_pair["y2"]}
+        {"x": furthest_pair["x1"], "y": furthest_pair["y1"]},
+        {"x": furthest_pair["x2"], "y": furthest_pair["y2"]}
         ]
-    entry_stair = choice(pair_list)
-    exit_stair = [tile for tile in pair_list if tile != entry_stair]
-    print(f"entry stair location: {entry_stair}")
-    print(f"exit stair location: {exit_stair}")
-
-
-
-
-
-    
+    shuffle(pair_list)
+    stair_placements = {
+        "entry_stair": pair_list[0],
+        "exit_stair": pair_list[1]
+        }    
+    return stair_placements
 
 
 def build_schema(map_width: int, map_height: int, available_tiles: list[str]):
@@ -364,7 +373,13 @@ def map_accessibility_checks(basic_map, map_coverage_threshold):
     else:
         print(f"map coverage check passed. map size: {map_size}. largest group: {largest_group_volume}")
     
-    set_stair_placement(tile_groups, largest_group_key)
+    # valid stair placement check
+    valid_pairs = valid_stair_placements(tile_groups, largest_group_key)
+    if len(valid_pairs) < 1:
+        return False
+    
+    stair_placements = set_stair_placement(valid_pairs)
+    return stair_placements
 
 
 def write_map_to_file(map):
@@ -380,16 +395,18 @@ def write_map_to_file(map):
 
 # TODO: add function to enrich map with water, items, holes, etc
 
-# TODO: add probability to tiles to improve build
-
-# TODO: add function to rebuild map if all rooms don't join up
-
 # TODO: add tests on tiles.json to check uniqueness of name, id, config
 
 def map_maker():
     schema = build_schema(map_width, map_height, available_tiles)
-    basic_map = build_basic_map(schema, tile_list)
-    map_accessibility_checks(basic_map, map_coverage_threshold)
+    valid_map = False
+    while not valid_map:
+        basic_map = build_basic_map(schema, tile_list)
+        stair_placements = map_accessibility_checks(basic_map, map_coverage_threshold)
+        if stair_placements:
+            print(stair_placements)
+            valid_map = True
+            # TODO: build enriched map function, which among other things adds stairs
     write_map_to_file(basic_map)
 
 if __name__ == "__main__":
