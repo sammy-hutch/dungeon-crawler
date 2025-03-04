@@ -271,8 +271,8 @@ def set_stair_placement(location_pairs):
         ]
     shuffle(pair_list)
     stair_placements = {
-        "entry_stair": pair_list[0],
-        "exit_stair": pair_list[1]
+        "entry": pair_list[0],
+        "exit": pair_list[1]
         }    
     return stair_placements
 
@@ -302,10 +302,6 @@ def build_schema(map_width: int, map_height: int, available_tiles: list[str]):
                 valid_tile_placement = False
                 while not valid_tile_placement:
                     tile = choice(valid_remaining_tiles)
-                    # print(f"tile: {tile}, x: {x}, y: {y}")
-                    # print("schema:")
-                    # for row in schema:
-                    #     print(row)
                     if tile_borders_match(tile, schema, x, y, empty_tile):
                         schema[y][x] = tile
                         valid_tile_placement = True
@@ -348,12 +344,10 @@ def build_basic_map(schema: list[list[str]], tile_list: json):
 
     return basic_map
 
+
 def map_accessibility_checks(basic_map, map_coverage_threshold):
-    ## function to hold various accessibility checks for the map, including:
-    # check to see if largest tile group covers at least x pct of map
-    # TODO: check to see if there are at least 2 valid locations for stairs in the largest tile group
-    ## IMPORTANT: NEED TO CHECK BEFORE ASSIGNING STAIR LOCATIONS, OTHERWISE CAN HIT ERRORS
-    ## if any check fails, map_accessibility_checks fails and map needs to be rebuilt
+    ## function to hold various accessibility checks for the map
+    # TODO: break this up into smaller functions within the mapmaker handler
 
     map_tile_count_y = len(basic_map)
     map_tile_count_x = len(basic_map[0])
@@ -382,6 +376,26 @@ def map_accessibility_checks(basic_map, map_coverage_threshold):
     return stair_placements
 
 
+def build_enriched_map(basic_map, stairs):
+    """
+    Adds stairs, water, holes and other static features to the map
+
+    Args
+        basic_map: the output of build_basic_map() function. A matrix of the tiles in the map
+        stairs: the output of map_accessibility_checks() function. the locations of entry and exit stairs
+    """
+
+    # add stairs to map
+    entry_x = stairs["entry"]["x"]
+    entry_y = stairs["entry"]["y"]
+    exit_x = stairs["exit"]["x"]
+    exit_y = stairs["exit"]["y"]
+    basic_map[entry_y][entry_x] = "^"
+    basic_map[exit_y][exit_x] = "v"
+
+    return basic_map
+
+
 def write_map_to_file(map):
     try:
         with open('maps/start.map', 'w') as map_file:
@@ -398,16 +412,17 @@ def write_map_to_file(map):
 # TODO: add tests on tiles.json to check uniqueness of name, id, config
 
 def map_maker():
-    schema = build_schema(map_width, map_height, available_tiles)
     valid_map = False
     while not valid_map:
+        schema = build_schema(map_width, map_height, available_tiles)
         basic_map = build_basic_map(schema, tile_list)
         stair_placements = map_accessibility_checks(basic_map, map_coverage_threshold)
         if stair_placements:
             print(stair_placements)
             valid_map = True
             # TODO: build enriched map function, which among other things adds stairs
-    write_map_to_file(basic_map)
+    enriched_map = build_enriched_map(basic_map, stair_placements)
+    write_map_to_file(enriched_map)
 
 if __name__ == "__main__":
 
@@ -426,6 +441,8 @@ if __name__ == "__main__":
     for row in basic_map:
         print(row)
     
-    map_accessibility_checks(basic_map, map_coverage_threshold)
+    stair_placements = map_accessibility_checks(basic_map, map_coverage_threshold)
+    
+    enriched_map = build_enriched_map(basic_map, stair_placements)
     
     write_map_to_file(basic_map)

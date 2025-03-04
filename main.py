@@ -11,7 +11,9 @@ running = True
 
 tile_kinds = {
     "w": TileKind("wall", "images/catacombs0.png", True),
-    "f": TileKind("floor", "images/limestone1.png", False)
+    "f": TileKind("floor", "images/limestone1.png", False),
+    "^": TileKind("stairs_up", "images/stone_stairs_up.png", False),
+    "v": TileKind("stairs_down", "images/stone_stairs_down.png", False)
 }
 map_maker()
 map = Map("maps/start.map", tile_kinds, 32)
