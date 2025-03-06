@@ -384,6 +384,7 @@ def build_enriched_map(basic_map, stairs):
         basic_map: the output of build_basic_map() function. A matrix of the tiles in the map
         stairs: the output of map_accessibility_checks() function. the locations of entry and exit stairs
     """
+    # TODO: enrich map with water, items, holes, etc
 
     # add stairs to map
     entry_x = stairs["entry"]["x"]
@@ -407,8 +408,6 @@ def write_map_to_file(map):
     except:
         logging.error("error whilst writing map to file")
 
-# TODO: add function to enrich map with water, items, holes, etc
-
 # TODO: add tests on tiles.json to check uniqueness of name, id, config
 
 def map_maker():
@@ -420,7 +419,6 @@ def map_maker():
         if stair_placements:
             print(stair_placements)
             valid_map = True
-            # TODO: build enriched map function, which among other things adds stairs
     enriched_map = build_enriched_map(basic_map, stair_placements)
     write_map_to_file(enriched_map)
 
