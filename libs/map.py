@@ -1,4 +1,6 @@
 import pygame
+import logging
+from libs.camera import camera
 
 class TileKind:
     def __init__(self, name, image, is_solid):
@@ -31,6 +33,17 @@ class Map:
     def draw(self, screen):
         for y, row in enumerate(self.tiles):
             for x, tile in enumerate(row):
-                location = (x * self.tile_size, y * self.tile_size)
+                location = (x * self.tile_size - camera.x, 
+                            y * self.tile_size - camera.y)
                 image = self.tile_kinds[tile].image
                 screen.blit(image, location)
+    
+    def start_location(self):
+        start_location = {"y": 0, "x": 0}
+        for y, row in enumerate(self.tiles):
+            for x, tile in enumerate(row):
+                if tile == "^":
+                    start_location["y"] = y
+                    start_location["x"] = x
+                    return start_location
+        return logging.error("no start location found during start_location() func")

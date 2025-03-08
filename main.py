@@ -5,15 +5,16 @@ from libs.map import TileKind, Map
 from libs.mapmaker import map_maker
 from libs.player import Player
 from libs.sprite import sprites
+from libs.camera import create_screen
 
 # pygame setup
 pygame.init()
-pygame.display.set_caption("Red Mouse Dungeon Crawler")
-screen = pygame.display.set_mode((1024, 1024))
+screen = create_screen(1024, 1024, "Red Mouse Dungeon Crawler")
+
 clock = pygame.time.Clock()
 running = True
-player = Player("images/sprites/formicid.png", 0, 0)
 
+tile_size = 32
 tile_kinds = {
     "w": TileKind("wall", "images/catacombs0.png", True),
     "f": TileKind("floor", "images/limestone1.png", False),
@@ -21,7 +22,11 @@ tile_kinds = {
     "v": TileKind("stairs_down", "images/stone_stairs_down.png", False)
 }
 map_maker()
-map = Map("maps/start.map", tile_kinds, 32)
+map = Map("maps/start.map", tile_kinds, tile_size)
+start_location = map.start_location()
+start_x = start_location["x"] * tile_size
+start_y = start_location["y"] * tile_size
+player = Player("images/sprites/formicid.png", start_x, start_y)
 
 while running:
     # poll for events

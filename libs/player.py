@@ -1,6 +1,7 @@
 import pygame
 from libs.sprite import Sprite
 from libs.input import is_key_pressed
+from libs.camera import camera
 
 # TODO: create key bindings file so keys can be modified
 
@@ -30,3 +31,5 @@ class Player(Sprite):
         if is_key_pressed(pygame.K_q):
             self.y -= self.movement_speed
             self.x -= self.movement_speed
+        camera.x = self.x - camera.width/2 + self.image.get_width()/2
+        camera.y = self.y - camera.height/2 + self.image.get_height()/2
