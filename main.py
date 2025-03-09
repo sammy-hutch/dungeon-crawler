@@ -17,10 +17,10 @@ running = True
 
 tile_size = 32
 tile_kinds = {
-    "w": TileKind("wall", "images/catacombs0.png", True),
-    "f": TileKind("floor", "images/limestone1.png", False),
-    "^": TileKind("stairs_up", "images/stone_stairs_up.png", False),
-    "v": TileKind("stairs_down", "images/stone_stairs_down.png", False)
+    "w": TileKind("wall", "images/dungeon/catacombs0.png", True),
+    "f": TileKind("floor", "images/dungeon/limestone1.png", False),
+    "^": TileKind("stairs_up", "images/dungeon/stone_stairs_up.png", False),
+    "v": TileKind("stairs_down", "images/dungeon/stone_stairs_down.png", False)
 }
 map_maker()
 map = Map("maps/start.map", tile_kinds, tile_size)
