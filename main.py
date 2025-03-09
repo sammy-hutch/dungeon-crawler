@@ -1,4 +1,6 @@
 # Example file showing a basic pygame "game loop"
+import os
+from dotenv import load_dotenv
 import pygame
 from libs import input
 from libs.map import TileKind, Map
@@ -8,14 +10,18 @@ from libs.sprite import Sprite, sprites
 from libs.camera import create_screen
 from libs.entity import Entity, active_objs
 
+load_dotenv()
+
 # pygame setup
 pygame.init()
-screen = create_screen(1024, 1024, "Red Mouse Dungeon Crawler")
+screen_width = int(os.getenv("SCREEN_WIDTH"))
+screen_height = int(os.getenv("SCREEN_HEIGHT"))
+screen = create_screen(screen_width, screen_height, "Red Mouse Dungeon Crawler")
 
 clock = pygame.time.Clock()
 running = True
 
-tile_size = 32
+tile_size = int(os.getenv("TILE_SIZE"))
 tile_kinds = {
     "w": TileKind("wall", "images/dungeon/catacombs0.png", True),
     "f": TileKind("floor", "images/dungeon/limestone1.png", False),

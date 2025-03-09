@@ -1,11 +1,15 @@
+import os
+from dotenv import load_dotenv
 from random import randrange, choice, shuffle
 import json
 import logging
 
+load_dotenv()
+
 # TODO: make these into env vars
-map_width = 10
-map_height = 10
-map_coverage_threshold = 0.3 # minimum pct of map which largest navigable tile group needs to cover
+map_width = int(os.getenv("MAP_WIDTH"))
+map_height = int(os.getenv("MAP_HEIGHT"))
+map_coverage_threshold = float(os.getenv("MAP_COVERAGE_THRESHOLD")) 
 
 # handle tile data file
 tile_file = open('data/tiles.json',)
