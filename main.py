@@ -9,6 +9,7 @@ from libs.player import Player
 from libs.sprite import Sprite, sprites
 from libs.camera import create_screen
 from libs.entity import Entity, active_objs
+from libs.physics import Body
 
 load_dotenv()
 
@@ -34,7 +35,7 @@ start_location = map.start_location()
 start_x = start_location["x"] * tile_size
 start_y = start_location["y"] * tile_size
 
-player = Entity(Player(), Sprite("images/sprites/formicid.png"), x=start_x, y=start_y)
+player = Entity(Player(), Sprite("images/sprites/formicid.png"), Body(), x=start_x, y=start_y)
 
 while running:
     # poll for events

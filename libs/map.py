@@ -1,6 +1,9 @@
 import pygame
 import logging
+from math import ceil
 from libs.camera import camera
+
+map = None
 
 class TileKind:
     def __init__(self, name, image, is_solid):
@@ -10,11 +13,9 @@ class TileKind:
 
 class Map:
     def __init__(self, map_file, tile_kinds, tile_size):
+        global map
         self.tile_kinds = tile_kinds
-        
-        # file = open(map_file, "r")
-        # data = csv.reader(file)
-        # file.close()
+        map = self
 
         # Load the file
         file = open(map_file, "r")
@@ -30,6 +31,34 @@ class Map:
         # Set the size
         self.tile_size = tile_size
     
+    def is_point_solid(self, x, y):
+        x_tile = int(x / self.tile_size)
+        y_tile = int(y / self.tile_size)
+        if y_tile < 0 or \
+            x_tile < 0 or \
+            y_tile >= len(self.tiles) or \
+            x_tile >= len(self.tiles[y_tile]):
+            return False
+        tile = self.tiles[y_tile][x_tile]
+        return self.tile_kinds[tile].is_solid
+
+    def is_rect_solid(self, x, y, width, height):
+        x_checks = int(ceil(width/self.tile_size))
+        y_checks = int(ceil(height/self.tile_size))
+        for yi in range(y_checks):
+            for xi in range(x_checks):
+                x = xi * self.tile_size + x
+                y = yi * self.tile_size + y
+                if self.is_point_solid(x, y):  # NW corner for each tile in affected area
+                    return True
+        if self.is_point_solid(x + width, y):  # NE corner
+            return True
+        if self.is_point_solid(x, y + height):  # SW corner
+            return True
+        if self.is_point_solid(x + width, y + height):  # SE corner
+            return True
+        return False
+
     def draw(self, screen):
         for y, row in enumerate(self.tiles):
             for x, tile in enumerate(row):
