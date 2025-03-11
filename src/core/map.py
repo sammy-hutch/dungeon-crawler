@@ -1,14 +1,17 @@
 import pygame
 import logging
 from math import ceil
-from libs.camera import camera
+from core.camera import camera
 
 map = None
+
+map_folder = "content/maps"
+image_folder = "content/images/dungeon"
 
 class TileKind:
     def __init__(self, name, image, is_solid):
         self.name = name
-        self.image = pygame.image.load(image)
+        self.image = pygame.image.load(image_folder + "/" + image)
         self.is_solid = is_solid
 
 class Map:
@@ -18,7 +21,7 @@ class Map:
         map = self
 
         # Load the file
-        file = open(map_file, "r")
+        file = open(map_folder + "/" + map_file, "r")
         data = file.read()
         file.close()
 

@@ -1,15 +1,17 @@
 import pygame
-from libs.camera import camera
+from core.camera import camera
 
 sprites = []
 loaded = {}
+
+image_folder = "content/images/sprites"
 
 class Sprite:
     def __init__(self, image):
         if image in loaded:
             self.image = loaded[image]
         else:
-            self.image = pygame.image.load(image)
+            self.image = pygame.image.load(image_folder + "/" + image)
             loaded[image] = self.image
         sprites.append(self)
     

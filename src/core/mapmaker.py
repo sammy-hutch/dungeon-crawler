@@ -6,13 +6,15 @@ import logging
 
 load_dotenv()
 
-# TODO: make these into env vars
 map_width = int(os.getenv("MAP_WIDTH"))
 map_height = int(os.getenv("MAP_HEIGHT"))
 map_coverage_threshold = float(os.getenv("MAP_COVERAGE_THRESHOLD")) 
 
+data_folder = "content/data"
+map_folder = "content/maps"
+
 # handle tile data file
-tile_file = open('data/tiles.json',)
+tile_file = open(data_folder + "/" + 'tiles.json',)
 tiles = json.load(tile_file)
 tile_file.close()
 tile_list = tiles["tiles"]
@@ -403,7 +405,7 @@ def build_enriched_map(basic_map, stairs):
 
 def write_map_to_file(map):
     try:
-        with open('maps/start.map', 'w') as map_file:
+        with open(map_folder + "/" + 'start.map', 'w') as map_file:
             for counter, row in enumerate(map):
                 data_to_write = '"' + '","'.join(row) + '"'
                 map_file.write(data_to_write)

@@ -1,9 +1,9 @@
 import pygame
-from libs.sprite import Sprite
-from libs.input import is_key_pressed
-from libs.camera import camera
-from libs.entity import active_objs
-from libs.physics import Body
+from components.sprite import Sprite
+from core.input import is_key_pressed
+from core.camera import camera
+from components.entity import active_objs
+from components.physics import Body
 
 # TODO: create key bindings file so keys can be modified
 
