@@ -196,8 +196,8 @@ def tile_group_volumes(tile_groups):
             groups[tile["group"]] += 1
         else:
             groups.update({tile["group"]: 1})
-    print(groups)
-    print(f"number of groups: {len(groups)}")
+    # print(groups)
+    # print(f"number of groups: {len(groups)}")
 
     return groups
 
@@ -358,7 +358,6 @@ def map_accessibility_checks(basic_map, map_coverage_threshold):
     map_tile_count_y = len(basic_map)
     map_tile_count_x = len(basic_map[0])
     map_size = map_tile_count_y * map_tile_count_x
-    print(map_size)
 
     tile_groups = navigable_tile_dict(basic_map, ignored_tile_types)
     group_volumes = tile_group_volumes(tile_groups)
@@ -366,14 +365,14 @@ def map_accessibility_checks(basic_map, map_coverage_threshold):
     largest_group_key = max(group_volumes, key=group_volumes.get)
     largest_group_volume = group_volumes[largest_group_key]
 
-    # map_coverage_check
+    ## map_coverage_check
     if  largest_group_volume / map_size < map_coverage_threshold:
-        print(f"map coverage check not passed. map size: {map_size}. largest group: {largest_group_volume}")
+        # print(f"map coverage check not passed. map size: {map_size}. largest group: {largest_group_volume}")
         return False
-    else:
-        print(f"map coverage check passed. map size: {map_size}. largest group: {largest_group_volume}")
+    # else:
+    #     print(f"map coverage check passed. map size: {map_size}. largest group: {largest_group_volume}")
     
-    # valid stair placement check
+    ## valid stair placement check
     valid_pairs = valid_stair_placements(tile_groups, largest_group_key)
     if len(valid_pairs) < 1:
         return False
@@ -414,7 +413,6 @@ def write_map_to_file(map):
     except:
         logging.error("error whilst writing map to file")
 
-# TODO: add tests on tiles.json to check uniqueness of name, id, config
 
 def map_maker():
     valid_map = False
@@ -423,7 +421,6 @@ def map_maker():
         basic_map = build_basic_map(schema, tile_list)
         stair_placements = map_accessibility_checks(basic_map, map_coverage_threshold)
         if stair_placements:
-            print(stair_placements)
             valid_map = True
     enriched_map = build_enriched_map(basic_map, stair_placements)
     write_map_to_file(enriched_map)

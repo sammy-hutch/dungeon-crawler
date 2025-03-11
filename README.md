@@ -10,3 +10,6 @@ conda activate dungeoncrawler
 ## notes
 
 for collision detection, just add Body() to the entities
+
+
+# TODO: add tests on tiles.json to check uniqueness of name, id, config

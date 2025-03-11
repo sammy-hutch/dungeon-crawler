@@ -1,4 +1,4 @@
-# Example file showing a basic pygame "game loop"
+
 import os
 from dotenv import load_dotenv
 import pygame
@@ -59,7 +59,7 @@ while running:
     for s in sprites:
         s.draw(screen)
 
-    # RENDER YOUR GAME HERE
+    # Render code
 
     # flip() the display to put your work on screen
     pygame.display.flip()
