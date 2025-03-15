@@ -1,9 +1,13 @@
+import os
+from dotenv import load_dotenv
 import pygame
 import logging
 from math import ceil
-from core.camera import camera
+
+load_dotenv()
 
 map = None
+tile_size = int(os.getenv("TILE_SIZE"))
 
 map_folder = "content/maps"
 image_folder = "content/images/dungeon"
@@ -15,15 +19,10 @@ class TileKind:
         self.is_solid = is_solid
 
 class Map:
-    def __init__(self, map_file, tile_kinds, tile_size):
+    def __init__(self, data, tile_kinds):
         global map
         self.tile_kinds = tile_kinds
         map = self
-
-        # Load the file
-        file = open(map_folder + "/" + map_file, "r")
-        data = file.read()
-        file.close()
 
         # Set up the tiles from loaded data
         self.tiles = []
@@ -63,6 +62,7 @@ class Map:
         return False
 
     def draw(self, screen):
+        from core.camera import camera
         for y, row in enumerate(self.tiles):
             for x, tile in enumerate(row):
                 location = (x * self.tile_size - camera.x, 
@@ -70,12 +70,4 @@ class Map:
                 image = self.tile_kinds[tile].image
                 screen.blit(image, location)
     
-    def start_location(self):
-        start_location = {"y": 0, "x": 0}
-        for y, row in enumerate(self.tiles):
-            for x, tile in enumerate(row):
-                if tile == "^":
-                    start_location["y"] = y
-                    start_location["x"] = x
-                    return start_location
-        return logging.error("no start location found during start_location() func")
+

@@ -19,3 +19,5 @@ for collision detection, just add Body() to the entities
 - add fog (unexplored area)
 - add shadow (area outside of field of vision)
 - utilise texture atlasses
+- keybindings in pygame
+- create file based on runtime
