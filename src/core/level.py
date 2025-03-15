@@ -1,8 +1,12 @@
+import os
+from dotenv import load_dotenv
 from core.map import Map
 from data.objects import create_entity
 
+load_dotenv()
+
 level = None
-level_folder = "content/levels"
+level_folder = os.getenv("LEVEL_FOLDER")
 
 class Level:
     def __init__(self, level_file, tile_types):

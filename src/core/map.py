@@ -9,8 +9,8 @@ load_dotenv()
 map = None
 tile_size = int(os.getenv("TILE_SIZE"))
 
-map_folder = "content/maps"
-image_folder = "content/images/dungeon"
+map_folder = os.getenv("MAP_FOLDER")
+image_folder = os.getenv("DNGN_IMAGE_FOLDER")
 
 class TileKind:
     def __init__(self, name, image, is_solid):

@@ -10,8 +10,8 @@ map_width = int(os.getenv("MAP_WIDTH"))
 map_height = int(os.getenv("MAP_HEIGHT"))
 map_coverage_threshold = float(os.getenv("MAP_COVERAGE_THRESHOLD")) 
 
-data_folder = "content/data"
-map_folder = "content/maps"
+data_folder = os.getenv("DATA_FOLDER")
+map_folder = os.getenv("MAP_FOLDER")
 
 # handle tile data file
 tile_file = open(data_folder + "/" + 'tiles.json',)

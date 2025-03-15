@@ -1,3 +1,5 @@
+import os
+from dotenv import load_dotenv
 import pygame
 from components.sprite import Sprite
 from core.input import is_key_pressed
@@ -5,9 +7,12 @@ from core.camera import camera
 from components.entity import active_objs
 from components.physics import Body
 
+load_dotenv()
+
 # TODO: create key bindings file so keys can be modified
 
-movement_speed = 32
+# player moves one tile per key press
+movement_speed = int(os.getenv("TILE_SIZE"))
 
 class Player:
     def __init__(self):

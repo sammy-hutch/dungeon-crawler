@@ -1,9 +1,20 @@
+import os
+from dotenv import load_dotenv
 from pygame import Rect
+
+load_dotenv()
+
+# set default hitbox size to be 1 pixel smaller on every side than the tile
+tile_size = int(os.getenv("TILE_SIZE"))
+hitbox_x = 1
+hitbox_y = 1
+hitbox_width = tile_size - 2
+hitbox_height = tile_size - 2
 
 bodies = []
 
 class Body:
-    def __init__(self, x=1, y=1, width=30, height=30):
+    def __init__(self, x=hitbox_x, y=hitbox_y, width=hitbox_width, height=hitbox_height):
         self.hitbox = Rect(x, y, width, height)
         bodies.append(self)
     

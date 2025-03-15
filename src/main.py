@@ -1,17 +1,15 @@
 
 import os
-from dotenv import load_dotenv
 import pygame
+from dotenv import load_dotenv
+
+from components.sprite import sprites
+from components.entity import active_objs
 from core import input
-from core.map import TileKind, Map
-from core.mapmaker import map_maker
-from core.levelmaker import level_maker
-from components.player import Player
-from components.sprite import Sprite, sprites
 from core.camera import create_screen
-from components.entity import Entity, active_objs
-from components.physics import Body
 from core.level import Level, level
+from core.levelmaker import level_maker
+from core.mapmaker import map_maker
 from data.tile_types import tile_kinds
 
 load_dotenv()

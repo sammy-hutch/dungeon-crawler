@@ -5,10 +5,14 @@
 #  - features (altars, portals, etc)
 # etc
 
+import os
+from dotenv import load_dotenv
 import logging
 
-level_folder = "content/levels"
-map_folder = "content/maps"
+load_dotenv()
+
+level_folder = os.getenv("LEVEL_FOLDER")
+map_folder = os.getenv("MAP_FOLDER")
 
 map_file = "start.map"
 level_file = "start.lvl"

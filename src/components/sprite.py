@@ -1,10 +1,14 @@
+import os
+from dotenv import load_dotenv
 import pygame
 from core.camera import camera
+
+load_dotenv()
 
 sprites = []
 loaded = {}
 
-image_folder = "content/images/sprites"
+image_folder = os.getenv("SPRITE_IMAGE_FOLDER")
 
 class Sprite:
     def __init__(self, image):
