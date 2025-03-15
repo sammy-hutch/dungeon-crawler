@@ -1,0 +1,10 @@
+{
+    "move_player_n": "K_w",
+    "move_player_ne": "K_e",
+    "move_player_e": "K_d",
+    "move_player_se": "K_c",
+    "move_player_s": "K_x",
+    "move_player_sw": "K_z",
+    "move_player_w": "K_a",
+    "move_player_nw": "K_q"
+}

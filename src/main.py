@@ -10,6 +10,7 @@ from core.camera import create_screen
 from core.level import Level, level
 from core.levelmaker import level_maker
 from core.mapmaker import map_maker
+from data.key_binds import load_key_bindings
 from data.tile_types import tile_kinds
 
 load_dotenv()
@@ -27,6 +28,7 @@ map_file = "start.map"
 level_file = "start.lvl"
 
 tile_size = int(os.getenv("TILE_SIZE"))
+load_key_bindings()
 map_maker()
 level_maker(map_file, level_file)
 level = Level("start.lvl", tile_kinds)

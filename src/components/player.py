@@ -1,11 +1,12 @@
 import os
 from dotenv import load_dotenv
-import pygame
-from components.sprite import Sprite
-from core.input import is_key_pressed
-from core.camera import camera
+
 from components.entity import active_objs
 from components.physics import Body
+from components.sprite import Sprite
+from core.camera import camera
+from core.input import is_key_pressed
+from data.key_binds import key_binds
 
 load_dotenv()
 
@@ -24,24 +25,24 @@ class Player:
         sprite = self.entity.get(Sprite)
         body = self.entity.get(Body)
 
-        if is_key_pressed(pygame.K_w):
+        if is_key_pressed(key_binds["move_player_n"]):
             self.entity.y -= movement_speed
-        if is_key_pressed(pygame.K_e):
+        if is_key_pressed(key_binds["move_player_ne"]):
             self.entity.y -= movement_speed
             self.entity.x += movement_speed
-        if is_key_pressed(pygame.K_d):
+        if is_key_pressed(key_binds["move_player_e"]):
             self.entity.x += movement_speed
-        if is_key_pressed(pygame.K_c):
+        if is_key_pressed(key_binds["move_player_se"]):
             self.entity.y += movement_speed
             self.entity.x += movement_speed
-        if is_key_pressed(pygame.K_x):
+        if is_key_pressed(key_binds["move_player_s"]):
             self.entity.y += movement_speed
-        if is_key_pressed(pygame.K_z):
+        if is_key_pressed(key_binds["move_player_sw"]):
             self.entity.y += movement_speed
             self.entity.x -= movement_speed
-        if is_key_pressed(pygame.K_a):
+        if is_key_pressed(key_binds["move_player_w"]):
             self.entity.x -= movement_speed
-        if is_key_pressed(pygame.K_q):
+        if is_key_pressed(key_binds["move_player_nw"]):
             self.entity.y -= movement_speed
             self.entity.x -= movement_speed
         
