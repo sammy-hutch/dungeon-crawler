@@ -10,13 +10,19 @@ load_dotenv()
 tile_size = int(os.getenv("TILE_SIZE"))
 
 entity_factories = [
-    # 0 - Make a Player
+    # 0 - Makes a Player
     lambda args: Entity(Player(), Sprite("formicid.png"), Body()),
 
-    # 1 - Make a Mob
+    # 1 - Makes an Up Stair
+    lambda args: Entity(Sprite("stone_stairs_up.png")),
+
+    # 2 - Makes a Down Stair
+    lambda args: Entity(Sprite("stone_stairs_down.png")),
+
+    # 1 - Makes a Mob
     lambda args: Entity(Sprite("..."), Body()),
 
-    # 2 - Make an Item
+    # 2 - Makes an Item
     lambda args: Entity(Body()),
 ]
 

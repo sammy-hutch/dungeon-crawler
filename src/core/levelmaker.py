@@ -36,29 +36,51 @@ def load_file(file_folder, file):
 # function to create level based on map file or existing level file
 
 
-# function to set start location
-def start_location(map):
-    start_location = {"y": 0, "x": 0}
-    for y, row in enumerate(map):
-        for x, tile in enumerate(row):
-            if tile == "^":
-                start_location["y"] = str(y)
-                start_location["x"] = str(x)
-                return start_location
-    return logging.error("no start location found during start_location() func")
+# function to create stairs up entity
+def stairs_up_entity(map):
+    entity = []
+    factory_type = str(1)
+    entity.append(factory_type)
+    try:
+        for y, row in enumerate(map):
+            for x, tile in enumerate(row):
+                if tile == "^":
+                    entity.append(str(x))
+                    entity.append(str(y))
+    except:
+        logging.error("no valid location found during stairs_up_entity() func")
+    return entity
+
+
+# function to create stairs down entity
+def stairs_down_entity(map):
+    entity = []
+    factory_type = str(2)
+    entity.append(factory_type)
+    try:
+        for y, row in enumerate(map):
+            for x, tile in enumerate(row):
+                if tile == "v":
+                    entity.append(str(x))
+                    entity.append(str(y))
+    except:
+        logging.error("no valid location found during stairs_down_entity() func")
+    return entity
 
 
 # function to create player entity
-def player_entity(start_location):
+def player_entity(map):
     entity = []
     factory_type = str(0)
     entity.append(factory_type)
-    player_x = start_location["x"]
-    entity.append(player_x)
-    player_y = start_location["y"]
-    entity.append(player_y)
-    # entity.append(factory_type, player_x, player_y)
-    # entity = list(factory_type, player_x, player_y)
+    try:
+        for y, row in enumerate(map):
+            for x, tile in enumerate(row):
+                if tile == "^":
+                    entity.append(str(x))
+                    entity.append(str(y))
+    except:
+        logging.error("no valid location found during player_entity() func")
     return entity
 
 # function to add mobs , including player
@@ -71,7 +93,7 @@ def player_entity(start_location):
 
 
 # function to write level file
-def write_level_to_file(level, player_entity_data):
+def write_level_to_file(level, entities):
     try:
         with open(level_folder + "/" + 'start.lvl', 'w') as level_file:
 
@@ -86,11 +108,13 @@ def write_level_to_file(level, player_entity_data):
             level_file.write('\n')
 
             # add entities
-            for counter, value in enumerate(player_entity_data):
-                level_file.writelines(value)
-                if counter != len(player_entity_data) - 1:
-                    level_file.write(',')
-
+            for entity_counter, entity in enumerate(entities):
+                for item_counter, value in enumerate(entity):
+                    level_file.writelines(value)
+                    if item_counter != len(entity) - 1:
+                        level_file.write(',')
+                if entity_counter != len(entities) - 1:
+                    level_file.write('\n')
 
     except:
         logging.error("error whilst writing level to file")
@@ -99,9 +123,14 @@ def write_level_to_file(level, player_entity_data):
 def level_maker(map_file, level_file):
     map = load_file(map_folder, map_file)
     level = load_file(level_folder, level_file)
-    start = start_location(map)
-    player_entity_data = player_entity(start)
-    write_level_to_file(map, player_entity_data)
+    entities = []
+    stairs_up = stairs_up_entity(map)
+    entities.append(stairs_up)
+    stairs_down = stairs_down_entity(map)
+    entities.append(stairs_down)
+    player = player_entity(map)
+    entities.append(player)
+    write_level_to_file(map, entities)
 
 
 if __name__ == "__main__":
