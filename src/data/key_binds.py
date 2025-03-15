@@ -1,4 +1,5 @@
 import os
+import logging
 from dotenv import load_dotenv
 import json
 import pygame
@@ -18,8 +19,8 @@ def load_key_bindings(file="keybinds.json"):
                     loaded_bindings[action] = getattr(pygame, key_name)
                     key_binds[action] = loaded_bindings[action]
                 except AttributeError:
-                    print(f"Warning: Invalid key name '{key_name}' in keybindings.json")
+                    logging.error(f"Warning: Invalid key name '{key_name}' in keybindings.json")
     except FileNotFoundError:
-        print("Keybindings file not found. Using default bindings.")
+        logging.error("Keybindings file not found. Using default bindings.")
     except json.JSONDecodeError:
-        print("Error decoding keybindings.json. Using default bindings.")
+        logging.error("Error decoding keybindings.json. Using default bindings.")
