@@ -1,0 +1,30 @@
+
+- **content**: data files
+  - **data**: json data files
+    - **tiles.json**: data for 3x3 "chunks" of map. Utilised during random map generation.
+  - **images**: png files
+    - **dungeon**: image files for dungeon components such as wall, floor, stairs.
+    - **sprites**: image files for entities such as mobs and players.
+  - **levels**: folder for .lvl level files. Git ignored by default. Each level file contains the discovered map state, as well as entity info. Level files are intended to be updated upon game saves.
+  - **maps**: folder for .map map files. Git ignored by default. Each map file contains a list of y lists, with each of those containing x elements, where y and x are the dimensions of the map. each element represents a tile in the map. Map files are not intended to be changed.
+- **src**
+  - **components**
+    - **entity.py**: entity class for managing player and sprite entities.
+    - **physics.py**: body class for collision detection.
+    - **player.py**: player class for handling user inputs to player position.
+    - **sprite.py**: sprite class, including sprite image handling.
+  - **core**
+    - **camera.py**: the view of the game, allows for repositioning map as player moves around.
+    - **input.py**: handles user input.
+    - **level.py**: works with .lvl files, generating discovered map as player moves around, and positioning entities.
+    - **levelmaker.py**: generates .lvl file which combines the .map file and a list of entities to place on the map.
+    - **map.py**: works with .map files, generating visual map by assigning images to tiles.
+    - **mapmaker.py**: generates .map file from "chunk" data.
+  - **data**
+    - **objects.py**: entity factory for all objects on map.
+    - **tile_types.py**: dictionary matching tile images to map data.
+  - **main.py**
+- **.env**
+- **.gitignore**
+- **README.md**
+- **requirements.txt**
