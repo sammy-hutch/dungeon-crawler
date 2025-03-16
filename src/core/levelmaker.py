@@ -55,7 +55,7 @@ def add_entity(entity, map):
     Returns:
         entity_data (list): list containing 3 items: entity factory number, x coord, y coord. e.g. [0, 26, 3]
     """
-    print(f"entity: {entities[entity]}")
+
     entity_data = []
     factory_type = str(entities[entity]["factory"])
     entity_data.append(factory_type)
@@ -67,6 +67,7 @@ def add_entity(entity, map):
                     entity_data.append(str(y))
     except:
         logging.error("no valid location found during add_entity() func")
+        
     return entity_data
 
 
