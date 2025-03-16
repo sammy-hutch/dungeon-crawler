@@ -402,9 +402,10 @@ def build_enriched_map(basic_map, stairs):
     return basic_map
 
 
-def write_map_to_file(map):
+def write_map_to_file(map, lvl_num):
     try:
-        with open(map_folder + "/" + 'start.map', 'w') as map_file:
+        file_name = "test" + str(lvl_num) + ".map"
+        with open(map_folder + "/" + file_name, 'w') as map_file:
             for counter, row in enumerate(map):
                 data_to_write = '"' + '","'.join(row) + '"'
                 map_file.write(data_to_write)
@@ -414,7 +415,7 @@ def write_map_to_file(map):
         logging.error("error whilst writing map to file")
 
 
-def map_maker():
+def map_maker(lvl_num):
     valid_map = False
     while not valid_map:
         schema = build_schema(map_width, map_height, available_tiles)
@@ -423,7 +424,7 @@ def map_maker():
         if stair_placements:
             valid_map = True
     enriched_map = build_enriched_map(basic_map, stair_placements)
-    write_map_to_file(enriched_map)
+    write_map_to_file(enriched_map, lvl_num)
 
 if __name__ == "__main__":
 

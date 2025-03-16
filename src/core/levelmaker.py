@@ -80,8 +80,8 @@ def populate_map(map):
     entity_list = []
 
     # Add stairs
-    entity_list.extend(add_entity("stairs_up", map, "lvl2.lvl"))
-    entity_list.extend(add_entity("stairs_down", map, "lvl2.lvl"))
+    entity_list.extend(add_entity("stairs_up", map, "^"))
+    entity_list.extend(add_entity("stairs_down", map, "v"))
 
     # Add doors
     entity_list.extend(add_entity("door", map))
@@ -97,9 +97,10 @@ def populate_map(map):
 
 
 # function to write level file
-def write_level_to_file(level, entities):
+def write_level_to_file(level, entities, lvl_num):
     try:
-        with open(level_folder + "/" + 'start.lvl', 'w') as level_file:
+        file_name = "test" + str(lvl_num) + ".lvl"
+        with open(level_folder + "/" + file_name, 'w') as level_file:
 
             # add level to file
             for row in level:
@@ -124,12 +125,14 @@ def write_level_to_file(level, entities):
         logging.error("error whilst writing level to file")
 
 
-def level_maker(map_file, level_file):
+def level_maker(lvl_num):
+    map_file = "test" + str(lvl_num) + ".map"
+    level_file = "test" + str(lvl_num) + ".lvl"
     map = load_file(map_folder, map_file)
-    level = load_file(level_folder, level_file)
+    # level = load_file(level_folder, level_file)
     entity_list = populate_map(map)
-    write_level_to_file(map, entity_list)
+    write_level_to_file(map, entity_list, lvl_num)
 
 
 if __name__ == "__main__":
-    level_maker(map_file, level_file)
+    level_maker(lvl_num=1)

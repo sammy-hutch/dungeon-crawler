@@ -52,3 +52,7 @@ class Level:
                 self.entities.append(create_entity(id, x, y, items))
             except:
                 print(f"Error parsing line: {line}")
+    
+    def save_file(self, level_file):
+        # TODO: add save file function, which writes level data to file
+        pass
