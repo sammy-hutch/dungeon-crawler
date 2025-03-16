@@ -16,6 +16,10 @@ from data.tile_types import tile_kinds
 
 load_dotenv()
 
+debug_mode = os.getenv("DEBUG_MODE")
+level_folder_path = "./" + os.getenv("LEVEL_FOLDER") + "/"
+map_folder_path = "./" + os.getenv("MAP_FOLDER") + "/"
+
 # pygame setup
 pygame.init()
 screen_width = int(os.getenv("SCREEN_WIDTH"))
@@ -39,10 +43,22 @@ level = Level(level_name, tile_kinds)
 
 while running:
     # poll for events
-    # pygame.QUIT event means the user clicked X to close your window
     for event in pygame.event.get():
+
         if event.type == pygame.QUIT:
+            # if in debug mode, delete all map and level files
+            if debug_mode == "yes":
+                for filename in os.listdir(map_folder_path):
+                    if filename.startswith(save_name):
+                        path = os.path.join(map_folder_path, filename)
+                        os.remove(path)
+                for filename in os.listdir(level_folder_path):
+                    if filename.startswith(save_name):
+                        path = os.path.join(level_folder_path, filename)
+                        os.remove(path)  
+            # close the application              
             running = False
+            
         elif event.type == pygame.KEYDOWN:
             input.keys_down.add(event.key)
         elif event.type == pygame.KEYUP:
