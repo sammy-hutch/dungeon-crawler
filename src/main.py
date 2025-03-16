@@ -2,6 +2,7 @@ import os
 import pygame
 from dotenv import load_dotenv
 
+from components.label import labels
 from components.sprite import sprites
 from components.entity import active_objs
 from components.navigator import lvl_num
@@ -71,6 +72,10 @@ while running:
     level.map.draw(screen)
     for s in sprites:
         s.draw(screen)
+    
+    # Draw UI stuff
+    for l in labels:
+        l.draw(screen)
 
     # Render code
 

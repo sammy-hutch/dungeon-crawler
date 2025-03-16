@@ -4,6 +4,7 @@
     - **entities.json**: basic data for entities, such as factory number and valid start location
     - **keybinds.json**: key binding file.
     - **tiles.json**: data for 3x3 "chunks" of map. Utilised during random map generation.
+  - **fonts**: font ttf files
   - **images**: png files
     - **dungeon**: image files for dungeon components such as wall, floor, stairs.
     - **sprites**: image files for entities such as mobs and players.
@@ -12,6 +13,7 @@
 - **src**
   - **components**
     - **entity.py**: entity class for managing player and sprite entities.
+    - **label.py**: label class for handling text labels on screen
     - **navigator.py**: functionality for managing the dungeon level number, and navigating between levels
     - **physics.py**: body class for collision detection.
     - **player.py**: player class for handling user inputs to player position.

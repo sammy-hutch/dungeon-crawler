@@ -1,7 +1,6 @@
 import os
 from dotenv import load_dotenv
 from core.map import Map
-from data.objects import create_entity
 
 load_dotenv()
 
@@ -19,18 +18,26 @@ class Level:
         from components.entity import active_objs
         from components.physics import triggers, bodies
         from components.sprite import sprites
+        from components.label import labels
         triggers.clear()
         bodies.clear()
         sprites.clear()
         active_objs.clear()
+        labels.clear()
         self.entities = []
     
     def load_file(self, level_file):
-        self.reset_everything()
+        from data.objects import create_entity
+
         # Read all the data from the file
         file = open(level_folder + "/" + level_file, "r")
         data = file.read()
         file.close()
+
+        # Clear the previous area
+        self.reset_everything()
+
+        self.name = level_file.split(".")[0].title().replace("_", " ")
 
         # Split up the data by minus signs
         chunks = data.split('\n-')
