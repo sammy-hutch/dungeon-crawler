@@ -1,10 +1,9 @@
 import os
 from dotenv import load_dotenv
 
-from core.mapmaker import map_maker
 from core.levelmaker import level_maker
+from core.mapmaker import map_maker
 from components.physics import Trigger
-from components.player import Player
 
 load_dotenv()
 

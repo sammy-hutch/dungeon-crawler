@@ -1,6 +1,7 @@
 import os
 from dotenv import load_dotenv
 import pygame
+
 from core.camera import camera
 
 load_dotenv()

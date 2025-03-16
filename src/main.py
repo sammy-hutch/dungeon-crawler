@@ -1,4 +1,3 @@
-
 import os
 import pygame
 from dotenv import load_dotenv
@@ -19,24 +18,22 @@ load_dotenv()
 debug_mode = os.getenv("DEBUG_MODE")
 level_folder_path = "./" + os.getenv("LEVEL_FOLDER") + "/"
 map_folder_path = "./" + os.getenv("MAP_FOLDER") + "/"
+save_name = os.getenv("SAVE_NAME")
 
 # pygame setup
 pygame.init()
 screen_width = int(os.getenv("SCREEN_WIDTH"))
 screen_height = int(os.getenv("SCREEN_HEIGHT"))
 screen = create_screen(screen_width, screen_height, "Red Mouse Dungeon Crawler")
+tile_size = int(os.getenv("TILE_SIZE"))
 
 clock = pygame.time.Clock()
 running = True
 
-map_file = "start.map"
-level_file = "start.lvl"
-
-tile_size = int(os.getenv("TILE_SIZE"))
 load_key_bindings()
 map_maker(lvl_num)
 level_maker(lvl_num)
-save_name = os.getenv("SAVE_NAME")
+
 level_name = save_name + "_1.lvl"
 level = Level(level_name, tile_kinds)
 
@@ -58,7 +55,7 @@ while running:
                         os.remove(path)  
             # close the application              
             running = False
-            
+
         elif event.type == pygame.KEYDOWN:
             input.keys_down.add(event.key)
         elif event.type == pygame.KEYUP:
@@ -80,6 +77,6 @@ while running:
     # flip() the display to put your work on screen
     pygame.display.flip()
 
-    clock.tick(10)  # limits FPS to 60
+    clock.tick(10)  # limits FPS to 10 # TODO: find a better way to manage the key presses
 
 pygame.quit()
