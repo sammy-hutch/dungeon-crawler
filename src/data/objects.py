@@ -1,9 +1,10 @@
 import os
 from dotenv import load_dotenv
 from components.entity import Entity
-from components.sprite import Sprite
-from components.player import Player
 from components.physics import Body
+from components.player import Player
+from components.sprite import Sprite
+from components.teleporter import Teleporter
 
 load_dotenv()
 
@@ -14,10 +15,10 @@ entity_factories = [
     lambda args: Entity(Player(), Sprite("formicid.png"), Body()),
 
     # 1 - Makes an Up Stair
-    lambda args: Entity(Sprite("stone_stairs_up.png")),
+    lambda args: Entity(Teleporter(args[3]), Sprite("stone_stairs_up.png")),
 
     # 2 - Makes a Down Stair
-    lambda args: Entity(Sprite("stone_stairs_down.png")),
+    lambda args: Entity(Teleporter(args[3]), Sprite("stone_stairs_down.png")),
 
     # 3 - Makes a Door
     lambda args: Entity(Sprite("closed_door.png")),
@@ -26,7 +27,7 @@ entity_factories = [
     lambda args: Entity(Sprite("..."), Body()),
 
     # 5 - Makes an Item
-    lambda args: Entity(Body()),
+    lambda args: Entity(Body())
 ]
 
 

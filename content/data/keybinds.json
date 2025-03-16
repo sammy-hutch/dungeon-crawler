@@ -6,5 +6,6 @@
     "move_player_s": "K_x",
     "move_player_sw": "K_z",
     "move_player_w": "K_a",
-    "move_player_nw": "K_q"
+    "move_player_nw": "K_q",
+    "interact_current_space": "K_s"
 }

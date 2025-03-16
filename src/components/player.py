@@ -2,7 +2,7 @@ import os
 from dotenv import load_dotenv
 
 from components.entity import active_objs
-from components.physics import Body
+from components.physics import Body, triggers
 from components.sprite import Sprite
 from core.camera import camera
 from core.input import is_key_pressed
@@ -45,6 +45,11 @@ class Player:
         if is_key_pressed(key_binds["move_player_nw"]):
             self.entity.y -= movement_speed
             self.entity.x -= movement_speed
+        
+        if is_key_pressed(key_binds["interact_current_space"]):
+                    for t in triggers:
+                        if body.is_colliding_with(t):
+                            t.on()
         
         if not body.is_position_valid():
             self.entity.x = previous_x

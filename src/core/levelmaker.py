@@ -44,7 +44,7 @@ def load_file(file_folder, file):
 # ...
 
 
-def add_entity(entity, map):
+def add_entity(entity, map, data=None):
     """
     Helper function to create list of entity and associated data (x and y coords)
 
@@ -66,6 +66,8 @@ def add_entity(entity, map):
                     entity_data.append(factory_type)
                     entity_data.append(str(x))
                     entity_data.append(str(y))
+                    if data != None:
+                        entity_data.append(data)
                     entity_list.append(entity_data)
     except:
         logging.error(f"error whilst assigning {entity} entity during add_entity() func")
@@ -78,8 +80,8 @@ def populate_map(map):
     entity_list = []
 
     # Add stairs
-    entity_list.extend(add_entity("stairs_up", map))
-    entity_list.extend(add_entity("stairs_down", map))
+    entity_list.extend(add_entity("stairs_up", map, "lvl2.lvl"))
+    entity_list.extend(add_entity("stairs_down", map, "lvl2.lvl"))
 
     # Add doors
     entity_list.extend(add_entity("door", map))
