@@ -19,10 +19,10 @@ entity_factories = [
     # 2 - Makes a Down Stair
     lambda args: Entity(Sprite("stone_stairs_down.png")),
 
-    # 1 - Makes a Mob
+    # 3 - Makes a Mob
     lambda args: Entity(Sprite("..."), Body()),
 
-    # 2 - Makes an Item
+    # 4 - Makes an Item
     lambda args: Entity(Body()),
 ]
 

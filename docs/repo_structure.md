@@ -1,6 +1,7 @@
 
 - **content**: data files
   - **data**: json data files
+    - **entities.json**: basic data for entities, such as factory number and valid start location
     - **keybinds.json**: key binding file.
     - **tiles.json**: data for 3x3 "chunks" of map. Utilised during random map generation.
   - **images**: png files
