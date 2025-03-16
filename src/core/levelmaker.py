@@ -15,6 +15,7 @@ load_dotenv()
 level_folder = os.getenv("LEVEL_FOLDER")
 map_folder = os.getenv("MAP_FOLDER")
 data_folder = os.getenv("DATA_FOLDER")
+save_name = os.getenv("SAVE_NAME")
 
 map_file = "start.map"
 level_file = "start.lvl"
@@ -99,7 +100,7 @@ def populate_map(map):
 # function to write level file
 def write_level_to_file(level, entities, lvl_num):
     try:
-        file_name = "test" + str(lvl_num) + ".lvl"
+        file_name = save_name + "_" + str(lvl_num) + ".lvl"
         with open(level_folder + "/" + file_name, 'w') as level_file:
 
             # add level to file
@@ -126,10 +127,8 @@ def write_level_to_file(level, entities, lvl_num):
 
 
 def level_maker(lvl_num):
-    map_file = "test" + str(lvl_num) + ".map"
-    level_file = "test" + str(lvl_num) + ".lvl"
+    map_file = save_name + "_" + str(lvl_num) + ".map"
     map = load_file(map_folder, map_file)
-    # level = load_file(level_folder, level_file)
     entity_list = populate_map(map)
     write_level_to_file(map, entity_list, lvl_num)
 

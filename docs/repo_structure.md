@@ -12,6 +12,7 @@
 - **src**
   - **components**
     - **entity.py**: entity class for managing player and sprite entities.
+    - **navigator.py**: functionality for managing the dungeon level number, and navigating between levels
     - **physics.py**: body class for collision detection.
     - **player.py**: player class for handling user inputs to player position.
     - **sprite.py**: sprite class, including sprite image handling.

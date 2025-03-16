@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 
 from components.sprite import sprites
 from components.entity import active_objs
-from components.teleporter import lvl_num
+from components.navigator import lvl_num
 from core import input
 from core.camera import create_screen
 from core.level import Level, level
@@ -32,7 +32,9 @@ tile_size = int(os.getenv("TILE_SIZE"))
 load_key_bindings()
 map_maker(lvl_num)
 level_maker(lvl_num)
-level = Level("test1.lvl", tile_kinds)
+save_name = os.getenv("SAVE_NAME")
+level_name = save_name + "_1.lvl"
+level = Level(level_name, tile_kinds)
 
 
 while running:

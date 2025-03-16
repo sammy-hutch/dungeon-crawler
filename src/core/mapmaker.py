@@ -12,6 +12,7 @@ map_coverage_threshold = float(os.getenv("MAP_COVERAGE_THRESHOLD"))
 
 data_folder = os.getenv("DATA_FOLDER")
 map_folder = os.getenv("MAP_FOLDER")
+save_name = os.getenv("SAVE_NAME")
 
 # handle tile data file
 tile_file = open(data_folder + "/" + 'tiles.json',)
@@ -404,7 +405,7 @@ def build_enriched_map(basic_map, stairs):
 
 def write_map_to_file(map, lvl_num):
     try:
-        file_name = "test" + str(lvl_num) + ".map"
+        file_name = save_name + "_" + str(lvl_num) + ".map"
         with open(map_folder + "/" + file_name, 'w') as map_file:
             for counter, row in enumerate(map):
                 data_to_write = '"' + '","'.join(row) + '"'
