@@ -2,7 +2,7 @@
 #  - start location
 #  - starting mobs
 #  - items
-#  - features (altars, portals, etc)
+#  - features (altars, portals, doors, etc)
 # etc
 
 import os
@@ -56,29 +56,36 @@ def add_entity(entity, map):
         entity_data (list): list containing 3 items: entity factory number, x coord, y coord. e.g. [0, 26, 3]
     """
 
-    entity_data = []
-    factory_type = str(entities[entity]["factory"])
-    entity_data.append(factory_type)
+    entity_list = []
     try:
         for y, row in enumerate(map):
             for x, tile in enumerate(row):
                 if tile == entities[entity]["start"]:
+                    entity_data = []
+                    factory_type = str(entities[entity]["factory"])
+                    entity_data.append(factory_type)
                     entity_data.append(str(x))
                     entity_data.append(str(y))
+                    entity_list.append(entity_data)
     except:
-        logging.error("no valid location found during add_entity() func")
-        
-    return entity_data
+        logging.error(f"error whilst assigning {entity} entity during add_entity() func")
+
+    return entity_list
 
 
 # function to add mobs , including player
 def populate_map(map):
     entity_list = []
 
-    # Add stairs and player
-    entity_list.append(add_entity("stairs_up", map))
-    entity_list.append(add_entity("stairs_down", map))
-    entity_list.append(add_entity("player", map))
+    # Add stairs
+    entity_list.extend(add_entity("stairs_up", map))
+    entity_list.extend(add_entity("stairs_down", map))
+
+    # Add doors
+    entity_list.extend(add_entity("door", map))
+
+    # Add Player
+    entity_list.extend(add_entity("player", map))
 
     return entity_list
 

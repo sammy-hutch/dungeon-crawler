@@ -2,6 +2,7 @@
     "player": {"factory": 0, "start": "^"},
     "stairs_up": {"factory": 1, "start": "^"},
     "stairs_down": {"factory": 2, "start": "v"},
-    "mob": {"factory": 3, "start": "f"},
-    "item": {"factory": 4, "start": "f"}
+    "door": {"factory": 3, "start": "d"},
+    "mob": {"factory": 4, "start": "f"},
+    "item": {"factory": 5, "start": "f"}
 }
