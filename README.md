@@ -9,10 +9,16 @@ conda activate dungeoncrawler
 
 ## notes
 
-for collision detection, just add Body() to the entities
+- for collision detection, just add Body() to the entities
+- state update logic currently contained within event response, meaning not currently possible to hold down multiple keys
 
 
-# TODO: add tests on tiles.json to check uniqueness of name, id, config
+# TO DO List
+
+## Ten-minute Tasks
+- tidy movement handler and keyup and keydown events (engine.py)
+- make file deletion at quit into its own functionality which can be inherited by the level and map classes (engine.py)
+- manage initial map and level (main.py)
 
 ## short-term tasks
 - add field of vision
@@ -20,3 +26,8 @@ for collision detection, just add Body() to the entities
 - add shadow (area outside of field of vision)
 - utilise texture atlasses
 - spawn player on down stairs when travelling upwards
+- add unit tests on tiles.json to check uniqueness of name, id, config
+
+## long-term tasks
+- player classes
+- mobs
