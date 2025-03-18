@@ -14,6 +14,11 @@ hitbox_height = tile_size - 2
 bodies = []
 triggers = []
 
+def reset_physics():
+    global bodies, triggers
+    bodies.clear()
+    triggers.clear()
+
 class PhysicalObj:
     def __init__(self, x, y, width, height):
         self.hitbox = Rect(x, y, width, height)

@@ -20,6 +20,7 @@
     - **sprite.py**: sprite class, including sprite image handling.
   - **core**
     - **camera.py**: the view of the game, allows for repositioning map as player moves around.
+    - **engine.py**: handles the game loop & moving between stages (e.g. menu screen, play screen)
     - **input.py**: handles user input.
     - **level.py**: works with .lvl files, generating discovered map as player moves around, and positioning entities.
     - **levelmaker.py**: generates .lvl file which combines the .map file and a list of entities to place on the map.
@@ -29,6 +30,9 @@
     - **key_binds.py**: functions for loading and modifying key bindings.
     - **objects.py**: entity factory for all objects on map.
     - **tile_types.py**: dictionary matching tile images to map data.
+    **stages**
+    - **menu.py**: code for menu stage
+    - **Play.py**: code for play stage (calls level functionality)
   - **main.py**
 - **.env**
 - **.gitignore**

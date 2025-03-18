@@ -14,18 +14,6 @@ class Level:
         self.tile_types = tile_types
         self.load_file(level_file)
     
-    def reset_everything(self):
-        from components.entity import active_objs
-        from components.physics import triggers, bodies
-        from components.sprite import sprites
-        from components.label import labels
-        triggers.clear()
-        bodies.clear()
-        sprites.clear()
-        active_objs.clear()
-        labels.clear()
-        self.entities = []
-    
     def load_file(self, level_file):
         from data.objects import create_entity
 
@@ -35,7 +23,8 @@ class Level:
         file.close()
 
         # Clear the previous area
-        self.reset_everything()
+        from core.engine import engine
+        engine.reset()
 
         self.name = level_file.split(".")[0].title().replace("_", " ")
 

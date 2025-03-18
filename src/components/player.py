@@ -1,7 +1,7 @@
 import os
 from dotenv import load_dotenv
 
-from components.entity import Entity, active_objs
+from components.entity import Entity
 from components.label import Label
 from components.physics import Body, triggers
 from components.sprite import Sprite
@@ -28,7 +28,8 @@ class Player:
 
         self.level_label.entity.x = 10
         
-        active_objs.append(self)
+        from core.engine import engine
+        engine.active_objs.append(self)
     
     def update(self):
         self.loc_label.set_text(f"X: {self.entity.x} - Y: {self.entity.y}")
@@ -36,6 +37,10 @@ class Player:
         previous_y = self.entity.y
         sprite = self.entity.get(Sprite)
         body = self.entity.get(Body)
+
+        if is_key_pressed(key_binds["navigate_to_menu"]):
+             from core.engine import engine
+             engine.switch_to("Menu")
 
         if is_key_pressed(key_binds["move_player_n"]):
             self.entity.y -= movement_speed

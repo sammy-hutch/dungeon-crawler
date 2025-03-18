@@ -5,13 +5,13 @@ import pygame
 load_dotenv()
 
 fonts = {}
-labels = []
 
 anti_alias = True
 font_folder = os.getenv("FONT_FOLDER")
 
 class Label:
     def __init__(self, font, text, size=32, colour=(255, 255, 255)):
+        from core.engine import engine
         global labels
         self.colour = colour
         if font in fonts:
@@ -20,7 +20,7 @@ class Label:
             self.font = pygame.font.Font(font_folder + "/" + font, size)
     
         self.set_text(text)
-        labels.append(self)
+        engine.ui_drawables.append(self)
     
     def set_text(self, text):
         self.text = text

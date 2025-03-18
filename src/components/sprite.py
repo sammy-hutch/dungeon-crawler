@@ -3,10 +3,10 @@ from dotenv import load_dotenv
 import pygame
 
 from core.camera import camera
+from core.engine import engine
 
 load_dotenv()
 
-sprites = []
 loaded = {}
 
 image_folder = os.getenv("SPRITE_IMAGE_FOLDER")
@@ -18,10 +18,10 @@ class Sprite:
         else:
             self.image = pygame.image.load(image_folder + "/" + image)
             loaded[image] = self.image
-        sprites.append(self)
+        engine.drawables.append(self)
     
     def delete(self):
-        sprites.remove(self)
+        engine.drawables.remove(self)
     
     def draw(self, screen):
         screen.blit(self.image, (self.entity.x - camera.x, self.entity.y - camera.y))

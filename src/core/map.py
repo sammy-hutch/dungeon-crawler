@@ -20,6 +20,9 @@ class TileKind:
 
 class Map:
     def __init__(self, data, tile_kinds):
+        from core.engine import engine
+        engine.background_drawables.append(self)
+
         global map
         self.tile_kinds = tile_kinds
         map = self
