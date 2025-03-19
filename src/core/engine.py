@@ -8,10 +8,6 @@ pygame.init()
 engine = None
 default_width = int(os.getenv("SCREEN_WIDTH"))
 default_height = int(os.getenv("SCREEN_HEIGHT"))
-debug_mode = os.getenv("DEBUG_MODE")
-level_folder_path = "./" + os.getenv("LEVEL_FOLDER") + "/"
-map_folder_path = "./" + os.getenv("MAP_FOLDER") + "/"
-save_name = os.getenv("SAVE_NAME")
 
 class Engine:
     def __init__(self, game_title):
@@ -41,27 +37,20 @@ class Engine:
 
     def run(self):
         from core.input import keys_down
+        from data.file_manager import save_game
         movement_delay = 100  # milliseconds between movements
         last_movement_time = {} # Dictionary to store last movement time for each key
 
         self.running = True
         while self.running:
             for event in pygame.event.get():
+
                 # Handle quit event
                 if event.type == pygame.QUIT:
-                    # if in debug mode, delete all map and level files
-                    # TODO: make this into its own function
-                    if debug_mode == "yes":
-                        for filename in os.listdir(map_folder_path):
-                            if filename.startswith(save_name):
-                                path = os.path.join(map_folder_path, filename)
-                                os.remove(path)
-                        for filename in os.listdir(level_folder_path):
-                            if filename.startswith(save_name):
-                                path = os.path.join(level_folder_path, filename)
-                                os.remove(path)  
+                    save_game()
                     # close the application    
                     self.running = False
+                
                 # Handle keydown and keyup events
                 # TODO: tidy this
                 elif event.type == pygame.KEYDOWN:
@@ -73,7 +62,7 @@ class Engine:
                     if event.key in last_movement_time:
                         del last_movement_time[event.key]
             
-                # Handle movement
+                # Handle movement / Update code
                 # TODO: tidy this
                 current_time = pygame.time.get_ticks()
                 for key in keys_down:

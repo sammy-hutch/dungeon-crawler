@@ -17,8 +17,8 @@ conda activate dungeoncrawler
 
 ## Ten-minute Tasks
 - tidy movement handler and keyup and keydown events (engine.py)
-- make file deletion at quit into its own functionality which can be inherited by the level and map classes (engine.py)
 - manage initial map and level (main.py)
+- bug fix: not updating level number the first time each level generated
 
 ## short-term tasks
 - add field of vision

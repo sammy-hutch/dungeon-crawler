@@ -27,6 +27,7 @@
     - **map.py**: works with .map files, generating visual map by assigning images to tiles.
     - **mapmaker.py**: generates .map file from "chunk" data.
   - **data**
+    - **file_manager**: functionality for saving & deleting files
     - **key_binds.py**: functions for loading and modifying key bindings.
     - **objects.py**: entity factory for all objects on map.
     - **tile_types.py**: dictionary matching tile images to map data.
