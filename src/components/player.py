@@ -1,6 +1,3 @@
-import os
-from dotenv import load_dotenv
-
 from components.entity import Entity
 from components.label import Label
 from components.physics import Body, triggers
@@ -8,14 +5,12 @@ from components.sprite import Sprite
 from core.camera import camera
 from core.level import level
 from core.input import is_key_pressed
+from data.config import TILE_SIZE
 from data.key_binds import key_binds
 
-load_dotenv()
-
-# TODO: create key bindings file so keys can be modified
 
 # player moves one tile per key press
-movement_speed = int(os.getenv("TILE_SIZE"))
+movement_speed = TILE_SIZE
 
 class Player:
     def __init__(self):

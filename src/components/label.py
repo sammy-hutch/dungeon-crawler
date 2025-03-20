@@ -1,13 +1,9 @@
-import os
-from dotenv import load_dotenv
 import pygame
-
-load_dotenv()
+from data.config import FONT_FOLDER
 
 fonts = {}
 
 anti_alias = True
-font_folder = os.getenv("FONT_FOLDER")
 
 class Label:
     def __init__(self, font, text, size=32, colour=(255, 255, 255)):
@@ -17,7 +13,7 @@ class Label:
         if font in fonts:
             self.font = fonts[font]
         else:
-            self.font = pygame.font.Font(font_folder + "/" + font, size)
+            self.font = pygame.font.Font(FONT_FOLDER + "/" + font, size)
     
         self.set_text(text)
         engine.ui_drawables.append(self)

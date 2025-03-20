@@ -1,17 +1,14 @@
-import os
 import logging
-from dotenv import load_dotenv
 import json
 import pygame
 
-load_dotenv()
+from data.config import DATA_FOLDER
 
-data_folder = os.getenv("DATA_FOLDER")
 key_binds = {}
 
 def load_key_bindings(file="keybinds.json"):
     try:
-        with open(data_folder + "/" + file, "r") as f:
+        with open(DATA_FOLDER + "/" + file, "r") as f:
             loaded_bindings = json.load(f)
             for action, key_name in loaded_bindings.items():
                 try:

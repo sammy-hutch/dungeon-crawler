@@ -1,21 +1,15 @@
-import os
-from dotenv import load_dotenv
 import pygame
 import logging
 from math import ceil
 
-load_dotenv()
+from data.config import DNGN_IMAGE_FOLDER, MAP_FOLDER, TILE_SIZE
 
 map = None
-tile_size = int(os.getenv("TILE_SIZE"))
-
-map_folder = os.getenv("MAP_FOLDER")
-image_folder = os.getenv("DNGN_IMAGE_FOLDER")
 
 class TileKind:
     def __init__(self, name, image, is_solid):
         self.name = name
-        self.image = pygame.image.load(image_folder + "/" + image)
+        self.image = pygame.image.load(DNGN_IMAGE_FOLDER + "/" + image)
         self.is_solid = is_solid
 
 class Map:
@@ -34,7 +28,7 @@ class Map:
             self.tiles.append(row)
         
         # Set the size
-        self.tile_size = tile_size
+        self.tile_size = TILE_SIZE
     
     def is_point_solid(self, x, y):
         x_tile = int(x / self.tile_size)

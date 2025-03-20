@@ -1,22 +1,17 @@
-import os
-from dotenv import load_dotenv
 import pygame
 
 from core.camera import camera
 from core.engine import engine
-
-load_dotenv()
+from data.config import SPRITE_IMAGE_FOLDER
 
 loaded = {}
-
-image_folder = os.getenv("SPRITE_IMAGE_FOLDER")
 
 class Sprite:
     def __init__(self, image):
         if image in loaded:
             self.image = loaded[image]
         else:
-            self.image = pygame.image.load(image_folder + "/" + image)
+            self.image = pygame.image.load(SPRITE_IMAGE_FOLDER + "/" + image)
             loaded[image] = self.image
         engine.drawables.append(self)
     

@@ -1,21 +1,11 @@
-import os
-from dotenv import load_dotenv
 from random import randrange, choice, shuffle
 import json
 import logging
 
-load_dotenv()
-
-map_width = int(os.getenv("MAP_WIDTH"))
-map_height = int(os.getenv("MAP_HEIGHT"))
-map_coverage_threshold = float(os.getenv("MAP_COVERAGE_THRESHOLD")) 
-
-data_folder = os.getenv("DATA_FOLDER")
-map_folder = os.getenv("MAP_FOLDER")
-save_name = os.getenv("SAVE_NAME")
+from data.config import DATA_FOLDER, MAP_COVERAGE_THRESHOLD, MAP_FOLDER, MAP_HEIGHT, MAP_WIDTH, SAVE_NAME
 
 # handle tile data file
-tile_file = open(data_folder + "/" + 'tiles.json',)
+tile_file = open(DATA_FOLDER + "/" + 'tiles.json',)
 tiles = json.load(tile_file)
 tile_file.close()
 tile_list = tiles["tiles"]
@@ -284,13 +274,11 @@ def set_stair_placement(location_pairs):
     return stair_placements
 
 
-def build_schema(map_width: int, map_height: int, available_tiles: list[str]):
+def build_schema(available_tiles: list[str]):
     """
     Builds 'schema', which is high-level overview of map layout.
 
     Args:
-        map_width (int): how many 'chunks' wide the map is
-        map_height (int): how many 'chunks' tall the map is
         available_tiles (list[str]): the tiles to choose from when building the schema
     Returns:
         schema (list[list[str]]): a matrix of size map_width * map_height
@@ -298,12 +286,12 @@ def build_schema(map_width: int, map_height: int, available_tiles: list[str]):
 
     empty_tile = 3
     complete_schema: bool = False
-    schema = [[empty_tile for _ in range(map_width)] for _ in range(map_height)]
+    schema = [[empty_tile for _ in range(MAP_WIDTH)] for _ in range(MAP_HEIGHT)]
 
     try:
         while not complete_schema:
-            x = randrange(0,map_width)
-            y = randrange(0,map_height)
+            x = randrange(0,MAP_WIDTH)
+            y = randrange(0,MAP_HEIGHT)
             if schema[y][x] == empty_tile:
                 valid_remaining_tiles = available_tiles.copy()
                 valid_tile_placement = False
@@ -352,7 +340,7 @@ def build_basic_map(schema: list[list[str]], tile_list: json):
     return basic_map
 
 
-def map_accessibility_checks(basic_map, map_coverage_threshold):
+def map_accessibility_checks(basic_map):
     ## function to hold various accessibility checks for the map
     # TODO: break this up into smaller functions within the mapmaker handler
 
@@ -367,7 +355,7 @@ def map_accessibility_checks(basic_map, map_coverage_threshold):
     largest_group_volume = group_volumes[largest_group_key]
 
     ## map_coverage_check
-    if  largest_group_volume / map_size < map_coverage_threshold:
+    if  largest_group_volume / map_size < MAP_COVERAGE_THRESHOLD:
         # print(f"map coverage check not passed. map size: {map_size}. largest group: {largest_group_volume}")
         return False
     # else:
@@ -405,8 +393,8 @@ def build_enriched_map(basic_map, stairs):
 
 def write_map_to_file(map, lvl_num):
     try:
-        file_name = save_name + "_" + str(lvl_num) + ".map"
-        with open(map_folder + "/" + file_name, 'w') as map_file:
+        file_name = SAVE_NAME + "_" + str(lvl_num) + ".map"
+        with open(MAP_FOLDER + "/" + file_name, 'w') as map_file:
             for counter, row in enumerate(map):
                 data_to_write = '"' + '","'.join(row) + '"'
                 map_file.write(data_to_write)
@@ -419,9 +407,9 @@ def write_map_to_file(map, lvl_num):
 def map_maker(lvl_num):
     valid_map = False
     while not valid_map:
-        schema = build_schema(map_width, map_height, available_tiles)
+        schema = build_schema(available_tiles)
         basic_map = build_basic_map(schema, tile_list)
-        stair_placements = map_accessibility_checks(basic_map, map_coverage_threshold)
+        stair_placements = map_accessibility_checks(basic_map)
         if stair_placements:
             valid_map = True
     enriched_map = build_enriched_map(basic_map, stair_placements)
@@ -429,7 +417,7 @@ def map_maker(lvl_num):
 
 if __name__ == "__main__":
 
-    schema = build_schema(map_width, map_height, available_tiles)
+    schema = build_schema(available_tiles)
 
     print("")
     print("schema")
@@ -444,7 +432,7 @@ if __name__ == "__main__":
     for row in basic_map:
         print(row)
     
-    stair_placements = map_accessibility_checks(basic_map, map_coverage_threshold)
+    stair_placements = map_accessibility_checks(basic_map)
     
     enriched_map = build_enriched_map(basic_map, stair_placements)
     

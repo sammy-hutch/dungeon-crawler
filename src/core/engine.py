@@ -1,13 +1,9 @@
-import os
-from dotenv import load_dotenv
 import pygame
+from data.config import SCREEN_WIDTH, SCREEN_HEIGHT
 
-load_dotenv()
 pygame.init()
 
 engine = None
-default_width = int(os.getenv("SCREEN_WIDTH"))
-default_height = int(os.getenv("SCREEN_HEIGHT"))
 
 class Engine:
     def __init__(self, game_title):
@@ -21,7 +17,7 @@ class Engine:
 
         from core.camera import create_screen
         self.clear_colour = (30, 150, 240)  # Default colour if nothing else is drawn
-        self.screen = create_screen(default_width, default_height, game_title)  # The rectangle in the window itself
+        self.screen = create_screen(SCREEN_WIDTH, SCREEN_HEIGHT, game_title)  # The rectangle in the window itself
         self.stages = {}
         self.current_stage = None
     

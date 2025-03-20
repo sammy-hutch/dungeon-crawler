@@ -1,15 +1,11 @@
 import os
-from dotenv import load_dotenv
-
 from core.levelmaker import level_maker
 from core.mapmaker import map_maker
 from components.physics import Trigger
+from data.config import SAVE_NAME, LEVEL_FOLDER
 
-load_dotenv()
 
 lvl_num = 1
-
-save_name = os.getenv("SAVE_NAME")
 
 def navigate(direction):
     """
@@ -27,8 +23,8 @@ def navigate(direction):
     if direction == "v":
         lvl_num += 1
 
-    level_file = save_name + "_" + str(lvl_num) + ".lvl"
-    level_file_path = "./" + os.getenv("LEVEL_FOLDER") + "/" + level_file
+    level_file = SAVE_NAME + "_" + str(lvl_num) + ".lvl"
+    level_file_path = "./" + LEVEL_FOLDER + "/" + level_file
 
     # if travelling to new level, create map and level files
     if not os.path.exists(level_file_path):

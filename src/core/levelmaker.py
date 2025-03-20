@@ -5,23 +5,16 @@
 #  - features (altars, portals, doors, etc)
 # etc
 
-import os
-from dotenv import load_dotenv
 import logging
 import json
 
-load_dotenv()
-
-level_folder = os.getenv("LEVEL_FOLDER")
-map_folder = os.getenv("MAP_FOLDER")
-data_folder = os.getenv("DATA_FOLDER")
-save_name = os.getenv("SAVE_NAME")
+from data.config import DATA_FOLDER, LEVEL_FOLDER, MAP_FOLDER, SAVE_NAME
 
 map_file = "start.map"
 level_file = "start.lvl"
 
 # handle entity data file
-entity_file = open(data_folder + "/" + 'entities.json',)
+entity_file = open(DATA_FOLDER + "/" + 'entities.json',)
 entities = json.load(entity_file)
 entity_file.close()
 
@@ -100,8 +93,8 @@ def populate_map(map):
 # function to write level file
 def write_level_to_file(level, entities, lvl_num):
     try:
-        file_name = save_name + "_" + str(lvl_num) + ".lvl"
-        with open(level_folder + "/" + file_name, 'w') as level_file:
+        file_name = SAVE_NAME + "_" + str(lvl_num) + ".lvl"
+        with open(LEVEL_FOLDER + "/" + file_name, 'w') as level_file:
 
             # add level to file
             for row in level:
@@ -127,8 +120,8 @@ def write_level_to_file(level, entities, lvl_num):
 
 
 def level_maker(lvl_num):
-    map_file = save_name + "_" + str(lvl_num) + ".map"
-    map = load_file(map_folder, map_file)
+    map_file = SAVE_NAME + "_" + str(lvl_num) + ".map"
+    map = load_file(MAP_FOLDER, map_file)
     entity_list = populate_map(map)
     write_level_to_file(map, entity_list, lvl_num)
 

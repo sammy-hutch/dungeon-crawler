@@ -1,11 +1,7 @@
-import os
-from dotenv import load_dotenv
 from core.map import Map
-
-load_dotenv()
+from data.config import LEVEL_FOLDER
 
 level = None
-level_folder = os.getenv("LEVEL_FOLDER")
 
 class Level:
     def __init__(self, level_file, tile_types):
@@ -18,7 +14,7 @@ class Level:
         from data.objects import create_entity
 
         # Read all the data from the file
-        file = open(level_folder + "/" + level_file, "r")
+        file = open(LEVEL_FOLDER + "/" + level_file, "r")
         data = file.read()
         file.close()
 

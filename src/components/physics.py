@@ -1,15 +1,11 @@
-import os
-from dotenv import load_dotenv
 from pygame import Rect
-
-load_dotenv()
+from data.config import TILE_SIZE
 
 # set default hitbox size to be 1 pixel smaller on every side than the tile
-tile_size = int(os.getenv("TILE_SIZE"))
 hitbox_x = 1
 hitbox_y = 1
-hitbox_width = tile_size - 2
-hitbox_height = tile_size - 2
+hitbox_width = TILE_SIZE - 2
+hitbox_height = TILE_SIZE - 2
 
 bodies = []
 triggers = []
@@ -39,7 +35,7 @@ class PhysicalObj:
         
 
 class Trigger(PhysicalObj):
-    def __init__(self, on, x=0, y=0, width=tile_size, height=tile_size):
+    def __init__(self, on, x=0, y=0, width=TILE_SIZE, height=TILE_SIZE):
         super().__init__(x, y, width, height)
         triggers.append(self)
         self.on = on

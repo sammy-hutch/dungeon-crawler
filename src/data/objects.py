@@ -1,14 +1,9 @@
-import os
-from dotenv import load_dotenv
 from components.entity import Entity
 from components.physics import Body
 from components.player import Player
 from components.sprite import Sprite
 from components.navigator import Navigator
-
-load_dotenv()
-
-tile_size = int(os.getenv("TILE_SIZE"))
+from data.config import TILE_SIZE
 
 entity_factories = [
     # 0 - Makes a Player
@@ -34,6 +29,6 @@ entity_factories = [
 def create_entity(id, x, y, data=None):
     factory = entity_factories[id]
     e = factory(data)
-    e.x = x * tile_size
-    e.y = y * tile_size
+    e.x = x * TILE_SIZE
+    e.y = y * TILE_SIZE
     return e
