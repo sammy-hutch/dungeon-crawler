@@ -67,17 +67,10 @@ class Engine:
             # Handle movement / Update code
             # TODO: tidy this
             current_time = pygame.time.get_ticks()
-            # print(f"key list during event: {keys_down}")
             for key in keys_down:
                 if key in last_movement_time:
                     if current_time - last_movement_time[key] >= movement_delay:
-                        # print(f"entities: {self.entities}")
-                        # for e in self.entities:
-                        #     print(f"entity: {e.id}, X: {e.x}, Y: {e.y}")
-                        # print("")
                         for a in self.active_objs:
-                            # print(f"X: {a.entity.x}, Y:{a.entity.y}")
-                            # print("calling player update code")
                             a.update()
                         last_movement_time[key] = current_time
             
