@@ -58,6 +58,11 @@ class Engine:
                         keys_down.remove(event.key)
                     if event.key in last_movement_time:
                         del last_movement_time[event.key]
+                
+                # Handle mouse click events
+                elif event.type == pygame.MOUSEBUTTONDOWN:
+                    for a in self.active_objs:
+                        a.update()
             
             # Handle movement / Update code
             # TODO: tidy this
@@ -75,7 +80,6 @@ class Engine:
                             # print("calling player update code")
                             a.update()
                         last_movement_time[key] = current_time
-
             
             # Draw code
             self.screen.fill(self.clear_colour)
