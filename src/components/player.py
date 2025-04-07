@@ -36,6 +36,11 @@ class Player:
         if is_key_pressed(key_binds["navigate_to_menu"]):
              from core.engine import engine
              engine.switch_to("Menu")
+        
+        if is_key_pressed(key_binds["interact_current_space"]):
+                    for t in triggers:
+                        if body.is_colliding_with(t):
+                            t.on()
 
         if is_key_pressed(key_binds["move_player_n"]):
             self.entity.y -= movement_speed
@@ -57,11 +62,6 @@ class Player:
         if is_key_pressed(key_binds["move_player_nw"]):
             self.entity.y -= movement_speed
             self.entity.x -= movement_speed
-        
-        if is_key_pressed(key_binds["interact_current_space"]):
-                    for t in triggers:
-                        if body.is_colliding_with(t):
-                            t.on()
         
         if not body.is_position_valid():
             self.entity.x = previous_x

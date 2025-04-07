@@ -29,6 +29,8 @@ entity_factories = [
 def create_entity(id, x, y, data=None):
     factory = entity_factories[id]
     e = factory(data)
+    e.id = id
     e.x = x * TILE_SIZE
     e.y = y * TILE_SIZE
+    e.data = data
     return e

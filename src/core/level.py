@@ -1,5 +1,5 @@
 from core.map import Map
-from data.config import LEVEL_FOLDER
+from data.config import LEVEL_FOLDER, MAP_FOLDER, SAVE_NAME, TILE_SIZE
 
 level = None
 
@@ -8,19 +8,16 @@ class Level:
         global level
         level = self
         self.tile_types = tile_types
-        self.load_file(level_file)
+        self.load_level_file(level_file)
     
-    def load_file(self, level_file):
+    def load_level_file(self, level_file):
         from data.objects import create_entity
+        from core.engine import engine
 
         # Read all the data from the file
         file = open(LEVEL_FOLDER + "/" + level_file, "r")
         data = file.read()
         file.close()
-
-        # Clear the previous area
-        from core.engine import engine
-        engine.reset()
 
         self.name = level_file.split(".")[0].title().replace("_", " ")
 
@@ -41,10 +38,29 @@ class Level:
                 id = int(items[0])
                 x = int(items[1])
                 y = int(items[2])
-                self.entities.append(create_entity(id, x, y, items))
+                entity = create_entity(id, x, y, items)
+                self.entities.append(entity)
+                engine.entities.append(entity)
             except:
                 print(f"Error parsing line: {line}")
     
-    def save_file(self, level_file):
-        # TODO: add save file function, which writes level data to file
-        pass
+    def save_file(self):
+        from core.engine import engine
+        from core.levelmaker import load_map_file, write_level_to_file
+        from components.navigator import lvl_num
+
+        map_file = SAVE_NAME + "_" + str(lvl_num) + ".map"
+        map = load_map_file(MAP_FOLDER, map_file)
+
+        entity_list = []
+        for entity in engine.entities:
+            entity_data = []
+            entity_data.append(str(entity.id))
+            entity_data.append(str(int(entity.x / TILE_SIZE)))
+            entity_data.append(str(int(entity.y / TILE_SIZE)))
+            for i, val in enumerate(entity.data):
+                if i > 2:
+                    entity_data.append(val)
+            entity_list.append(entity_data)
+                        
+        write_level_to_file(map, entity_list, lvl_num)

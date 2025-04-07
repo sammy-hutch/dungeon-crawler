@@ -11,6 +11,7 @@ class Engine:
         engine = self
 
         self.active_objs = []  # Anything with an update() method that can be called
+        self.entities = [] # global list of all entities
         self.background_drawables = []
         self.drawables = []  # Anything to be drawn in the world
         self.ui_drawables = []  # Anything to be drawn over the world
@@ -58,15 +59,22 @@ class Engine:
                     if event.key in last_movement_time:
                         del last_movement_time[event.key]
             
-                # Handle movement / Update code
-                # TODO: tidy this
-                current_time = pygame.time.get_ticks()
-                for key in keys_down:
-                    if key in last_movement_time:
-                        if current_time - last_movement_time[key] >= movement_delay:
-                            for a in self.active_objs:
-                                a.update()
-                            last_movement_time[key] = current_time
+            # Handle movement / Update code
+            # TODO: tidy this
+            current_time = pygame.time.get_ticks()
+            # print(f"key list during event: {keys_down}")
+            for key in keys_down:
+                if key in last_movement_time:
+                    if current_time - last_movement_time[key] >= movement_delay:
+                        # print(f"entities: {self.entities}")
+                        # for e in self.entities:
+                        #     print(f"entity: {e.id}, X: {e.x}, Y: {e.y}")
+                        # print("")
+                        for a in self.active_objs:
+                            # print(f"X: {a.entity.x}, Y:{a.entity.y}")
+                            # print("calling player update code")
+                            a.update()
+                        last_movement_time[key] = current_time
 
             
             # Draw code
@@ -97,6 +105,7 @@ class Engine:
         from components.physics import reset_physics
         reset_physics()
         self.active_objs.clear()
+        self.entities.clear()
         self.drawables.clear()
         self.ui_drawables.clear()
         self.background_drawables.clear()

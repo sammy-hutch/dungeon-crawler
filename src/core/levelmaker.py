@@ -20,7 +20,7 @@ entity_file.close()
 
 
 # function to extract data from .map or .lvl file
-def load_file(file_folder, file):
+def load_map_file(file_folder, file):
     # Read all the data from the file
     file = open(file_folder + "/" + file, "r")
     data = file.read()
@@ -121,7 +121,7 @@ def write_level_to_file(level, entities, lvl_num):
 
 def level_maker(lvl_num):
     map_file = SAVE_NAME + "_" + str(lvl_num) + ".map"
-    map = load_file(MAP_FOLDER, map_file)
+    map = load_map_file(MAP_FOLDER, map_file)
     entity_list = populate_map(map)
     write_level_to_file(map, entity_list, lvl_num)
 
