@@ -18,7 +18,10 @@ conda activate dungeoncrawler
 ## Ten-minute Tasks
 - tidy movement handler and keyup and keydown events (engine.py)
 - manage initial map and level (main.py)
-- bug fix: not updating level number the first time each level generated
+- camera not snapping to player when changing dngn level (player.py?)
+- duplicated code for loading and writing of files (level.py, levelmaker.py, mapmaker.py?)
+- turn singletons into classes where appropriate
+- functionality/refactor to tidy entity data handling (level.py, levelmaker.py, objects.py)
 
 ## short-term tasks
 - add field of vision
