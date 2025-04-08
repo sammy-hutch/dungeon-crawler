@@ -16,13 +16,12 @@ conda activate dungeoncrawler
 # TO DO List
 
 ## Ten-minute Tasks
-- tidy movement handler and keyup and keydown events (engine.py)
+- tidy movement handler and keyup and keydown events (engine.py) - JUMPY MOVEMENT!
 - manage initial map and level (main.py)
 - camera not snapping to player when changing dngn level (player.py?)
 - duplicated code for loading and writing of files (level.py, levelmaker.py, mapmaker.py?)
 - turn singletons into classes where appropriate
 - functionality/refactor to tidy entity data handling (level.py, levelmaker.py, objects.py)
-- modify Sprite class to accept sprite type (for image folder navigation, for example) (sprite.py)
 
 ## short-term tasks
 - add field of vision
