@@ -13,7 +13,7 @@ def quit_game():
 
 def menu():
     # Add background
-    Entity(Sprite("art1.png", is_ui=True))
+    Entity(Sprite("art", "art1.png", is_ui=True))
 
     # Create buttons
     new_game_button = Entity(Label("RedRose-Regular.ttf", 
