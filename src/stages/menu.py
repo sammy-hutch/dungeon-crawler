@@ -9,7 +9,7 @@ def new_game():
 
 def quit_game():
     from core.engine import engine
-    engine.running = False
+    engine.quit()
 
 def menu():
     # Add background

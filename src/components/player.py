@@ -35,6 +35,8 @@ class Player:
 
         if is_key_pressed(key_binds["navigate_to_menu"]):
              from core.engine import engine
+             from core.level import level
+             level.save_file()
              engine.switch_to("Menu")
         
         if is_key_pressed(key_binds["interact_current_space"]):

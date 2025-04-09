@@ -34,7 +34,6 @@ class Engine:
 
     def run(self):
         from core.input import keys_down
-        from data.file_manager import save_game
         movement_delay = 100  # milliseconds between movements
         last_movement_time = {} # Dictionary to store last movement time for each key
 
@@ -44,9 +43,7 @@ class Engine:
 
                 # Handle quit event
                 if event.type == pygame.QUIT:
-                    save_game()
-                    # close the application    
-                    self.running = False
+                    self.quit()
                 
                 # Handle keydown and keyup events
                 # TODO: tidy this
@@ -106,3 +103,10 @@ class Engine:
         self.drawables.clear()
         self.ui_drawables.clear()
         self.background_drawables.clear()
+    
+    def quit(self):
+        from data.file_manager import save_game
+        # Save the game
+        save_game()
+        # close the application    
+        self.running = False
