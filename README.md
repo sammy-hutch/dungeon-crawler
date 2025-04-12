@@ -28,7 +28,6 @@ conda activate dungeoncrawler
 - add fog (unexplored area)
 - add shadow (area outside of field of vision)
 - utilise texture atlasses
-- spawn player on down stairs when travelling upwards
 - add unit tests on tiles.json to check uniqueness of name, id, config
 
 ## long-term tasks
