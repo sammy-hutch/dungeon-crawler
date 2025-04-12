@@ -6,24 +6,20 @@ from components.physics import Trigger
 from data.config import SAVE_NAME, LEVEL_FOLDER
 
 
-lvl_num = 1
-
 def navigate(direction):
     """
-    Function for managing level transitions, 
-      incl the current level number, building new levels & maps, 
-      resetting engine, and loading level files.
+    Function for managing level transitions, incl the current level number, 
+      building new levels & maps, resetting engine, and loading level files.
 
     Args: 
         direction (str): the direction of travel, corresponding to the map space of the stairs, either up ("^") or down ("v").
     """
 
-    global lvl_num
     from core.level import level
     from core.engine import engine
 
     # Identify current level file
-    level_file = SAVE_NAME + "_" + str(lvl_num) + ".lvl"
+    level_file = SAVE_NAME + "_" + str(engine.lvl_num) + ".lvl"
     level_file_path = "./" + LEVEL_FOLDER + "/" + level_file
 
     # Save current level to level file
@@ -35,18 +31,18 @@ def navigate(direction):
 
     # Adjust level number depending on direction of travel
     if direction == "^":
-        lvl_num -= 1
+        engine.lvl_num -= 1
     if direction == "v":
-        lvl_num += 1
+        engine.lvl_num += 1
 
     # Identify new level file
-    level_file = SAVE_NAME + "_" + str(lvl_num) + ".lvl"
+    level_file = SAVE_NAME + "_" + str(engine.lvl_num) + ".lvl"
     level_file_path = "./" + LEVEL_FOLDER + "/" + level_file
 
     # If travelling to new level, create map and level files
     if not os.path.exists(level_file_path):
-        map_maker(lvl_num)
-        level_maker(lvl_num)
+        map_maker(engine.lvl_num)
+        level_maker(engine.lvl_num)
     
     # Load level file
     level.load_level_file(level_file)

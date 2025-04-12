@@ -4,11 +4,15 @@ from data.config import SCREEN_WIDTH, SCREEN_HEIGHT
 pygame.init()
 
 engine = None
+lvl_num = 1
 
 class Engine:
     def __init__(self, game_title):
         global engine
         engine = self
+
+        global lvl_num
+        self.lvl_num = lvl_num
 
         self.active_objs = []  # Anything with an update() method that can be called
         self.entities = [] # global list of all entities
@@ -17,7 +21,7 @@ class Engine:
         self.ui_drawables = []  # Anything to be drawn over the world
 
         from core.camera import create_screen
-        self.clear_colour = (30, 150, 240)  # Default colour if nothing else is drawn
+        self.clear_colour = (237, 212, 212)  # Default colour if nothing else is drawn
         self.screen = create_screen(SCREEN_WIDTH, SCREEN_HEIGHT, game_title)  # The rectangle in the window itself
         self.stages = {}
         self.current_stage = None

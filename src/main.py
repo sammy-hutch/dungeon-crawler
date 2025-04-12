@@ -1,5 +1,4 @@
-from components.navigator import lvl_num
-from core.engine import Engine
+from core.engine import Engine, lvl_num
 from core.levelmaker import level_maker
 from core.mapmaker import map_maker
 from data.key_binds import load_key_bindings

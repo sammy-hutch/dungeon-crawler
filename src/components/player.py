@@ -3,7 +3,6 @@ from components.label import Label
 from components.physics import Body, triggers
 from components.sprite import Sprite
 from core.camera import camera
-from core.level import level
 from core.input import is_key_pressed
 from data.config import TILE_SIZE
 from data.key_binds import key_binds
@@ -14,6 +13,7 @@ movement_speed = TILE_SIZE
 
 class Player:
     def __init__(self):
+        from core.level import level
         self.loc_label = Entity(Label("RedRose-Regular.ttf", "X: 0 - Y: 0")).get(Label)
         self.level_label = Entity(Label("RedRose-Regular.ttf", level.name)).get(Label)
 

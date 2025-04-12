@@ -47,9 +47,8 @@ class Level:
     def save_file(self):
         from core.engine import engine
         from core.levelmaker import load_map_file, write_level_to_file
-        from components.navigator import lvl_num
 
-        map_file = SAVE_NAME + "_" + str(lvl_num) + ".map"
+        map_file = SAVE_NAME + "_" + str(engine.lvl_num) + ".map"
         map = load_map_file(MAP_FOLDER, map_file)
 
         entity_list = []
@@ -63,4 +62,4 @@ class Level:
                     entity_data.append(val)
             entity_list.append(entity_data)
                         
-        write_level_to_file(map, entity_list, lvl_num)
+        write_level_to_file(map, entity_list, engine.lvl_num)
