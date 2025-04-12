@@ -19,6 +19,7 @@ class Engine:
         self.background_drawables = []
         self.drawables = []  # Anything to be drawn in the world
         self.ui_drawables = []  # Anything to be drawn over the world
+        self.changed_player_state = False
 
         from core.camera import create_screen
         self.clear_colour = (237, 212, 212)  # Default colour if nothing else is drawn
@@ -43,6 +44,8 @@ class Engine:
 
         self.running = True
         while self.running:
+
+            # Handle events
             for event in pygame.event.get():
 
                 # Handle quit event
@@ -50,7 +53,6 @@ class Engine:
                     self.quit()
                 
                 # Handle keydown and keyup events
-                # TODO: tidy this
                 elif event.type == pygame.KEYDOWN:
                     keys_down.add(event.key)
                     last_movement_time[event.key] = 0
@@ -62,19 +64,21 @@ class Engine:
                 
                 # Handle mouse click events
                 elif event.type == pygame.MOUSEBUTTONDOWN:
-                    for a in self.active_objs:
-                        a.update()
+                    self.changed_player_state = True
             
-            # Handle movement / Update code
-            # TODO: tidy this
-            current_time = pygame.time.get_ticks()
-            for key in keys_down:
-                if key in last_movement_time:
-                    if current_time - last_movement_time[key] >= movement_delay:
-                        for a in self.active_objs:
-                            a.update()
-                        last_movement_time[key] = current_time
-            
+                # Handle movement
+                current_time = pygame.time.get_ticks()
+                for key in keys_down:
+                    if key in last_movement_time:
+                        if current_time - last_movement_time[key] >= movement_delay:
+                            self.changed_player_state = True
+                            last_movement_time[key] = current_time
+
+            # Update code
+            for a in self.active_objs:
+                a.update()
+            engine.changed_player_state = False
+
             # Draw code
             self.screen.fill(self.clear_colour)
 
@@ -93,8 +97,6 @@ class Engine:
             pygame.display.flip()
 
             # Cap the frames
-            # TODO: find a better way to manage key presses etc
-            # clock.tick(60)
             pygame.time.delay(17)
         
         pygame.quit()
@@ -110,7 +112,9 @@ class Engine:
     
     def quit(self):
         from data.file_manager import save_game
+
         # Save the game
         save_game()
+        
         # close the application    
         self.running = False
