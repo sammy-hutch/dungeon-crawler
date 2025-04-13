@@ -18,7 +18,6 @@ conda activate dungeoncrawler
 ## Ten-minute Tasks
 - manage initial map and level (main.py)
 - duplicated code for loading and writing of files (level.py, levelmaker.py, mapmaker.py?)
-- turn singletons into classes where appropriate
 - functionality/refactor to tidy entity data handling (level.py, levelmaker.py, objects.py)
 
 ## short-term tasks

@@ -11,9 +11,7 @@ class Engine:
         global engine
         engine = self
 
-        global lvl_num
         self.lvl_num = lvl_num
-
         self.active_objs = []  # Anything with an update() method that can be called
         self.entities = [] # global list of all entities
         self.background_drawables = []
