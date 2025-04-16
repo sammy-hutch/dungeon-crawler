@@ -19,11 +19,12 @@ conda activate dungeoncrawler
 - manage initial map and level (main.py)
 - duplicated code for loading and writing of files (level.py, levelmaker.py, mapmaker.py?)
 - functionality/refactor to tidy entity data handling (level.py, levelmaker.py, objects.py)
+- add content path as an env var (to tidy env vars) (.env, config.py)
+- add fog layer to level save file (level.py)
+- turn off fog when in debug mode (engine.py?)
 
 ## short-term tasks
-- add field of vision
-- add fog (unexplored area)
-- add shadow (area outside of field of vision)
+- new game function creates new game rather than restarts current (menu.py)
 - utilise texture atlasses
 - add unit tests on tiles.json to check uniqueness of name, id, config
 

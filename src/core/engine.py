@@ -16,11 +16,12 @@ class Engine:
         self.entities = [] # global list of all entities
         self.background_drawables = []
         self.drawables = []  # Anything to be drawn in the world
-        self.ui_drawables = []  # Anything to be drawn over the world
+        self.fog_drawables = [] # fog layer
+        self.ui_drawables = []  # Anything to be drawn as UI
         self.changed_player_state = False
 
         from core.camera import create_screen
-        self.clear_colour = (237, 212, 212)  # Default colour if nothing else is drawn
+        self.clear_colour = (0, 0, 0)  # Default colour if nothing else is drawn
         self.screen = create_screen(SCREEN_WIDTH, SCREEN_HEIGHT, game_title)  # The rectangle in the window itself
         self.stages = {}
         self.current_stage = None
@@ -71,6 +72,10 @@ class Engine:
                         if current_time - last_movement_time[key] >= movement_delay:
                             self.changed_player_state = True
                             last_movement_time[key] = current_time
+                
+                # TODO: move this to a better place, or handle better
+                for f in self.fog_drawables:
+                    f.update()
 
             # Update code
             for a in self.active_objs:
@@ -87,6 +92,10 @@ class Engine:
             # Draw the main objects
             for s in self.drawables:
                 s.draw(self.screen)
+
+            # Draw the fog
+            for f in self.fog_drawables:
+                f.draw(self.screen)
             
             # Draw UI stuff
             for l in self.ui_drawables:
