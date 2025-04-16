@@ -2,14 +2,19 @@ import pygame
 import logging
 from math import ceil
 
-from data.config import DNGN_IMAGE_FOLDER, MAP_FOLDER, TILE_SIZE
+from data.config import DNGN_IMAGE_FOLDER, EFFECT_IMAGE_FOLDER, MAP_FOLDER, TILE_SIZE
 
 map = None
 
 class TileKind:
-    def __init__(self, name, image, is_solid):
+    def __init__(self, name, type, image, is_solid):
         self.name = name
-        self.image = pygame.image.load(DNGN_IMAGE_FOLDER + "/" + image)
+        image_folder = None
+        if type == "dungeon":
+            image_folder = DNGN_IMAGE_FOLDER
+        elif type == "effect":
+            image_folder = EFFECT_IMAGE_FOLDER
+        self.image = pygame.image.load(image_folder + "/" + image)
         self.is_solid = is_solid
 
 class Map:
