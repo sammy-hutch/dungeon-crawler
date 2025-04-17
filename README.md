@@ -21,7 +21,6 @@ conda activate dungeoncrawler
 - functionality/refactor to tidy entity data handling (level.py, levelmaker.py, objects.py)
 - add content path as an env var (to tidy env vars) (.env, config.py)
 - add fog layer to level save file (level.py)
-- turn off fog when in debug mode (engine.py?)
 
 ## short-term tasks
 - new game function creates new game rather than restarts current (menu.py)

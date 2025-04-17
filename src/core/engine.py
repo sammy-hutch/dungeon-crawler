@@ -1,5 +1,5 @@
 import pygame
-from data.config import SCREEN_WIDTH, SCREEN_HEIGHT
+from data.config import FOG, SCREEN_WIDTH, SCREEN_HEIGHT
 
 pygame.init()
 
@@ -94,8 +94,9 @@ class Engine:
                 s.draw(self.screen)
 
             # Draw the fog
-            for f in self.fog_drawables:
-                f.draw(self.screen)
+            if FOG:
+                for f in self.fog_drawables:
+                    f.draw(self.screen)
             
             # Draw UI stuff
             for l in self.ui_drawables:

@@ -26,3 +26,4 @@ EFFECT_IMAGE_FOLDER = os.getenv("EFFECT_IMAGE_FOLDER")
 # Defaults
 SAVE_NAME = os.getenv("SAVE_NAME")
 DEBUG_MODE = os.getenv("DEBUG_MODE", "False").lower() == "true"
+FOG = os.getenv("FOG", "True").lower() == "true"
