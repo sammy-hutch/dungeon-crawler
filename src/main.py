@@ -1,11 +1,8 @@
 from core.engine import Engine, lvl_num
 from core.levelmaker import level_maker
 from core.mapmaker import map_maker
-from data.key_binds import load_key_bindings
 from stages.menu import menu
 from stages.play import play
-
-load_key_bindings()  # TODO: put this inside engine?
 
 ## The following preserved from old main
 ## is used to make the initial map & level

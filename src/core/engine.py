@@ -1,5 +1,6 @@
 import pygame
 from data.config import FOG, SCREEN_WIDTH, SCREEN_HEIGHT
+from data.key_binds import load_key_bindings
 
 pygame.init()
 
@@ -25,6 +26,8 @@ class Engine:
         self.screen = create_screen(SCREEN_WIDTH, SCREEN_HEIGHT, game_title)  # The rectangle in the window itself
         self.stages = {}
         self.current_stage = None
+
+        load_key_bindings()
     
     def register(self, stage_name, func):
         self.stages[stage_name] = func
