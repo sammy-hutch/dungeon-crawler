@@ -120,6 +120,7 @@ class Engine:
         self.drawables.clear()
         self.ui_drawables.clear()
         self.background_drawables.clear()
+        self.fog_drawables.clear()
     
     def quit(self):
         from data.file_manager import save_game

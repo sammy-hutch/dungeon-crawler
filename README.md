@@ -16,7 +16,6 @@ conda activate dungeoncrawler
 # TO DO List
 
 ## Ten-minute Tasks
-- manage initial map and level (main.py)
 - duplicated code for loading and writing of files (level.py, levelmaker.py, mapmaker.py?)
 - functionality/refactor to tidy entity data handling (level.py, levelmaker.py, objects.py)
 - add content path as an env var (to tidy env vars) (.env, config.py)
