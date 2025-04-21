@@ -9,13 +9,7 @@ tile_file = open(DATA_FOLDER + "/" + 'tiles.json',)
 tiles = json.load(tile_file)
 tile_file.close()
 tile_list = tiles["tiles"]
-# available_tiles: list[str] = [tile['id'] for tile in tile_list]
-# available_tiles = []
-# for tile in tile_list:
-#     probability = tile['probability']
-#     available_tiles.extend(tile['id'] for tile in range(probability))
 available_tiles = [tile["id"] for tile in tile_list for _ in range(tile["probability"])]
-# print(available_tiles)
 ignored_tile_types = ["w"]
 
 
@@ -187,8 +181,6 @@ def tile_group_volumes(tile_groups):
             groups[tile["group"]] += 1
         else:
             groups.update({tile["group"]: 1})
-    # print(groups)
-    # print(f"number of groups: {len(groups)}")
 
     return groups
 
@@ -356,10 +348,7 @@ def map_accessibility_checks(basic_map):
 
     ## map_coverage_check
     if  largest_group_volume / map_size < MAP_COVERAGE_THRESHOLD:
-        # print(f"map coverage check not passed. map size: {map_size}. largest group: {largest_group_volume}")
         return False
-    # else:
-    #     print(f"map coverage check passed. map size: {map_size}. largest group: {largest_group_volume}")
     
     ## valid stair placement check
     valid_pairs = valid_stair_placements(tile_groups, largest_group_key)
