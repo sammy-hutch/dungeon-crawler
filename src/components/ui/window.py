@@ -1,5 +1,3 @@
-from pygame import Surface
-
 from components.entity import Entity
 
 class Window:

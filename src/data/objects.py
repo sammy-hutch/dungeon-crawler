@@ -1,5 +1,5 @@
 from components.entity import Entity
-from components.inventory import DroppedItem, Inventory
+from components.inventory import DroppedItem
 from components.physics import Body
 from components.player import Player
 from components.sprite import Sprite

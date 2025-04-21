@@ -39,11 +39,13 @@ class Inventory:
     def notify(self):
         if self.listener is not None:
             self.listener.refresh()
-    
-    # Attempts to add a certain amount of an item to the inventory
-    # Default is 1 of that item
-    # Returns any excess items it couldn't add
+
     def add(self, item_type, amount=1):
+        """
+        Attempts to add a certain amount of an item to the inventory
+        Default is 1 of that item
+        Returns any excess items it couldn't add
+        """
         # First sweep for any open stacks
         if item_type.stack_size > 1:
             for slot in self.slots:
@@ -69,10 +71,12 @@ class Inventory:
                     self.notify()
                     return 0
 
-    # Attempts to remove a certain amount of an item from the inventory
-    # Default is 1 of that item
-    # Returns what it was able to remove
     def remove(self, item_type, amount=1):
+        """
+        Attempts to remove a certain amount of an item from the inventory
+        Default is 1 of that item
+        Returns what it was able to remove
+        """
         found = 0
         for slot in self.slots:
             if slot.type == item_type:
@@ -95,8 +99,10 @@ class Inventory:
                     return found
         return found
 
-    # Returns whether a certain amount of an item is present in the inventory
     def has(self, item_type, amount=1):
+        """
+        Returns whether a certain amount of an item is present in the inventory
+        """
         found = 0
         for slot in self.slots:
             if slot.type == item_type:
@@ -105,8 +111,10 @@ class Inventory:
                     return True
         return False
 
-    # Returns the first slot number of where an item is
     def get_index(self, item_type):
+        """
+        Returns the first slot number of where an item is
+        """
         for index, slot in enumerate(self.slots):
             if slot.type == item_type:
                 return index
@@ -122,27 +130,35 @@ class Inventory:
                 s += "Empty Slot\t"
         return s
 
-    # Returns how many slots are currently open
     def get_free_slots(self):
+        """
+        Returns how many inventory slots are currently open
+        """
         i = 0
         for slot in self.slots:
             if slot.type is None:
                 i += 1
         return i
 
-    # Returns True if all slots have an item
     def is_full(self):
+        """
+        Returns True if all slots have an item. Stacks do not need to be full
+        """
         return self.get_free_slots() == 0
 
-    # Returns the total weight of all items in the inventory
     def get_weight(self):
+        """
+        Returns the total weight of all items in the inventory
+        """
         weight = 0
         for i in self.slots:
             weight += i.weight * i.amount
         return weight
 
-    # Returns the total value of all items in the inventory
     def get_value(self):
+        """
+        Returns the total value of all items in the inventory
+        """
         value = 0
         for i in self.slots:
             value += i.value * i.amount

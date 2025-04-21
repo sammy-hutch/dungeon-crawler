@@ -8,21 +8,28 @@
   - **images**: png files
     - **artwork**: large image files for artwork such as backgrounds.
     - **dungeon**: image files for dungeon components such as wall, floor, stairs.
+    - **effect**: image files for effects such as fog, unseen tiles etc.
+    - **items**: image files for items
     - **sprites**: image files for entities such as mobs and players.
+    - **ui**: image files for UI
   - **levels**: folder for .lvl level files. Git ignored by default. Each level file contains the discovered map state, as well as entity info. Level files are intended to be updated upon game saves.
   - **maps**: folder for .map map files. Git ignored by default. Each map file contains a list of y lists, with each of those containing x elements, where y and x are the dimensions of the map. each element represents a tile in the map. Map files are not intended to be changed.
 - **src**
   - **components**
+    - **ui**
+      - **inventory_view.py**: creates a view of inventory, from window class and sprites
+      - **window.py**: creates a window within UI
     - **button.py**: button class for buttons triggered by mouse clicks
     - **entity.py**: entity class for managing player and sprite entities.
+    - **inventory.py**: classes for item types, item slots and inventory, as well as class for dropped item trigger which is assigned to items on map which can be picked up.
     - **label.py**: label class for handling text labels on screen
     - **navigator.py**: functionality for managing the dungeon level number, and navigating between levels
     - **physics.py**: body class for collision detection.
-    - **player.py**: player class for handling user inputs to player position.
+    - **player.py**: player class for handling user inputs to player position, as well as holding & persisting inventory.
     - **sprite.py**: sprite class for all sprites (including UI features such as backgrounds), including sprite image handling.
   - **core**
     - **camera.py**: the view of the game, allows for repositioning map as player moves around.
-    - **engine.py**: handles the game loop & moving between stages (e.g. menu screen, play screen)
+    - **engine.py**: handles the game loop & moving between stages (e.g. menu screen, play screen). Manages entities such as drawables, active objects, etc.
     - **input.py**: handles user input such as key presses and mouse clicks.
     - **level.py**: works with .lvl files, generating discovered map as player moves around, and positioning entities.
     - **levelmaker.py**: generates .lvl file which combines the .map file and a list of entities to place on the map.
@@ -30,7 +37,8 @@
     - **mapmaker.py**: generates .map file from "chunk" data.
   - **data**
     - **config.py**: centralised configuration module for env vars
-    - **file_manager**: functionality for saving & deleting files
+    - **file_manager.py**: functionality for saving & deleting files
+    - **item_types.py**: list of item types
     - **key_binds.py**: functions for loading and modifying key bindings.
     - **objects.py**: entity factory for all objects on map.
     - **tile_types.py**: dictionary matching tile images to map data.
