@@ -41,7 +41,6 @@ class Level:
             self.fog.append(tile_row)
 
         # Load the entities
-        self.entities = []
         entity_lines = entity_data.split('\n')[1:]
         for line in entity_lines:
             try:
@@ -50,7 +49,6 @@ class Level:
                 x = int(items[1])
                 y = int(items[2])
                 entity = create_entity(id, x, y, items)
-                self.entities.append(entity)
                 engine.entities.append(entity)
             except:
                 print(f"Error parsing line: {line}")
