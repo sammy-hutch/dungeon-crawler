@@ -40,10 +40,18 @@ class Trigger(PhysicalObj):
         triggers.append(self)
         self.on = on
 
+    def breakdown(self):
+        global triggers
+        triggers.remove(self)
+
 class Body(PhysicalObj):
     def __init__(self, x=hitbox_x, y=hitbox_y, width=hitbox_width, height=hitbox_height):
         super().__init__(x, y, width, height)
         bodies.append(self)
+    
+    def breakdown(self):
+        global bodies
+        bodies.remove(self)
     
     def is_position_valid(self):
         from core.map import map
