@@ -7,6 +7,8 @@
 
 import logging
 import json
+from math import ceil
+from random import randrange
 
 from data.config import DATA_FOLDER, LEVEL_FOLDER, MAP_FOLDER, SAVE_NAME
 
@@ -38,9 +40,10 @@ def load_map_file(file_folder, file):
 # ...
 
 
-def add_entity(entity, map, data=None):
+def add_predefined_entity(entity, map, data=None):
     """
     Helper function to create list of entity and associated data (x and y coords)
+    Searches for predefined entities in map file and adds them to the level
 
     Args:
         entity (str): name of entity, matching names in entities.json, e.g. "player"
@@ -64,7 +67,55 @@ def add_entity(entity, map, data=None):
                         entity_data.append(data)
                     entity_list.append(entity_data)
     except:
-        logging.error(f"error whilst assigning {entity} entity during add_entity() func")
+        logging.error(f"error whilst assigning {entity} entity during add_predefined_entity() func")
+
+    return entity_list
+
+
+def add_random_entity(entity, map, coverage):
+    """
+    Helper function to create list of entity and associated data (x and y coords)
+    Randomly places entities in level according to coverage threshold
+
+    Args:
+        entity (str): name of entity, matching names in entities.json, e.g. "player"
+        map: matrix data of map
+        coverage (float): proportion of open space in map to be occupied by chosen entity
+    
+    Returns:
+        entity_data (list): list containing entity factory number, x coord, y coord, any other variables such as item type, quantity e.g. [6, 26, 3, 0, 5]
+    """
+
+    valid_tiles = 0
+    valid_tile_type = entities[entity]["start"]
+    for y, row in enumerate(map):
+        for x, tile in enumerate(row):
+            if tile == valid_tile_type:
+                valid_tiles += 1
+    
+    entities_to_add = int(ceil(valid_tiles * coverage))
+    map_width = len(map[0])
+    map_height = len(map)
+
+    entity_list = []
+    try:
+        while entities_to_add > 0:
+            x = randrange(0,map_width)
+            y = randrange(0,map_height)
+            if map[y][x] == valid_tile_type:
+                # TODO: tidy this code, to be more optimised
+                quantity = randrange(0,4)
+                entity_data = []
+                factory_type = str(entities[entity]["factory"])
+                entity_data.append(factory_type)
+                entity_data.append(str(x))
+                entity_data.append(str(y))
+                entity_data.append(str(0))          # currently hardcoded to gold item.     TODO: add more functionality
+                entity_data.append(str(quantity))   # currently adding a random quantity.   TODO: add more functionality
+                entity_list.append(entity_data)
+                entities_to_add -= 1
+    except:
+        logging.error(f"error whilst assigning {entity} entity during add_predefined_entity() func")
 
     return entity_list
 
@@ -74,14 +125,17 @@ def populate_map(map):
     entity_list = []
 
     # Add stairs
-    entity_list.extend(add_entity("stairs_up", map, "^"))
-    entity_list.extend(add_entity("stairs_down", map, "v"))
+    entity_list.extend(add_predefined_entity("stairs_up", map, "^"))
+    entity_list.extend(add_predefined_entity("stairs_down", map, "v"))
 
     # Add doors
-    entity_list.extend(add_entity("door", map))
+    entity_list.extend(add_predefined_entity("door", map))
+
+    # Add items
+    entity_list.extend(add_random_entity("item", map, 0.1))
 
     # Add Player
-    entity_list.extend(add_entity("player", map))
+    entity_list.extend(add_predefined_entity("player", map))
 
     return entity_list
 
