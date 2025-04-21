@@ -1,7 +1,7 @@
 import pygame
 
 from core.camera import camera
-from data.config import ARTWORK_IMAGE_FOLDER, DNGN_IMAGE_FOLDER, SPRITE_IMAGE_FOLDER
+from data.config import ARTWORK_IMAGE_FOLDER, DNGN_IMAGE_FOLDER, ITEM_IMAGE_FOLDER, SPRITE_IMAGE_FOLDER, UI_IMAGE_FOLDER
 
 loaded = {}
 
@@ -15,7 +15,8 @@ class Sprite:
             if type == 'char': image_folder = SPRITE_IMAGE_FOLDER
             elif type == 'dngn': image_folder = DNGN_IMAGE_FOLDER
             elif type == 'art': image_folder = ARTWORK_IMAGE_FOLDER
-
+            elif type == 'item': image_folder = ITEM_IMAGE_FOLDER
+            elif type == 'ui': image_folder = UI_IMAGE_FOLDER
             self.image = pygame.image.load(image_folder + "/" + image)
             loaded[image] = self.image
         if is_ui:
@@ -25,9 +26,12 @@ class Sprite:
         self.is_ui = is_ui
         self.type = type
     
-    def delete(self):
+    def breakdown(self):
         from core.engine import engine
-        engine.drawables.remove(self)
+        if self.is_ui:
+            engine.ui_drawables.remove(self)
+        else:
+            engine.drawables.remove(self)
     
     def draw(self, screen):
         pos = (self.entity.x - camera.x, self.entity.y - camera.y) \
