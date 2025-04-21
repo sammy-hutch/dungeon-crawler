@@ -1,9 +1,12 @@
 from components.entity import Entity
+from components.inventory import DroppedItem, Inventory
 from components.physics import Body
 from components.player import Player
 from components.sprite import Sprite
 from components.navigator import Navigator
+
 from data.config import TILE_SIZE
+from data.item_types import item_types
 
 entity_factories = [
     # 0 - Makes a Player
@@ -22,7 +25,10 @@ entity_factories = [
     lambda args: Entity(Sprite("char", "..."), Body()),
 
     # 5 - Makes an Item
-    lambda args: Entity(Sprite("char", "..."), Body())
+    lambda args: Entity(
+            DroppedItem(item_types[int(args[3])], int(args[4])), 
+            Sprite("item", item_types[int(args[3])].icon_name)
+        )
 ]
 
 

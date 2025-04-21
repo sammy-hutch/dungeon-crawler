@@ -1,15 +1,21 @@
 from components.entity import Entity
+from components.inventory import Inventory
 from components.label import Label
 from components.physics import Body, triggers
 from components.sprite import Sprite
+from components.ui.inventory_view import InventoryView
+
 from core.camera import camera
 from core.input import is_key_pressed
+
 from data.config import TILE_SIZE
 from data.key_binds import key_binds
 
 
 # player moves one tile per key press
 movement_speed = TILE_SIZE
+
+inventory = Inventory(20)
 
 class Player:
     def __init__(self):
@@ -19,6 +25,7 @@ class Player:
         # Create Labels
         self.loc_label = Entity(Label("RedRose-Regular.ttf", "X: 0 - Y: 0")).get(Label)
         self.level_label = Entity(Label("RedRose-Regular.ttf", level.name)).get(Label)
+        self.inventory_window = Entity(InventoryView(inventory))
         self.loc_label.entity.y = camera.height - 50
         self.loc_label.entity.x = 10
         self.level_label.entity.x = 10
@@ -45,7 +52,7 @@ class Player:
             if is_key_pressed(key_binds["interact_current_space"]):
                         for t in triggers:
                             if body.is_colliding_with(t):
-                                t.on()
+                                t.on(self.entity)
 
             if is_key_pressed(key_binds["move_player_n"]):
                 self.entity.y -= movement_speed

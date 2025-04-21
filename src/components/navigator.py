@@ -49,4 +49,4 @@ def navigate(direction):
 
 class Navigator(Trigger):
     def __init__(self, direction, x=0, y=0, width=32, height=32):
-        super().__init__(lambda: navigate(direction), x, y, width, height)
+        super().__init__(lambda other: navigate(direction), x, y, width, height)

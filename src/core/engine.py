@@ -130,3 +130,10 @@ class Engine:
         
         # close the application    
         self.running = False
+    
+    def remove_entity(self, e): # TODO: see if entities should be handled in level instead
+        self.entities.remove(e)
+        for c in e.components:
+            g = getattr(c, "breakdown", None)
+            if callable(g):
+                c.breakdown()
