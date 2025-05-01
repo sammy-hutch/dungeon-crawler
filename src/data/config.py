@@ -8,6 +8,9 @@ SCREEN_WIDTH = int(os.getenv("SCREEN_WIDTH", "1024"))
 SCREEN_HEIGHT = int(os.getenv("SCREEN_HEIGHT", "1024"))
 TILE_SIZE = int(os.getenv("TILE_SIZE", "32"))
 
+# Player experience
+VISION_RADIUS = int(os.getenv("VISION_RADIUS", "5"))
+
 # Map building
 MAP_WIDTH = int(os.getenv("MAP_WIDTH", "10"))
 MAP_HEIGHT = int(os.getenv("MAP_HEIGHT", "10"))

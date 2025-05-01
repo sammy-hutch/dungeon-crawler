@@ -1,5 +1,5 @@
 from core.map import Map
-from data.config import LEVEL_FOLDER, MAP_FOLDER, SAVE_NAME, TILE_SIZE
+from data.config import LEVEL_FOLDER, MAP_FOLDER, SAVE_NAME, TILE_SIZE, VISION_RADIUS
 
 level = None
 
@@ -76,6 +76,7 @@ class Level:
     
     def update(self):
         from core.engine import engine
+        vision_radius = VISION_RADIUS
         for e in engine.entities:
             if e.id == 0:
                 player_x = e.x
@@ -87,7 +88,7 @@ class Level:
                         x_diff = player_x - tile_x
                         y_diff = player_y - tile_y
                         diff =  round((x_diff**2 + y_diff**2)**0.5)
-                        if diff <= 5 * self.tile_size:
+                        if diff <= vision_radius * self.tile_size:
                             self.fog[y][x] = " "
                         elif tile == " " or tile == "o":
                             self.fog[y][x] = "o"
