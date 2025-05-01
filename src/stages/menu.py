@@ -3,8 +3,11 @@ from components.entity import Entity
 from components.label import Label
 from components.sprite import Sprite
 
+from data.file_manager import save_game
+
 def new_game():
     from core.engine import engine
+    save_game()
     engine.lvl_num = 1
     engine.switch_to("Play")
 

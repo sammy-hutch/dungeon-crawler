@@ -24,7 +24,7 @@ conda activate dungeoncrawler
 - add other items to be collected, and improve levelmaker functionality for procedurally generating items of various types (item_types.py, levelmaker.py)
 
 ## short-term tasks
-- new game function creates new game rather than restarts current (menu.py)
+- save inventory and other data into a save game file
 - line of sight for player, blocked by walls etc (instead of 5-tile bubble)
 - utilise texture atlasses
 - add unit tests on tiles.json to check uniqueness of name, id, config
