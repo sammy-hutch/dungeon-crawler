@@ -5,8 +5,6 @@ level = None
 
 class Level:
     def __init__(self, level_file, tile_types):
-        from core.engine import engine
-        engine.fog_drawables.append(self)
         global level
         level = self
         self.tile_types = tile_types
@@ -16,6 +14,7 @@ class Level:
     def load_level_file(self, level_file):
         from data.objects import create_entity
         from core.engine import engine
+        engine.fog_drawables.append(self)
 
         # Read all the data from the file
         file = open(LEVEL_FOLDER + "/" + level_file, "r")

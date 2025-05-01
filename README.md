@@ -22,13 +22,13 @@ conda activate dungeoncrawler
 - add fog layer to level save file (level.py)
 - make item types into a dict for easier referencing, rather than a list (item_types.py)
 - add other items to be collected, and improve levelmaker functionality for procedurally generating items of various types (item_types.py, levelmaker.py)
-- BUGFIX: fog removed when navigating to different level (?)
 
 ## short-term tasks
 - new game function creates new game rather than restarts current (menu.py)
 - line of sight for player, blocked by walls etc (instead of 5-tile bubble)
 - utilise texture atlasses
 - add unit tests on tiles.json to check uniqueness of name, id, config
+- add minimap
 
 ## long-term tasks
 - player classes
