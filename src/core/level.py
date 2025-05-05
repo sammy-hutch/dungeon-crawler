@@ -16,28 +16,31 @@ class Level:
         from core.engine import engine
         engine.fog_drawables.append(self)
 
-        # Read all the data from the file
+        # Read the data from the level file
         file = open(LEVEL_FOLDER + "/" + level_file, "r")
-        data = file.read()
+        level_data = file.read()
+        file.close()
+
+        # Read the data from the map file
+        file = open(MAP_FOLDER + "/" + level_file.replace(".lvl", ".map"), "r")
+        map_data = file.read()
         file.close()
 
         self.name = level_file.split(".")[0].title().replace("_", " ")
 
         # Split up the data by minus signs
-        chunks = data.split('\n-')
-        tile_map_data = chunks[0]
+        chunks = level_data.split('\n-')
+        fog_data = chunks[0]
         entity_data = chunks[1]
 
         # Load the map
-        self.map = Map(tile_map_data, self.tile_types)
+        self.map = Map(map_data, self.tile_types)
 
-        # Create fog
+        # Load the fog
         self.fog = []
-        for row in self.map.tiles:
-            tile_row = []
-            for tile in row:
-                tile_row.append("x")
-            self.fog.append(tile_row)
+        for line in fog_data.split("\n"):
+            row = [item.strip('"') for item in line.strip().split(',')]
+            self.fog.append(row)
 
         # Load the entities
         entity_lines = entity_data.split('\n')[1:]
@@ -53,13 +56,11 @@ class Level:
                 print(f"Error parsing line: {line}")
     
     def save_file(self):
-        # TODO: save fog instead of map to lvl file (add additional part in load step to load from both map as well as lvl files)
         from core.engine import engine
-        from core.levelmaker import load_map_file, write_level_to_file
+        from core.levelmaker import write_level_to_file
 
-        map_file = SAVE_NAME + "_" + str(engine.lvl_num) + ".map"
-        map = load_map_file(MAP_FOLDER, map_file)
-
+        fog = self.fog
+        
         entity_list = []
         for entity in engine.entities:
             entity_data = []
@@ -71,7 +72,7 @@ class Level:
                     entity_data.append(val)
             entity_list.append(entity_data)
                         
-        write_level_to_file(map, entity_list, engine.lvl_num)
+        write_level_to_file(fog, entity_list, engine.lvl_num)
     
     def update(self):
         from core.engine import engine

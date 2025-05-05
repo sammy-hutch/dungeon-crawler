@@ -21,6 +21,17 @@ entities = json.load(entity_file)
 entity_file.close()
 
 
+# function to create a blanket fog across entire map
+def create_fog(map):
+    fog = []
+    for row in map:
+        tile_row = []
+        for tile in row:
+            tile_row.append("x")
+        fog.append(tile_row)
+    return fog
+
+
 # function to extract data from .map or .lvl file
 def load_map_file(file_folder, file):
     # Read all the data from the file
@@ -35,9 +46,6 @@ def load_map_file(file_folder, file):
         file.append(row)
     
     return file
-
-# function to create level based on map file or existing level file
-# ...
 
 
 def add_predefined_entity(entity, map, data=None):
@@ -145,13 +153,13 @@ def populate_map(map):
 
 
 # function to write level file
-def write_level_to_file(level, entities, lvl_num):
+def write_level_to_file(fog, entities, lvl_num):
     try:
         file_name = SAVE_NAME + "_" + str(lvl_num) + ".lvl"
         with open(LEVEL_FOLDER + "/" + file_name, 'w') as level_file:
 
-            # add level to file
-            for row in level:
+            # add fog to file
+            for row in fog:
                 data_to_write = '"' + '","'.join(row) + '"'
                 level_file.write(data_to_write)
                 level_file.write('\n')
@@ -176,8 +184,9 @@ def write_level_to_file(level, entities, lvl_num):
 def level_maker(lvl_num):
     map_file = SAVE_NAME + "_" + str(lvl_num) + ".map"
     map = load_map_file(MAP_FOLDER, map_file)
+    fog = create_fog(map)
     entity_list = populate_map(map)
-    write_level_to_file(map, entity_list, lvl_num)
+    write_level_to_file(fog, entity_list, lvl_num)
 
 
 if __name__ == "__main__":
