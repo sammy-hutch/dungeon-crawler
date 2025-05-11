@@ -112,14 +112,17 @@ def add_random_entity(entity, map, coverage):
             y = randrange(0,map_height)
             if map[y][x] == valid_tile_type:
                 # TODO: tidy this code, to be more optimised
-                quantity = randrange(0,4)
                 entity_data = []
                 factory_type = str(entities[entity]["factory"])
-                entity_data.append(factory_type)
-                entity_data.append(str(x))
-                entity_data.append(str(y))
-                entity_data.append(str(0))          # currently hardcoded to gold item.     TODO: add more functionality
-                entity_data.append(str(quantity))   # currently adding a random quantity.   TODO: add more functionality
+                entity_data.append(factory_type)        # arg 0
+                entity_data.append(str(x))              # arg 1
+                entity_data.append(str(y))              # arg 2
+                
+                if entity == "item":
+                    entity_data.append(str(0))          # arg 3. currently hardcoded to gold item.     TODO: add more functionality
+                    quantity = randrange(0,4)
+                    entity_data.append(str(quantity))   # arg 4. currently adding a random quantity.   TODO: add more functionality
+                
                 entity_list.append(entity_data)
                 entities_to_add -= 1
     except:
@@ -141,6 +144,9 @@ def populate_map(map):
 
     # Add items
     entity_list.extend(add_random_entity("item", map, 0.1))
+
+    # Add mobs
+    entity_list.extend(add_random_entity("mob", map, 0.05))
 
     # Add Player
     entity_list.extend(add_predefined_entity("player", map))

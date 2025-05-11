@@ -25,8 +25,9 @@
     - **label.py**: label class for handling text labels on screen
     - **navigator.py**: functionality for managing the dungeon level number, and navigating between levels
     - **physics.py**: body class for collision detection.
-    - **player.py**: player class for handling user inputs to player position, as well as holding & persisting inventory.
+    - **player.py**: player class for handling user inputs to player position, interactions with objects, as well as holding & persisting inventory.
     - **sprite.py**: sprite class for all sprites (including UI features such as backgrounds), including sprite image handling.
+    - **usable.py**: class for usable objects (such as doors) (currently also interactable objects (such as mobs))
   - **core**
     - **camera.py**: the view of the game, allows for repositioning map as player moves around.
     - **engine.py**: handles the game loop & moving between stages (e.g. menu screen, play screen). Manages entities such as drawables, active objects, etc.
@@ -35,6 +36,7 @@
     - **levelmaker.py**: generates .lvl file which combines the .map file and a list of entities to place on the map.
     - **map.py**: works with .map files, generating visual map by assigning images to tiles.
     - **mapmaker.py**: generates .map file from "chunk" data.
+    - **math_ext.py**: math functions
   - **data**
     - **config.py**: centralised configuration module for env vars
     - **file_manager.py**: functionality for saving & deleting files

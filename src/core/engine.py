@@ -19,6 +19,7 @@ class Engine:
         self.drawables = []  # Anything to be drawn in the world
         self.fog_drawables = [] # fog layer
         self.ui_drawables = []  # Anything to be drawn as UI
+        self.usables = []
         self.changed_player_state = False
 
         from core.camera import create_screen
@@ -40,12 +41,13 @@ class Engine:
         func()
 
     def run(self):
-        from core.input import keys_down
+        from core.input import keys_down, mouse_buttons_just_pressed
         movement_delay = 100  # milliseconds between movements
         last_movement_time = {} # Dictionary to store last movement time for each key
 
         self.running = True
         while self.running:
+            mouse_buttons_just_pressed.clear()
 
             # Handle events
             for event in pygame.event.get():
@@ -66,6 +68,7 @@ class Engine:
                 
                 # Handle mouse click events
                 elif event.type == pygame.MOUSEBUTTONDOWN:
+                    mouse_buttons_just_pressed.add(event.button)
                     self.changed_player_state = True
             
                 # Handle movement
@@ -121,6 +124,7 @@ class Engine:
         self.ui_drawables.clear()
         self.background_drawables.clear()
         self.fog_drawables.clear()
+        self.usables.clear()
     
     def quit(self):
         from data.file_manager import save_game
