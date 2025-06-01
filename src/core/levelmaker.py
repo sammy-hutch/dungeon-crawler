@@ -119,9 +119,17 @@ def add_random_entity(entity, map, coverage):
                 entity_data.append(str(y))              # arg 2
                 
                 if entity == "item":
-                    entity_data.append(str(0))          # arg 3. currently hardcoded to gold item.     TODO: add more functionality
-                    quantity = randrange(0,4)
-                    entity_data.append(str(quantity))   # arg 4. currently adding a random quantity.   TODO: add more functionality
+                    item_type = randrange(0,10)         # currently randomises item here.   TODO: make proper functionality for this
+                    if 0 <= item_type <= 7:
+                        entity_data.append(str(0))          # arg 3. currently hardcoded to gold item.     TODO: add more functionality
+                        quantity = randrange(0,4)
+                        entity_data.append(str(quantity))   # arg 4. currently adding a random quantity.   TODO: add more functionality
+                    elif item_type == 8:
+                        entity_data.append(str(1))      # arg 3. longsword
+                        entity_data.append(str(1))      # arg 4. quantity
+                    else:
+                        entity_data.append(str(2))      # arg 3. mace
+                        entity_data.append(str(1))      # arg 4. quantity
                 
                 entity_list.append(entity_data)
                 entities_to_add -= 1

@@ -16,6 +16,7 @@ from data.key_binds import key_binds
 
 # player moves one tile per key press
 movement_speed = TILE_SIZE
+message_time_seconds = 3
 
 inventory = Inventory(20)
 
@@ -26,17 +27,24 @@ class Player:
 
         # Create Labels
         self.loc_label = Entity(Label("RedRose-Regular.ttf", "X: 0 - Y: 0")).get(Label)
-        self.level_label = Entity(Label("RedRose-Regular.ttf", level.name)).get(Label)
+        self.message_label = Entity(Label("RedRose-Regular.ttf", level.name)).get(Label)
         self.inventory_window = Entity(InventoryView(inventory))
+
         self.loc_label.entity.y = camera.height - 50
         self.loc_label.entity.x = 10
-        self.level_label.entity.x = 10
+        self.message_label.entity.x = 10
+        self.show_message(f"Entering {level.name}")
         
         engine.active_objs.append(self)
     
     def update(self):
         from core.engine import engine
         from core.level import level
+
+        if self.message_countdown > 0:
+            self.message_countdown -= 1
+            if self.message_countdown <= 0:
+                self.message_label.set_text("")
 
         self.loc_label.set_text(f"X: {self.entity.x} - Y: {self.entity.y}")
         previous_x = self.entity.x
@@ -109,6 +117,10 @@ class Player:
         
         camera.x = self.entity.x - camera.width/2 + sprite.image.get_width()/2
         camera.y = self.entity.y - camera.height/2 + sprite.image.get_height()/2
+    
+    def show_message(self, message):
+        self.message_label.set_text(message)
+        self.message_countdown = message_time_seconds * 15
     
     def interact(self, mouse_pos):
         from core.engine import engine
