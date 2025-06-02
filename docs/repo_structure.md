@@ -43,6 +43,7 @@
     - **item_types.py**: list of item types
     - **key_binds.py**: functions for loading and modifying key bindings.
     - **objects.py**: entity factory for all objects on map.
+    - **states.py**: dictionary of possible states for entities, e.g. whether a door is open or closed
     - **tile_types.py**: dictionary matching tile images to map data.
     **stages**
     - **menu.py**: code for menu stage, including background art and buttons

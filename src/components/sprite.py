@@ -8,6 +8,23 @@ loaded = {}
 class Sprite:
     def __init__(self, type, image, is_ui=False):
         from core.engine import engine
+
+        self.set_image(type, image)
+
+        if is_ui:
+            engine.ui_drawables.append(self)
+        else:
+            engine.drawables.append(self)
+        
+        self.is_ui = is_ui
+        self.type = type
+    
+    def set_image(self, type, image):
+        """
+        Args:
+            type (str): can be 'char', 'dngn', 'art', 'item', 'ui'
+            image (str): .png file name of image
+        """
         if image in loaded:
             self.image = loaded[image]
         else:
@@ -19,12 +36,6 @@ class Sprite:
             elif type == 'ui': image_folder = UI_IMAGE_FOLDER
             self.image = pygame.image.load(image_folder + "/" + image)
             loaded[image] = self.image
-        if is_ui:
-            engine.ui_drawables.append(self)
-        else:
-            engine.drawables.append(self)
-        self.is_ui = is_ui
-        self.type = type
     
     def breakdown(self):
         from core.engine import engine

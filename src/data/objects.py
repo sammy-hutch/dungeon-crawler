@@ -4,7 +4,7 @@ from components.physics import Body
 from components.player import Player
 from components.sprite import Sprite
 from components.navigator import Navigator
-from components.usable import Hittable
+from components.usable import Hittable, Changeable
 
 from data.config import TILE_SIZE
 from data.item_types import item_types
@@ -20,15 +20,15 @@ entity_factories = [
     lambda args: Entity(Navigator(args[3]), Sprite("dngn", "stone_stairs_down.png")),
 
     # 3 - Makes a Door
-    lambda args: Entity(Sprite("dngn", "closed_door.png")),
+    lambda args: Entity(Sprite("dngn", "closed_door.png"), Changeable("door")),
 
     # 4 - Makes a Mob
     lambda args: Entity(Sprite("char", "draconian_green.png"), Body(), Hittable("draconian")),
 
     # 5 - Makes an Item
     lambda args: Entity(
-            DroppedItem(item_types[int(args[3])], int(args[4])), 
-            Sprite("item", item_types[int(args[3])].icon_name)
+                    DroppedItem(item_types[int(args[3])], int(args[4])), 
+                    Sprite("item", item_types[int(args[3])].icon_name)
         )
 ]
 
