@@ -30,6 +30,7 @@
     - **usable.py**: class for usable objects (such as doors) (currently also interactable objects (such as mobs))
   - **core**
     - **camera.py**: the view of the game, allows for repositioning map as player moves around.
+    - **effect.py**: Effect class for temporary visual effects
     - **engine.py**: handles the game loop & moving between stages (e.g. menu screen, play screen). Manages entities such as drawables, active objects, etc.
     - **input.py**: handles user input such as key presses and mouse clicks.
     - **level.py**: works with .lvl files, generating discovered map as player moves around, and positioning entities.

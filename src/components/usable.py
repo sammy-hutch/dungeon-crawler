@@ -31,6 +31,8 @@ class Hittable(Usable):
             player.show_message("hitting " + self.obj_name)
             from core.engine import engine
             engine.remove_entity(self.entity)
+            from core.effect import Effect
+            Effect(self.entity.x, self.entity.y, 0, 0, 10, "cloud_misery0.png")
 
 class Changeable(Usable):
     def __init__(self, obj_name, default_state=0):
