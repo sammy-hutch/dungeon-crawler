@@ -20,7 +20,7 @@ entity_factories = [
     lambda args: Entity(Navigator(args[3]), Sprite("dngn", "stone_stairs_down.png")),
 
     # 3 - Makes a Door
-    lambda args: Entity(Sprite("dngn", "closed_door.png"), Changeable("door")),
+    lambda args: Entity(Sprite("dngn", "closed_door.png"), Body(), Changeable("door")),
 
     # 4 - Makes a Mob
     lambda args: Entity(Sprite("char", "draconian_green.png"), Body(), Hittable("draconian")),

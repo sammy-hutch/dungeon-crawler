@@ -44,16 +44,29 @@ class Changeable(Usable):
     def on(self, other, distance):
         from components.player import Player
         from components.sprite import Sprite
+        from components.physics import Body
         player = other.get(Player)
+        self_body = self.entity.get(Body)
+        other_body = other.get(Body)
 
         # If in range
         if distance > 46: #TODO: calculate distance based on tile size, rather than hardcoded
-            player.show_message("This is a " + self.obj_name + ", but i need to get closer to interact with it")
+            if player is not None:
+                player.show_message("This is a " + self.obj_name + ", but i need to get closer to interact with it")
+        # And player not passing through
+        elif self_body.is_solid == False and other_body.is_colliding_with(self_body):
+            return
+        # Then
         else:
             self.current_state += 1
             if self.current_state > self.max_state:
                 self.current_state = 0
             self.current_image = self.states[self.current_state]["image"]
             self.entity.get(Sprite).set_image('dngn', self.current_image)
+            self_body.is_solid = self.states[self.current_state]["is_solid"].lower() == "true"
+            if player is not None:
+                player.show_message(self.states[self.current_state]["message"])
+            return
+            
 
         

@@ -48,6 +48,7 @@ class Body(PhysicalObj):
     def __init__(self, x=hitbox_x, y=hitbox_y, width=hitbox_width, height=hitbox_height):
         super().__init__(x, y, width, height)
         bodies.append(self)
+        self.is_solid = True
     
     def breakdown(self):
         global bodies
@@ -60,7 +61,7 @@ class Body(PhysicalObj):
         if map.is_rect_solid(x, y, self.hitbox.width, self.hitbox.height):
             return False
         for body in bodies:
-            if body != self and body.is_colliding_with(self):
+            if body != self and body.is_colliding_with(self) and body.is_solid == True:
                 return False
         return True
 
