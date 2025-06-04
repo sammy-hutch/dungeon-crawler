@@ -98,6 +98,11 @@ class Engine:
             # Draw the main objects
             for s in self.drawables:
                 s.draw(self.screen)
+            
+            # Draw the effects
+            from core.effect import effects
+            for e in effects:
+                e.draw(self.screen)
 
             # Draw the fog
             if FOG:
@@ -125,6 +130,8 @@ class Engine:
         self.background_drawables.clear()
         self.fog_drawables.clear()
         self.usables.clear()
+        from core.effect import effects
+        effects.clear()
     
     def quit(self):
         from data.file_manager import save_game
