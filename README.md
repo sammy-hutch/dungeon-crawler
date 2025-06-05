@@ -23,10 +23,11 @@ conda activate dungeoncrawler
 - add other items to be collected, and improve levelmaker functionality for procedurally generating items of various types (item_types.py, levelmaker.py)
 - utilise distance function (math_ext.py) in other sqrt functions (search for sqrt)
 - improve hittable class - attackable? has_health? (usable.py)
+- closed doors block line of sight (level.py)
+- make line of sight a player-related attibute (move from level.py to player.py) and tidy the update code on level.py
 
 ## short-term tasks
 - save inventory and other data into a save game file
-- line of sight for player, blocked by walls etc (instead of 5-tile bubble)
 - utilise texture atlasses
 - add unit tests on tiles.json to check uniqueness of name, id, config
 - add minimap
