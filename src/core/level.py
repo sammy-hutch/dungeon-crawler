@@ -80,47 +80,44 @@ class Level:
         vision_radius = VISION_RADIUS
         for e in engine.entities:
             if e.id == 0:
-                player_x = e.x
-                player_y = e.y
+                player_x = safe_div(e.x, self.tile_size)
+                player_y = safe_div(e.y, self.tile_size)
                 field_of_vision = []
                 obstacles = []
                 for map in engine.background_drawables:
                     for y, row in enumerate(map.tiles):
-                        for x, tile in enumerate(row): # TODO: invert tile_size (i.e. divide player x and y by tile_size)
-                            tile_x = x * self.tile_size
-                            tile_y = y * self.tile_size
-                            x_diff = player_x - tile_x
-                            y_diff = player_y - tile_y
+                        for x, tile in enumerate(row):
+                            x_diff = player_x - x
+                            y_diff = player_y - y
                             distance =  round((x_diff**2 + y_diff**2)**0.5)
-                            if distance <= vision_radius * self.tile_size:
-                                vector = [x_diff, y_diff]
-                                angle = angle_from_north(vector)
+                            if distance <= vision_radius:
+                                angle = angle_from_north([x_diff, y_diff])
                                 tile_data = {
                                     "x": x, "y": y, "distance": distance, 
                                     "angle": angle, "is_visible": True
                                     }
                                 field_of_vision.append(tile_data)
                                 if map.tile_kinds[tile].is_solid: # TODO: change from is_solid. add new property to tiles, is_transparent
-                                    variance = 0.5*self.tile_size
-                                    nw_angle = angle_from_north([x_diff - variance, y_diff - variance])
-                                    ne_angle = angle_from_north([x_diff + variance, y_diff - variance])
-                                    se_angle = angle_from_north([x_diff + variance, y_diff + variance])
-                                    sw_angle = angle_from_north([x_diff - variance, y_diff + variance])
+                                    nw_angle = angle_from_north([x_diff - 0.5, y_diff - 0.5])
+                                    ne_angle = angle_from_north([x_diff + 0.5, y_diff - 0.5])
+                                    se_angle = angle_from_north([x_diff + 0.5, y_diff + 0.5])
+                                    sw_angle = angle_from_north([x_diff - 0.5, y_diff + 0.5])
                                     min_angle = min(nw_angle, ne_angle, se_angle, sw_angle)
                                     max_angle = max(nw_angle, ne_angle, se_angle, sw_angle)
-                                    limit = max_angle - min_angle > 90
+                                    over_limit = max_angle - min_angle > 90
                                     tile_data = {
                                         "x": x, "y": y, "distance": distance, 
-                                        "min_angle": min_angle, "max_angle": max_angle, "limit": limit
+                                        "min_angle": min_angle, "max_angle": max_angle, 
+                                        "over_limit": over_limit
                                         }
                                     obstacles.append(tile_data)
                 for tile in field_of_vision:
                     for obs in obstacles:
                         if (
                             tile["distance"] > obs["distance"] and (
-                                (obs["limit"] and (tile["angle"] > obs["max_angle"] or tile["angle"] < obs["min_angle"]))
+                                (obs["over_limit"] and (tile["angle"] > obs["max_angle"] or tile["angle"] < obs["min_angle"]))
                                 or
-                                (not obs["limit"] and obs["min_angle"] < tile["angle"] < obs["max_angle"])
+                                (not obs["over_limit"] and obs["min_angle"] < tile["angle"] < obs["max_angle"])
                             )
                         ):
                             tile["is_visible"] = False
