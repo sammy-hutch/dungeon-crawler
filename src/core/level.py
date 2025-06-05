@@ -1,5 +1,6 @@
 from core.map import Map
-from data.config import LEVEL_FOLDER, MAP_FOLDER, SAVE_NAME, TILE_SIZE, VISION_RADIUS
+from core.math_ext import safe_div, angle_from_north
+from data.config import LEVEL_FOLDER, MAP_FOLDER, TILE_SIZE, VISION_RADIUS
 
 level = None
 
@@ -81,19 +82,57 @@ class Level:
             if e.id == 0:
                 player_x = e.x
                 player_y = e.y
+                field_of_vision = []
+                obstacles = []
+                for map in engine.background_drawables:
+                    for y, row in enumerate(map.tiles):
+                        for x, tile in enumerate(row): # TODO: invert tile_size (i.e. divide player x and y by tile_size)
+                            tile_x = x * self.tile_size
+                            tile_y = y * self.tile_size
+                            x_diff = player_x - tile_x
+                            y_diff = player_y - tile_y
+                            distance =  round((x_diff**2 + y_diff**2)**0.5)
+                            if distance <= vision_radius * self.tile_size:
+                                vector = [x_diff, y_diff]
+                                angle = angle_from_north(vector)
+                                tile_data = {
+                                    "x": x, "y": y, "distance": distance, 
+                                    "angle": angle, "is_visible": True
+                                    }
+                                field_of_vision.append(tile_data)
+                                if map.tile_kinds[tile].is_solid: # TODO: change from is_solid. add new property to tiles, is_transparent
+                                    variance = 0.5*self.tile_size
+                                    nw_angle = angle_from_north([x_diff - variance, y_diff - variance])
+                                    ne_angle = angle_from_north([x_diff + variance, y_diff - variance])
+                                    se_angle = angle_from_north([x_diff + variance, y_diff + variance])
+                                    sw_angle = angle_from_north([x_diff - variance, y_diff + variance])
+                                    min_angle = min(nw_angle, ne_angle, se_angle, sw_angle)
+                                    max_angle = max(nw_angle, ne_angle, se_angle, sw_angle)
+                                    limit = max_angle - min_angle > 90
+                                    tile_data = {
+                                        "x": x, "y": y, "distance": distance, 
+                                        "min_angle": min_angle, "max_angle": max_angle, "limit": limit
+                                        }
+                                    obstacles.append(tile_data)
+                for tile in field_of_vision:
+                    for obs in obstacles:
+                        if (
+                            tile["distance"] > obs["distance"] and (
+                                (obs["limit"] and (tile["angle"] > obs["max_angle"] or tile["angle"] < obs["min_angle"]))
+                                or
+                                (not obs["limit"] and obs["min_angle"] < tile["angle"] < obs["max_angle"])
+                            )
+                        ):
+                            tile["is_visible"] = False
                 for y, row in enumerate(self.fog):
                     for x, tile in enumerate(row):
-                        tile_x = x * self.tile_size
-                        tile_y = y * self.tile_size
-                        x_diff = player_x - tile_x
-                        y_diff = player_y - tile_y
-                        diff =  round((x_diff**2 + y_diff**2)**0.5)
-                        if diff <= vision_radius * self.tile_size:
-                            self.fog[y][x] = " "
-                        elif tile == " " or tile == "o":
+                        if tile == " " or tile == "o":
                             self.fog[y][x] = "o"
                         else:
                             self.fog[y][x] = "x"
+                        for tile in field_of_vision:
+                            if y == tile["y"] and x == tile["x"] and tile["is_visible"]:
+                                self.fog[y][x] = " "
 
     def draw(self, screen):
         from core.camera import camera
