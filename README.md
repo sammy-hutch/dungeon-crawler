@@ -24,6 +24,7 @@ conda activate dungeoncrawler
 - utilise distance function (math_ext.py) in other sqrt functions (search for sqrt)
 - improve hittable class - attackable? has_health? (usable.py)
 - optimise line-of-sight code to iterate through the distance-measure & obstacle-add code for background, bodies etc
+- persist state of objects in level save file (open doors currently default to being closed)
 
 ## short-term tasks
 - save inventory and other data into a save game file
