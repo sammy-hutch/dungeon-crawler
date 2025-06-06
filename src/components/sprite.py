@@ -53,12 +53,15 @@ class Sprite:
 
     def line_of_sight(self, type="vision"):
         from core.engine import engine
+        from components.physics import bodies
         vision_radius = VISION_RADIUS
         tile_size = TILE_SIZE
         self_x = safe_div(self.entity.x, tile_size)
         self_y = safe_div(self.entity.y, tile_size)
         field_of_vision = []
         obstacles = []
+        
+        # Determine field of vision and identify obstacles on background_drawables layer
         for map in engine.background_drawables:
             for y, row in enumerate(map.tiles):
                 for x, tile in enumerate(row):
@@ -86,6 +89,31 @@ class Sprite:
                                 "over_limit": over_limit
                                 }
                             obstacles.append(tile_data)
+
+        # Identify obstacles on bodies
+        for b in bodies:
+            if b.blocks_vision:
+                other_x = safe_div(b.entity.x, tile_size)
+                other_y = safe_div(b.entity.y, tile_size)
+                x_diff = self_x - other_x
+                y_diff = self_y - other_y
+                distance =  round((x_diff**2 + y_diff**2)**0.5)
+                if distance <= vision_radius:
+                    nw_angle = angle_from_north([x_diff - 0.5, y_diff - 0.5])
+                    ne_angle = angle_from_north([x_diff + 0.5, y_diff - 0.5])
+                    se_angle = angle_from_north([x_diff + 0.5, y_diff + 0.5])
+                    sw_angle = angle_from_north([x_diff - 0.5, y_diff + 0.5])
+                    min_angle = min(nw_angle, ne_angle, se_angle, sw_angle)
+                    max_angle = max(nw_angle, ne_angle, se_angle, sw_angle)
+                    over_limit = max_angle - min_angle > 90
+                    tile_data = {
+                        "x": x, "y": y, "distance": distance, 
+                        "min_angle": min_angle, "max_angle": max_angle, 
+                        "over_limit": over_limit
+                        }
+                    obstacles.append(tile_data)
+
+        # Remove tiles from field of vision if blocked by obstacles
         for tile in field_of_vision:
             for obs in obstacles:
                 if (

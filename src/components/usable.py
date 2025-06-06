@@ -65,7 +65,8 @@ class Changeable(Usable):
                 self.current_state = 0
             self.current_image = self.states[self.current_state]["image"]
             self.entity.get(Sprite).set_image('dngn', self.current_image)
-            self_body.is_solid = self.states[self.current_state]["is_solid"].lower() == "true"
+            self_body.is_solid = self.states[self.current_state]["is_solid"].lower() == "true"  # TODO: tidy these lines to make conditional (only apply if those features exist in target body)
+            self_body.blocks_vision = self.states[self.current_state]["blocks_vision"].lower() == "true"
             if player is not None:
                 player.show_message(self.states[self.current_state]["message"])
             return
