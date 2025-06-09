@@ -1,6 +1,5 @@
 from core.map import Map
-from core.math_ext import safe_div, angle_from_north
-from data.config import LEVEL_FOLDER, MAP_FOLDER, TILE_SIZE, VISION_RADIUS
+from data.config import LEVEL_FOLDER, MAP_FOLDER, TILE_SIZE
 
 level = None
 
@@ -81,7 +80,7 @@ class Level:
         visible_tiles = []
         for e in engine.entities:
             if e.id == 0:
-                visible_tiles = e.get(Sprite).line_of_sight()
+                visible_tiles = e.get(Sprite).field_of_vision()
         for y, row in enumerate(self.fog):
             for x, tile in enumerate(row):
                 if tile == " " or tile == "o":
