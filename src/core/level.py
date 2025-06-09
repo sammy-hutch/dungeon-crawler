@@ -1,5 +1,5 @@
 from core.map import Map
-from data.config import LEVEL_FOLDER, MAP_FOLDER, SAVE_NAME, TILE_SIZE, VISION_RADIUS
+from data.config import LEVEL_FOLDER, MAP_FOLDER, TILE_SIZE
 
 level = None
 
@@ -76,24 +76,20 @@ class Level:
     
     def update(self):
         from core.engine import engine
-        vision_radius = VISION_RADIUS
+        from components.sprite import Sprite
+        visible_tiles = []
         for e in engine.entities:
             if e.id == 0:
-                player_x = e.x
-                player_y = e.y
-                for y, row in enumerate(self.fog):
-                    for x, tile in enumerate(row):
-                        tile_x = x * self.tile_size
-                        tile_y = y * self.tile_size
-                        x_diff = player_x - tile_x
-                        y_diff = player_y - tile_y
-                        diff =  round((x_diff**2 + y_diff**2)**0.5)
-                        if diff <= vision_radius * self.tile_size:
-                            self.fog[y][x] = " "
-                        elif tile == " " or tile == "o":
-                            self.fog[y][x] = "o"
-                        else:
-                            self.fog[y][x] = "x"
+                visible_tiles = e.get(Sprite).field_of_vision()
+        for y, row in enumerate(self.fog):
+            for x, tile in enumerate(row):
+                if tile == " " or tile == "o":
+                    self.fog[y][x] = "o"
+                else:
+                    self.fog[y][x] = "x"
+                for tile in visible_tiles:
+                    if y == tile["y"] and x == tile["x"] and tile["is_visible"]:
+                        self.fog[y][x] = " "
 
     def draw(self, screen):
         from core.camera import camera
