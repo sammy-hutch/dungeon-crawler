@@ -41,13 +41,14 @@ class Engine:
         func()
 
     def run(self):
-        from core.input import keys_down, mouse_buttons_just_pressed
+        from core.input import keys_down, keys_just_pressed, mouse_buttons_just_pressed
         movement_delay = 100  # milliseconds between movements
         last_movement_time = {} # Dictionary to store last movement time for each key
 
         self.running = True
         while self.running:
             mouse_buttons_just_pressed.clear()
+            keys_just_pressed.clear()
 
             # Handle events
             for event in pygame.event.get():
@@ -59,6 +60,7 @@ class Engine:
                 # Handle keydown and keyup events
                 elif event.type == pygame.KEYDOWN:
                     keys_down.add(event.key)
+                    keys_just_pressed.add(event.key)
                     last_movement_time[event.key] = 0
                 elif event.type == pygame.KEYUP:
                     if event.key in keys_down:

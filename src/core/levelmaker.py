@@ -11,6 +11,7 @@ from math import ceil
 from random import randrange
 
 from data.config import DATA_FOLDER, LEVEL_FOLDER, MAP_FOLDER, SAVE_NAME
+from data.npc_types import npc_types
 
 map_file = "start.map"
 level_file = "start.lvl"
@@ -131,6 +132,10 @@ def add_random_entity(entity, map, coverage):
                         entity_data.append(str(2))      # arg 3. mace
                         entity_data.append(str(1))      # arg 4. quantity
                 
+                if entity == "npc":
+                    npc_type = randrange(0, (len(npc_types)))
+                    entity_data.append(str(npc_type))   # arg 3. npc_type list number
+                
                 entity_list.append(entity_data)
                 entities_to_add -= 1
     except:
@@ -155,6 +160,9 @@ def populate_map(map):
 
     # Add mobs
     entity_list.extend(add_random_entity("mob", map, 0.05))
+
+    # Add NPCs
+    entity_list.extend(add_random_entity("npc", map, 0.05))
 
     # Add Player
     entity_list.extend(add_predefined_entity("player", map))

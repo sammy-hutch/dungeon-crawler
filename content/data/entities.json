@@ -4,5 +4,6 @@
     "stairs_down": {"factory": 2, "start": "v"},
     "door": {"factory": 3, "start": "d"},
     "mob": {"factory": 4, "start": "f"},
-    "item": {"factory": 5, "start": "f"}
+    "item": {"factory": 5, "start": "f"},
+    "npc": {"factory": 6, "start": "f"}
 }

@@ -1,6 +1,7 @@
 import pygame
 
 keys_down = set()
+keys_just_pressed = set()
 mouse_buttons_just_pressed = set()
 
 def is_key_pressed(key):
@@ -8,6 +9,9 @@ def is_key_pressed(key):
 
 def is_mouse_pressed(button):
     return pygame.mouse.get_pressed()[button]
+
+def is_key_just_pressed(key):
+    return key in keys_just_pressed
 
 def is_mouse_just_pressed(button):
     return button in mouse_buttons_just_pressed

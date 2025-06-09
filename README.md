@@ -25,6 +25,7 @@ conda activate dungeoncrawler
 - improve hittable class - attackable? has_health? (usable.py)
 - persist state of objects in level save file (open doors currently default to being closed)
 - bug in line of sight north tiles not blocked - something to do with the doors
+- refactor python data and content data files (src/data/ and content/data/) to be more consistent. e.g. add dictionaries for all objects which objects.py needs to reference
 
 ## short-term tasks
 - save inventory and other data into a save game file

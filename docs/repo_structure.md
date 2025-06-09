@@ -14,9 +14,11 @@
     - **ui**: image files for UI
   - **levels**: folder for .lvl level files. Git ignored by default. Each level file contains the discovered map state, as well as entity info. Level files are intended to be updated upon game saves.
   - **maps**: folder for .map map files. Git ignored by default. Each map file contains a list of y lists, with each of those containing x elements, where y and x are the dimensions of the map. each element represents a tile in the map. Map files are not intended to be changed.
+  - **npcs**: text files for npc interactions
 - **src**
   - **components**
     - **ui**
+      - **dialog_view.py**: creates a dialog window
       - **inventory_view.py**: creates a view of inventory, from window class and sprites
       - **window.py**: creates a window within UI
     - **button.py**: button class for buttons triggered by mouse clicks
@@ -24,6 +26,7 @@
     - **inventory.py**: classes for item types, item slots and inventory, as well as class for dropped item trigger which is assigned to items on map which can be picked up.
     - **label.py**: label class for handling text labels on screen
     - **navigator.py**: functionality for managing the dungeon level number, and navigating between levels
+    - **npc.py**: functionality for npc entities
     - **physics.py**: body class for collision detection.
     - **player.py**: player class for handling user inputs to player position, interactions with objects, as well as holding & persisting inventory.
     - **sprite.py**: sprite class for all sprites (including UI features such as backgrounds), including sprite image handling.
@@ -43,6 +46,7 @@
     - **file_manager.py**: functionality for saving & deleting files
     - **item_types.py**: list of item types
     - **key_binds.py**: functions for loading and modifying key bindings.
+    - **npc_types,py**: dictionary of npcs
     - **objects.py**: entity factory for all objects on map.
     - **states.py**: dictionary of possible states for entities, e.g. whether a door is open or closed
     - **tile_types.py**: dictionary matching tile images to map data.

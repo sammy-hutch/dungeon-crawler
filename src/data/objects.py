@@ -4,10 +4,12 @@ from components.physics import Body
 from components.player import Player
 from components.sprite import Sprite
 from components.navigator import Navigator
+from components.npc import NPC
 from components.usable import Hittable, Changeable
 
 from data.config import TILE_SIZE
 from data.item_types import item_types
+from data.npc_types import npc_types
 
 entity_factories = [
     # 0 - Makes a Player
@@ -29,6 +31,12 @@ entity_factories = [
     lambda args: Entity(
                     DroppedItem(item_types[int(args[3])], int(args[4])), 
                     Sprite("item", item_types[int(args[3])].icon_name)
+        ),
+    
+    # 6 - Makes an NPC
+    lambda args: Entity(
+                    Sprite("char", npc_types[int(args[3])]["image"]), 
+                    NPC(npc_types[int(args[3])]["name"], npc_types[int(args[3])]["npc_file"])
         )
 ]
 
