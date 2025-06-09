@@ -14,6 +14,7 @@ conda activate dungeoncrawler
 
 
 # TO DO List
+7:40 in video
 
 ## Ten-minute Tasks
 - duplicated code for loading and writing of files (level.py, levelmaker.py, mapmaker.py?)
@@ -32,6 +33,7 @@ conda activate dungeoncrawler
 - utilise texture atlasses
 - add unit tests on tiles.json to check uniqueness of name, id, config
 - add minimap
+- add zoom functionality
 
 ## long-term tasks
 - player classes
