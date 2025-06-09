@@ -74,8 +74,11 @@ class DialogView:
         line = self.lines[self.current_line]
         type = line[0]
         text = line[1:]
+        if len(line) == 0:
+            self.next_line()
+            return
         if type == '!':
-            self.command(text)
+            self.command(line)
         elif type == '$':
             self.narrate(text)
         elif type == '-':
@@ -103,7 +106,28 @@ class DialogView:
     # Execute some special command 
     # (e.g. giving item to player, navigating to particular line)
     def command(self, line):
-        pass
+        words = line.split(" ")
+        command = words[1]
+        arguments = words[2:]
+        if command == "give":
+            from components.player import inventory
+            from data.item_types import item_types
+            t = item_types[int(arguments[0])]
+            amount = int(arguments[1])
+            excess = inventory.add(t, amount)
+            amount_added = amount - excess
+            if amount_added == 0:
+                self.speaker_label.set_text("")
+                self.content_label.set_text(f"Your inventory is full")
+            else:
+                self.speaker_label.set_text("")
+                self.content_label.set_text(f"You receive {amount_added} {t.name}")
+        elif command == "goto":
+            pass
+        elif command == "end":
+            pass
+        else:
+            print(f"unknown command: {command}")
 
     # Check if a key is pressed to move to the next line
     def update(self):
