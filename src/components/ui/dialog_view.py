@@ -122,10 +122,32 @@ class DialogView:
             else:
                 self.speaker_label.set_text("")
                 self.content_label.set_text(f"You receive {amount_added} {t.name}")
+        elif command == "take":
+            from components.player import inventory
+            from data.item_types import item_types
+            t = item_types[int(arguments[0])]
+            amount = int(arguments[1])
+            removed = inventory.remove(t, amount)
+            if removed < amount:
+                inventory.add(t, removed)
+                self.current_line = int(arguments[2])-2
+                self.next_line()
+            else:
+                if removed > amount:
+                    inventory.add(t, removed - amount)
+                self.current_line = int(arguments[3])-2
+                self.next_line()
         elif command == "goto":
-            pass
+            self.current_line = int(arguments[0])-2
+            self.next_line()
         elif command == "end":
-            pass
+            self.breakdown()
+        elif command == "random":
+            import random
+            next_lines = [int(x) for x in arguments]
+            result = random.choice(next_lines)
+            self.current_line = result-2
+            self.next_line()
         else:
             print(f"unknown command: {command}")
 

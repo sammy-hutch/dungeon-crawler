@@ -1,5 +1,24 @@
+! random 2 9 14
 $ *djinni stares mystically into the distance*
 + ... I -
 - Do not bother me at this time.
 + I -
 - I repeat. Do not bother me at this time
+! end
+
+$ *low humming noises*
++ So, do i get some wishes or something?
+$ *humming intensifies*
+! end
+
+- ah, so you demand a wish.
+- well, what can you offer me?
+- 25 gold coins and i can grant you a wish.
+$ *you open your coin purse*
+! take 0 25 19 22
+- You dare to insult me by offering mere pennies!
+- Be gone!
+! end
+- very well, i know you had your eye on those maces
+- here, have fun.
+! give 2 1
