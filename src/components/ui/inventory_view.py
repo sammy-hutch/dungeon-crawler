@@ -12,10 +12,14 @@ item_size = 32     # How big is each slot in pixels
 
 class InventoryView:
     # Creates a new inventory view, drawing a given inventory
-    def __init__(self, inventory, slot_image="inventory_slot.png"):
+    def __init__(self, 
+                 inventory, 
+                 slot_image="inventory_slot.png", 
+                 selected_slot_image="selected_inventory_slot.png"):
         from core.engine import engine
         self.inventory = inventory
         self.slot_image = slot_image
+        self.selected_slot_image = selected_slot_image
 
         width = padding_size \
                 + (items_per_row * item_size) \
@@ -35,18 +39,49 @@ class InventoryView:
         self.slot_container_sprites = []
         self.slot_sprites = []
 
+        engine.active_objs.append(self)
+
         inventory.listener = self
 
         self.render()
+    
+    def update(self):
+        import pygame
+        from core.input import is_mouse_just_pressed
+        mouse_pos = pygame.mouse.get_pos()
+
+        if is_mouse_just_pressed(1):
+            if self.window.x <= mouse_pos[0] <= self.window.x + self.window.get(Window).width and \
+                self.window.y <= mouse_pos[1] <= self.window.y + self.window.get(Window).height:
+                
+                x = mouse_pos[0] - self.window.x
+                y = mouse_pos[1] - self.window.y
+                x_slot = int(x / (item_size + gap_size))
+                y_slot = int(y / (item_size + gap_size))
+                x_local_pos = x % (item_size + gap_size)
+                y_local_pos = y % (item_size + gap_size)
+
+                if 0 < x_local_pos < item_size and \
+                    0 < y_local_pos < item_size:
+
+                    index = int(x_slot + (y_slot * items_per_row))
+                    if self.inventory.equipped_slot == index:
+                        self.inventory.equipped_slot = None
+                    else:
+                        self.inventory.equipped_slot = index
+                    self.refresh()
 
     # Creates all the UI elements to display the inventory
     def render(self):
         row = 0
         column = 0
-        for slot in self.inventory.slots:
+        for index, slot in enumerate(self.inventory.slots):
             x = column * (item_size + gap_size) + self.window.x + padding_size
             y = row * (item_size + gap_size) + self.window.y + padding_size
-            container_sprite = Entity(Sprite("ui", self.slot_image, True), x=x, y=y)
+            slot_image = \
+                self.selected_slot_image if index == self.inventory.equipped_slot \
+                else self.slot_image
+            container_sprite = Entity(Sprite("ui", slot_image, True), x=x, y=y)
             self.window.get(Window).items.append(container_sprite)
             if slot.type is not None:
                 item_sprite = Entity(Sprite("item", slot.type.icon_name, True), x=x, y=y)

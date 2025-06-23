@@ -14,7 +14,7 @@ conda activate dungeoncrawler
 
 
 # TO DO List
-7:40 in video
+31:00 in video
 
 ## Ten-minute Tasks
 - duplicated code for loading and writing of files (level.py, levelmaker.py, mapmaker.py?)

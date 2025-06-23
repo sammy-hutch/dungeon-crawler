@@ -33,6 +33,7 @@ class Inventory:
     def __init__(self, capacity):
         self.capacity = capacity
         self.taken_slots = 0
+        self.equipped_slot = None
         self.slots = []
         for _ in range(self.capacity):
             self.slots.append(ItemSlot())
