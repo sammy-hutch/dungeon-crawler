@@ -5,6 +5,7 @@ from components.inventory import Inventory
 from components.label import Label
 from components.physics import Body, triggers
 from components.sprite import Sprite
+from components.ui.bar import Bar
 from components.ui.inventory_view import InventoryView
 
 from core.camera import camera
@@ -20,8 +21,13 @@ message_time_seconds = 3
 
 inventory = Inventory(20)
 
+def on_player_death(entity):
+    from core.engine import engine
+    engine.switch_to('Play')
+
 class Player:
-    def __init__(self):
+    def __init__(self, health):
+        self.health = health
         from core.engine import engine
         from core.level import level
 
@@ -37,6 +43,21 @@ class Player:
         
         engine.active_objs.append(self)
     
+    def setup(self):
+        # Setup combat
+        from components.combat import Combat
+        combat = Combat(self.health, on_player_death)
+        self.entity.add(combat)
+        self.combat = combat
+        del self.health
+
+        # Setup health bar
+        self.health_bar = Entity(Bar(self.combat.max_health, 
+                                     (255, 0, 0), 
+                                     (0, 255, 0))).get(Bar)
+        self.health_bar.entity.x = camera.width - self.health_bar.width
+        self.health_bar.entity.y = camera.height - self.health_bar.height
+    
     def update(self):
         from core.engine import engine
         from core.level import level
@@ -49,6 +70,7 @@ class Player:
         self.loc_label.set_text(f"X: {self.entity.x} - Y: {self.entity.y}")
         previous_x = self.entity.x
         previous_y = self.entity.y
+        self.health_bar.amount = self.combat.health
         sprite = self.entity.get(Sprite)
         body = self.entity.get(Body)
 
@@ -59,8 +81,17 @@ class Player:
             # Handle mouse clicks
             from core.input import is_mouse_just_pressed
             mouse_pos = pygame.mouse.get_pos()
+
+            if self.combat.equipped is None and inventory.equipped_slot is not None:
+                self.combat.equip(inventory.slots[inventory.equipped_slot].type)
+            if self.combat.equipped is not None and inventory.equipped_slot is None:
+                self.combat.unequip()
+            
             if is_mouse_just_pressed(1):
-                self.interact(mouse_pos)
+                if self.combat.equipped is None:
+                    self.interact(mouse_pos)
+                else:
+                    self.combat.perform_attack()
 
             # Handle key presses
             if is_key_pressed(key_binds["navigate_to_menu"]):
