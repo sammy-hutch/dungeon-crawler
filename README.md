@@ -38,3 +38,4 @@ conda activate dungeoncrawler
 ## long-term tasks
 - player classes
 - mobs
+- puzzle rooms (e.g. moving levers/blocks to open secret door, gap to cross, sacrificial altar)
