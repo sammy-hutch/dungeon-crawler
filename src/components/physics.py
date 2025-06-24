@@ -72,10 +72,10 @@ class Trigger(PhysicalObj):
         triggers.remove(self)
 
 class Body(PhysicalObj):
-    def __init__(self, x=hitbox_x, y=hitbox_y, width=hitbox_width, height=hitbox_height, blocks_vision=False):
+    def __init__(self, x=hitbox_x, y=hitbox_y, width=hitbox_width, height=hitbox_height, blocks_vision=False, is_solid=True):
         super().__init__(x, y, width, height)
         bodies.append(self)
-        self.is_solid = True
+        self.is_solid = is_solid
         self.blocks_vision = blocks_vision
         # TODO: add a components args field (e.g. to hold blocks_vision) and use add() function to add them to the  body (see entity.py for logic)
     

@@ -14,7 +14,8 @@ conda activate dungeoncrawler
 
 
 # TO DO List
-37:00 in video
+- review: on physics.py
+- change combat range (distance) to tile adjacency?
 
 ## Ten-minute Tasks
 - duplicated code for loading and writing of files (level.py, levelmaker.py, mapmaker.py?)
