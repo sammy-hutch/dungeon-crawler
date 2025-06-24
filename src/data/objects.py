@@ -1,3 +1,4 @@
+from components.enemy import Enemy
 from components.entity import Entity
 from components.inventory import DroppedItem
 from components.physics import Body
@@ -13,7 +14,7 @@ from data.npc_types import npc_types
 
 entity_factories = [
     # 0 - Makes a Player
-    lambda args: Entity(Player(), Sprite("char", "formicid.png"), Body()),
+    lambda args: Entity(Player(100), Sprite("char", "formicid.png"), Body()),
 
     # 1 - Makes an Up Stair
     lambda args: Entity(Navigator(args[3]), Sprite("dngn", "stone_stairs_up.png")),
@@ -25,7 +26,7 @@ entity_factories = [
     lambda args: Entity(Sprite("dngn", "closed_door.png"), Body(blocks_vision=True), Changeable("door")),
 
     # 4 - Makes a Mob
-    lambda args: Entity(Sprite("char", "draconian_green.png"), Body(), Hittable("draconian")),
+    lambda args: Entity(Sprite("char", "draconian_green.png"), Enemy(100, 1), Body(), Hittable("draconian")),
 
     # 5 - Makes an Item
     lambda args: Entity(

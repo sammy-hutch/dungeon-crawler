@@ -9,6 +9,7 @@ lvl_num = 1
 
 class Engine:
     def __init__(self, game_title):
+        self.step = 0
         global engine
         engine = self
 
@@ -47,6 +48,7 @@ class Engine:
 
         self.running = True
         while self.running:
+            self.step += 1
             mouse_buttons_just_pressed.clear()
             keys_just_pressed.clear()
 
