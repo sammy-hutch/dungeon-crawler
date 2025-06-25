@@ -15,7 +15,7 @@ class Combat:
         from components.entity import Entity
         from components.sprite import Sprite
         self.equipped = item
-        self.weapon_sprite = Entity(Sprite("item", self.equipped.icon_name)).get(Sprite)
+        self.weapon_sprite = Entity(Sprite("item", self.equipped.icon_name.replace(".png", "_equipped.png"))).get(Sprite)
     
     def unequip(self):
         self.equipped = None

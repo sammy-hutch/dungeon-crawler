@@ -20,9 +20,9 @@ conda activate dungeoncrawler
 - regen isn't working
 - change combat range (distance) to tile adjacency?
 - remove effects damage and add health bars to enemies
-- use handheld item icons when equipped
 - automatically unequip one item when equipping another
 - mouse clicks for attacks
+- refactor player acts, so player acts first and then all other active_objs act
 
 ## Ten-minute Tasks
 - duplicated code for loading and writing of files (level.py, levelmaker.py, mapmaker.py?)
