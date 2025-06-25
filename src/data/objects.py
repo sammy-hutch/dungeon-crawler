@@ -26,7 +26,7 @@ entity_factories = [
     lambda args: Entity(Sprite("dngn", "closed_door.png"), Body(blocks_vision=True), Changeable("door")),
 
     # 4 - Makes a Mob
-    lambda args: Entity(Sprite("char", "draconian_green.png"), Enemy(100, 1), Body(), Hittable("draconian")),
+    lambda args: Entity(Sprite("char", "draconian_green.png"), Enemy(50, 1), Body(), Hittable("draconian")),
 
     # 5 - Makes an Item
     lambda args: Entity(

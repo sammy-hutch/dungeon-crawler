@@ -14,8 +14,15 @@ conda activate dungeoncrawler
 
 
 # TO DO List
-- review: on physics.py
+
+## this feature branch
+- returning bug: navigating between levels
+- regen isn't working
 - change combat range (distance) to tile adjacency?
+- remove effects damage and add health bars to enemies
+- use handheld item icons when equipped
+- automatically unequip one item when equipping another
+- mouse clicks for attacks
 
 ## Ten-minute Tasks
 - duplicated code for loading and writing of files (level.py, levelmaker.py, mapmaker.py?)
@@ -24,12 +31,12 @@ conda activate dungeoncrawler
 - make item types into a dict for easier referencing, rather than a list (item_types.py)
 - add other items to be collected, and improve levelmaker functionality for procedurally generating items of various types (item_types.py, levelmaker.py)
 - utilise distance function (math_ext.py) in other sqrt functions (search for sqrt)
-- improve hittable class - attackable? has_health? (usable.py)
-- persist state of objects in level save file (open doors currently default to being closed)
+- remove hittable class (usable.py)
 - bug in line of sight north tiles not blocked - something to do with the doors
 - refactor python data and content data files (src/data/ and content/data/) to be more consistent. e.g. add dictionaries for all objects which objects.py needs to reference
 
 ## short-term tasks
+- persist state of objects in level save file (open doors currently default to being closed)
 - save inventory and other data into a save game file
 - utilise texture atlasses
 - add unit tests on tiles.json to check uniqueness of name, id, config

@@ -1,5 +1,6 @@
 import pygame
 
+from components.enemy import Enemy
 from components.entity import Entity
 from components.inventory import Inventory
 from components.label import Label
@@ -22,8 +23,8 @@ message_time_seconds = 3
 inventory = Inventory(20)
 
 def on_player_death(entity):
-    from core.engine import engine
-    engine.switch_to('Play')
+    from stages.menu import new_game
+    new_game()
 
 class Player:
     def __init__(self, health):
@@ -77,6 +78,8 @@ class Player:
         # Update user input
         if engine.changed_player_state == True:
             attempted_move = False
+            attempted_attack = False
+            target_entity = None
 
             # Handle mouse clicks
             from core.input import is_mouse_just_pressed
@@ -87,11 +90,11 @@ class Player:
             if self.combat.equipped is not None and inventory.equipped_slot is None:
                 self.combat.unequip()
             
-            if is_mouse_just_pressed(1):
-                if self.combat.equipped is None:
-                    self.interact(mouse_pos)
-                else:
-                    self.combat.perform_attack()
+            # if is_mouse_just_pressed(1): # TODO: rework this
+            #     if self.combat.equipped is None:
+            #         self.interact(mouse_pos)
+            #     else:
+            #         self.combat.attack()
 
             # Handle key presses
             if is_key_pressed(key_binds["navigate_to_menu"]):
@@ -141,10 +144,24 @@ class Player:
                             d = 0
                             usable.on(self.entity, d)
             
+            # Check if colliding with enemy
+            if attempted_move:
+                for a in engine.active_objs:
+                    if a.entity.has(Enemy):
+                        target_body = a.entity.get(Body)
+                        if body.is_colliding_with(target_body):
+                            target_entity = a.entity
+                            attempted_attack = True
+            
             # Check if position is invalid
             if not body.is_position_valid():
                 self.entity.x = previous_x
                 self.entity.y = previous_y
+            
+            if attempted_attack:
+                from components.combat import Combat
+                self.combat.attack(target_entity.get(Combat))
+                target_entity = None
         
         camera.x = self.entity.x - camera.width/2 + sprite.image.get_width()/2
         camera.y = self.entity.y - camera.height/2 + sprite.image.get_height()/2

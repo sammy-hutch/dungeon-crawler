@@ -19,8 +19,8 @@ def create_hit_text(x, y, text, color=(255, 255, 255)):
     global hit_font
     if hit_font is None:
         hit_font = pygame.font.Font(hit_font_file, hit_size)
-        image = hit_font.render(text, True, color)
-        Effect(x, y, hit_x_speed, hit_y_speed, hit_life, image)
+    image = hit_font.render(text, True, color)
+    Effect(x, y, hit_x_speed, hit_y_speed, hit_life, image)
 
 class Effect:
     def __init__(self, x, y, x_speed, y_speed, life, image):
@@ -29,7 +29,7 @@ class Effect:
         self.x_speed = x_speed
         self.y_speed = y_speed
         self.life = life
-        self.image = pygame.image.load(effect_image_folder + "/" + image)
+        self.image = image # pygame.image.load(effect_image_folder + "/" + image) # TODO: other effects will be broken, review them
         global effects
         effects.append(self)
     

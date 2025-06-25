@@ -88,9 +88,10 @@ class Engine:
                     f.update()
 
             # Update code
-            for a in self.active_objs:
-                a.update()
-            engine.changed_player_state = False
+            if engine.changed_player_state == True:
+                for a in self.active_objs:
+                    a.update()
+                engine.changed_player_state = False
 
             # Draw code
             self.screen.fill(self.clear_colour)

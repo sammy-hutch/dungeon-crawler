@@ -5,7 +5,7 @@ class Combat:
         self.health = health
         self.max_health = health
         self.equipped = None
-        self.regen = 0.01
+        self.regen = 1
         self.on_death = on_death
         self.weapon_sprite = None
         from core.engine import engine
@@ -15,7 +15,7 @@ class Combat:
         from components.entity import Entity
         from components.sprite import Sprite
         self.equipped = item
-        self.weapon_sprite = Entity(Sprite(self.equipped.icon_name)).get(Sprite)
+        self.weapon_sprite = Entity(Sprite("item", self.equipped.icon_name)).get(Sprite)
     
     def unequip(self):
         self.equipped = None
@@ -33,11 +33,11 @@ class Combat:
             # Code for unarmed attacks. TODO: make unarmed damage stat and pass it in
             damage = 1
             other.health -= damage
-        
-        damage = int(self.equipped.stats['damage'])
-        other.health -= damage
+        else:
+            damage = int(self.equipped.stats['damage'])
+            other.health -= damage
 
-        from core.effect import create_hit_text, Effect
+        from core.effect import create_hit_text
         create_hit_text(other.entity.x, other.entity.y, str(damage), (255, 0, 0))
 
         if other.health <= 0:
