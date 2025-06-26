@@ -17,7 +17,6 @@ conda activate dungeoncrawler
 
 ## this feature branch
 - returning bug: navigating between levels
-- regen isn't working
 - change combat range (distance) to tile adjacency?
 - remove effects damage and add health bars to enemies
 - mouse clicks for attacks

@@ -59,7 +59,7 @@ class Combat:
     
     def update(self):
         if self.health < self.max_health:
-            self.health + self.regen
+            self.health += self.regen
         if self.health > self.max_health:
             self.health = self.max_health
         
