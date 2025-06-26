@@ -92,11 +92,8 @@ class Player:
                     self.combat.equip(inventory.slots[inventory.equipped_slot].type)
                 inventory.equipped_changed = False
             
-            # if is_mouse_just_pressed(1): # TODO: rework this
-            #     if self.combat.equipped is None:
-            #         self.interact(mouse_pos)
-            #     else:
-            #         self.combat.attack()
+            if is_mouse_just_pressed(1):
+                self.interact(mouse_pos)
 
             # Handle key presses
             if is_key_pressed(key_binds["navigate_to_menu"]):
@@ -174,6 +171,9 @@ class Player:
     
     def interact(self, mouse_pos):
         from core.engine import engine
+        # TODO: tidy this, remove repetitive code
+
+        # Check if interacting with a usable
         for usable in engine.usables:
             if usable.entity.has(Sprite):
                 usable_sprite = usable.entity.get(Sprite)
@@ -197,3 +197,34 @@ class Player:
 
                     # Call the usable function
                     usable.on(self.entity, d)
+        
+        # Check if interacting with an enemy
+        for a in engine.active_objs:
+            if a.entity.has(Enemy) and a.entity.has(Sprite):
+                enemy_sprite = a.entity.get(Sprite)
+                x_sprite = a.entity.x - camera.x
+                y_sprite = a.entity.y - camera.y
+                width_sprite = enemy_sprite.image.get_width()
+                height_sprite = enemy_sprite.image.get_height()
+
+                # Check if the mouse is clicking this
+                if x_sprite < mouse_pos[0] < x_sprite + width_sprite and \
+                    y_sprite < mouse_pos[1] < y_sprite + height_sprite:
+                    my_sprite = self.entity.get(Sprite)
+
+                    from core.math_ext import distance
+                    # Calculate the distance between these two sprites, from their centres
+                    # TODO: simplify this using tilesizes
+                    d = distance(x_sprite + enemy_sprite.image.get_width()/2,
+                                 y_sprite + enemy_sprite.image.get_height()/2,
+                                 self.entity.x - camera.x + my_sprite.image.get_width()/2,
+                                 self.entity.y - camera.y + my_sprite.image.get_height()/2)
+                    
+                    range = 50 # hardcoded. TODO: make dynamic according to item stats
+
+                    # Call the attack function
+                    if range > d:
+                        from components.combat import Combat
+                        target_entity = a.entity
+                        self.combat.attack(target_entity.get(Combat))
+                        target_entity = None

@@ -27,6 +27,7 @@ class DialogView:
         self.lines = lines
         self.npc = npc
         self.player = player
+        self.entity = Entity() # currently all active_objs need an entity. temporary fix TODO: improve
 
         from core.camera import camera
         window_x = camera.width/2 - dialog_box_width/2

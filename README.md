@@ -19,10 +19,9 @@ conda activate dungeoncrawler
 - returning bug: navigating between levels
 - change combat range (distance) to tile adjacency?
 - remove effects damage and add health bars to enemies
-- mouse clicks for attacks
 - refactor player acts, so player acts first and then all other active_objs act
-- bug: can't interact with NPCs
 - shouldn't be able to equip non-equipables such as gold
+- improve dialog view entity patch
 
 ## Ten-minute Tasks
 - duplicated code for loading and writing of files (level.py, levelmaker.py, mapmaker.py?)
