@@ -65,6 +65,7 @@ class InventoryView:
                     0 < y_local_pos < item_size:
 
                     index = int(x_slot + (y_slot * items_per_row))
+                    self.inventory.equipped_changed = True
                     if self.inventory.equipped_slot == index:
                         self.inventory.equipped_slot = None
                     else:

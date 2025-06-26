@@ -85,10 +85,12 @@ class Player:
             from core.input import is_mouse_just_pressed
             mouse_pos = pygame.mouse.get_pos()
 
-            if self.combat.equipped is None and inventory.equipped_slot is not None:
-                self.combat.equip(inventory.slots[inventory.equipped_slot].type)
-            if self.combat.equipped is not None and inventory.equipped_slot is None:
-                self.combat.unequip()
+            if inventory.equipped_changed:
+                if self.combat.equipped is not None:
+                    self.combat.unequip()
+                if inventory.equipped_slot is not None:
+                    self.combat.equip(inventory.slots[inventory.equipped_slot].type)
+                inventory.equipped_changed = False
             
             # if is_mouse_just_pressed(1): # TODO: rework this
             #     if self.combat.equipped is None:
