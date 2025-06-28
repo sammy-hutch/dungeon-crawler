@@ -22,6 +22,7 @@ class Engine:
         self.ui_drawables = []  # Anything to be drawn as UI
         self.usables = []
         self.changed_player_state = False
+        self.valid_event = True # flag for escaping invalid events
 
         from core.camera import create_screen
         self.clear_colour = (0, 0, 0)  # Default colour if nothing else is drawn
@@ -54,6 +55,7 @@ class Engine:
 
             # Handle events
             for event in pygame.event.get():
+                engine.valid_event = True
 
                 # Handle quit event
                 if event.type == pygame.QUIT:
@@ -90,6 +92,7 @@ class Engine:
             # Update code
             if engine.changed_player_state == True:
                 for a in self.active_objs:
+                    if engine.valid_event:
                         a.update()
                 engine.changed_player_state = False
 
@@ -137,6 +140,7 @@ class Engine:
         self.usables.clear()
         from core.effect import effects
         effects.clear()
+        engine.valid_event = False
     
     def quit(self):
         from data.file_manager import save_game

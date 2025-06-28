@@ -16,7 +16,6 @@ conda activate dungeoncrawler
 # TO DO List
 
 ## this feature branch
-- returning bug: navigating between levels
 - remove effects damage and add health bars to enemies
 
 ## Ten-minute Tasks
@@ -33,6 +32,7 @@ conda activate dungeoncrawler
 - camera doesn't snap to player when entering new level
 - hide enemies in fog
 - should the player act first? how to handle player as a special entity? should it have its own type?
+- equipped items are unequipped when navigating between levels
 
 ## short-term tasks
 - persist state of objects in level save file (open doors currently default to being closed)
