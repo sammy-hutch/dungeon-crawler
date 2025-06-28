@@ -21,7 +21,6 @@ conda activate dungeoncrawler
 - remove effects damage and add health bars to enemies
 - refactor player acts, so player acts first and then all other active_objs act
 - shouldn't be able to equip non-equipables such as gold
-- improve dialog view entity patch
 
 ## Ten-minute Tasks
 - duplicated code for loading and writing of files (level.py, levelmaker.py, mapmaker.py?)

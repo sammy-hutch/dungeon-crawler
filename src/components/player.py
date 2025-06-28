@@ -146,11 +146,14 @@ class Player:
             # Check if colliding with enemy
             if attempted_move:
                 for a in engine.active_objs:
-                    if a.entity.has(Enemy):
-                        target_body = a.entity.get(Body)
-                        if body.is_colliding_with(target_body):
-                            target_entity = a.entity
-                            attempted_attack = True
+                    try:
+                        if a.entity.has(Enemy):
+                            target_body = a.entity.get(Body)
+                            if body.is_colliding_with(target_body):
+                                target_entity = a.entity
+                                attempted_attack = True
+                    except:
+                        pass
             
             # Check if position is invalid
             if not body.is_position_valid():
@@ -200,31 +203,34 @@ class Player:
         
         # Check if interacting with an enemy
         for a in engine.active_objs:
-            if a.entity.has(Enemy) and a.entity.has(Sprite):
-                enemy_sprite = a.entity.get(Sprite)
-                x_sprite = a.entity.x - camera.x
-                y_sprite = a.entity.y - camera.y
-                width_sprite = enemy_sprite.image.get_width()
-                height_sprite = enemy_sprite.image.get_height()
+            try:
+                if a.entity.has(Enemy) and a.entity.has(Sprite):
+                    enemy_sprite = a.entity.get(Sprite)
+                    x_sprite = a.entity.x - camera.x
+                    y_sprite = a.entity.y - camera.y
+                    width_sprite = enemy_sprite.image.get_width()
+                    height_sprite = enemy_sprite.image.get_height()
 
-                # Check if the mouse is clicking this
-                if x_sprite < mouse_pos[0] < x_sprite + width_sprite and \
-                    y_sprite < mouse_pos[1] < y_sprite + height_sprite:
-                    my_sprite = self.entity.get(Sprite)
+                    # Check if the mouse is clicking this
+                    if x_sprite < mouse_pos[0] < x_sprite + width_sprite and \
+                        y_sprite < mouse_pos[1] < y_sprite + height_sprite:
+                        my_sprite = self.entity.get(Sprite)
 
-                    from core.math_ext import distance
-                    # Calculate the distance between these two sprites, from their centres
-                    # TODO: simplify this using tilesizes
-                    d = distance(x_sprite + enemy_sprite.image.get_width()/2,
-                                 y_sprite + enemy_sprite.image.get_height()/2,
-                                 self.entity.x - camera.x + my_sprite.image.get_width()/2,
-                                 self.entity.y - camera.y + my_sprite.image.get_height()/2)
-                    
-                    range = 50 # hardcoded. TODO: make dynamic according to item stats
+                        from core.math_ext import distance
+                        # Calculate the distance between these two sprites, from their centres
+                        # TODO: simplify this using tilesizes
+                        d = distance(x_sprite + enemy_sprite.image.get_width()/2,
+                                    y_sprite + enemy_sprite.image.get_height()/2,
+                                    self.entity.x - camera.x + my_sprite.image.get_width()/2,
+                                    self.entity.y - camera.y + my_sprite.image.get_height()/2)
+                        
+                        range = 50 # hardcoded. TODO: make dynamic according to item stats
 
-                    # Call the attack function
-                    if range > d:
-                        from components.combat import Combat
-                        target_entity = a.entity
-                        self.combat.attack(target_entity.get(Combat))
-                        target_entity = None
+                        # Call the attack function
+                        if range > d:
+                            from components.combat import Combat
+                            target_entity = a.entity
+                            self.combat.attack(target_entity.get(Combat))
+                            target_entity = None
+            except:
+                pass

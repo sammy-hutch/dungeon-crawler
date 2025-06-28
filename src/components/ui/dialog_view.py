@@ -27,7 +27,6 @@ class DialogView:
         self.lines = lines
         self.npc = npc
         self.player = player
-        self.entity = Entity() # currently all active_objs need an entity. temporary fix TODO: improve
 
         from core.camera import camera
         window_x = camera.width/2 - dialog_box_width/2
@@ -91,12 +90,12 @@ class DialogView:
 
     # Have the NPC speak the next line of dialog
     def npc_speak(self, text):
-        self.speaker_label.set_text(self.npc.obj_name)
+        self.speaker_label.set_text(f"{self.npc.obj_name}:")
         self.content_label.set_text(text)
 
     # Have the player speak the next line of dialog
     def player_speak(self, text):
-        self.speaker_label.set_text("You")
+        self.speaker_label.set_text("You:")
         self.content_label.set_text(text)
 
     # Place some text in the window without anyone speaking
