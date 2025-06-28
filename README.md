@@ -19,7 +19,6 @@ conda activate dungeoncrawler
 - returning bug: navigating between levels
 - change combat range (distance) to tile adjacency?
 - remove effects damage and add health bars to enemies
-- refactor player acts, so player acts first and then all other active_objs act
 - shouldn't be able to equip non-equipables such as gold
 
 ## Ten-minute Tasks
