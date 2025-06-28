@@ -1,5 +1,8 @@
 import random
+
+from components.entity import Entity
 from components.physics import Body
+from components.ui.bar import Bar
 
 from core.math_ext import distance
 
@@ -28,15 +31,27 @@ class Enemy:
         engine.active_objs.append(self)
     
     def setup(self):
+        # Setup combat
         from components.combat import Combat
         self.entity.add(Combat(self.health, on_enemy_death))
         self.combat = self.entity.get(Combat)
         self.combat.equip(self.weapon)
         del self.health
+
+        # Setup health bar
+        self.health_bar = Entity(Bar(self.combat.max_health, 
+                                     (255, 0, 0), 
+                                     (0, 255, 0),
+                                     "enemy",
+                                     width=TILE_SIZE, 
+                                     height=TILE_SIZE/16)).get(Bar)
+        self.health_bar.entity.x = self.entity.x
+        self.health_bar.entity.y = self.entity.y
     
     def breakdown(self):
         from core.engine import engine
         engine.active_objs.remove(self)
+        engine.ui_drawables.remove(self.health_bar)
     
     def update_ai(self):
         from components.physics import get_bodies_within_circle
@@ -55,8 +70,10 @@ class Enemy:
             self.targeted_entity = None
 
     def update(self):
+        from core.camera import camera
         from core.engine import engine
-        
+
+        self.health_bar.amount = self.combat.health
         self.update_ai()
         
         if self.targeted_entity is not None:
@@ -84,3 +101,6 @@ class Enemy:
             if not body.is_position_valid():
                 self.entity.x = prev_x
                 self.entity.y = prev_y
+        
+        self.health_bar.entity.x = self.entity.x - camera.x
+        self.health_bar.entity.y = self.entity.y - camera.y

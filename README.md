@@ -16,7 +16,7 @@ conda activate dungeoncrawler
 # TO DO List
 
 ## this feature branch
-- remove effects damage and add health bars to enemies
+- mouse clicks need to be boxed, same as key presses
 
 ## Ten-minute Tasks
 - duplicated code for loading and writing of files (level.py, levelmaker.py, mapmaker.py?)
@@ -33,6 +33,7 @@ conda activate dungeoncrawler
 - hide enemies in fog
 - should the player act first? how to handle player as a special entity? should it have its own type?
 - equipped items are unequipped when navigating between levels
+- enemy health bars lag behind them
 
 ## short-term tasks
 - persist state of objects in level save file (open doors currently default to being closed)

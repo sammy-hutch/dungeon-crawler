@@ -55,7 +55,8 @@ class Player:
         # Setup health bar
         self.health_bar = Entity(Bar(self.combat.max_health, 
                                      (255, 0, 0), 
-                                     (0, 255, 0))).get(Bar)
+                                     (0, 255, 0),
+                                     "player")).get(Bar)
         self.health_bar.entity.x = camera.width - self.health_bar.width
         self.health_bar.entity.y = camera.height - self.health_bar.height
     

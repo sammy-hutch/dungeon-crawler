@@ -37,9 +37,6 @@ class Combat:
             damage = int(self.equipped.stats['damage'])
             other.health -= damage
 
-        from core.effect import create_hit_text
-        create_hit_text(other.entity.x, other.entity.y, str(damage), (255, 0, 0))
-
         if other.health <= 0:
             other.on_death(other.entity)
     
