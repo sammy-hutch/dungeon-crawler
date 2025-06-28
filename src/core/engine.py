@@ -1,4 +1,7 @@
 import pygame
+
+from components.player import Player
+
 from data.config import FOG, SCREEN_WIDTH, SCREEN_HEIGHT
 from data.key_binds import load_key_bindings
 
@@ -55,6 +58,10 @@ class Engine:
 
             # Handle events
             for event in pygame.event.get():
+                if engine.valid_event == False:
+                    for a in self.active_objs:
+                        if a.entity.has(Player):
+                            a.update()
                 engine.valid_event = True
 
                 # Handle quit event
