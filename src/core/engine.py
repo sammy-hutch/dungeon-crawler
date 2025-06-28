@@ -89,30 +89,8 @@ class Engine:
 
             # Update code
             if engine.changed_player_state == True:
-                from components.player import Player
-
-                # Update player
                 for a in self.active_objs:
-                    is_player = False
-                    try:
-                        if a.entity.has(Player):
-                            is_player = True
-                    except:
-                        pass
-                    if is_player:
                         a.update()
-                
-                # Update all other active objects
-                for a in self.active_objs:
-                    is_player = False
-                    try:
-                        if a.entity.has(Player):
-                            is_player = True
-                    except:
-                        pass
-                    if not is_player:
-                        a.update()
-                
                 engine.changed_player_state = False
 
             # Draw code

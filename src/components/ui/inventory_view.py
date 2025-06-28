@@ -65,12 +65,13 @@ class InventoryView:
                     0 < y_local_pos < item_size:
 
                     index = int(x_slot + (y_slot * items_per_row))
-                    self.inventory.equipped_changed = True
-                    if self.inventory.equipped_slot == index:
-                        self.inventory.equipped_slot = None
-                    else:
-                        self.inventory.equipped_slot = index
-                    self.refresh()
+                    if self.inventory.slots[index].type is not None and self.inventory.slots[index].type.stats["equippable"]:
+                        self.inventory.equipped_changed = True
+                        if self.inventory.equipped_slot == index:
+                            self.inventory.equipped_slot = None
+                        else:
+                            self.inventory.equipped_slot = index
+                        self.refresh()
 
     # Creates all the UI elements to display the inventory
     def render(self):
