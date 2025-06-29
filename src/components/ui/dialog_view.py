@@ -90,12 +90,12 @@ class DialogView:
 
     # Have the NPC speak the next line of dialog
     def npc_speak(self, text):
-        self.speaker_label.set_text(self.npc.obj_name)
+        self.speaker_label.set_text(f"{self.npc.obj_name}:")
         self.content_label.set_text(text)
 
     # Have the player speak the next line of dialog
     def player_speak(self, text):
-        self.speaker_label.set_text("You")
+        self.speaker_label.set_text("You:")
         self.content_label.set_text(text)
 
     # Place some text in the window without anyone speaking

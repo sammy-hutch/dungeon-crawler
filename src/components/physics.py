@@ -15,6 +15,13 @@ def reset_physics():
     bodies.clear()
     triggers.clear()
 
+def get_bodies_within_circle(circle_x, circle_y, radius):
+    items = []
+    for body in bodies:
+        if body.is_circle_colliding_with(circle_x, circle_y, radius):
+            items.append(body)
+    return items
+
 class PhysicalObj:
     def __init__(self, x, y, width, height):
         self.hitbox = Rect(x, y, width, height)
@@ -32,6 +39,26 @@ class PhysicalObj:
             return True
         else:
             return False
+    
+    def is_circle_colliding_with(self, circle_x, circle_y, radius):
+        body_x = self.entity.x + self.hitbox.x
+        body_y = self.entity.y + self.hitbox.y
+        circle_dist_x = abs(circle_x - body_x)
+        circle_dist_y = abs(circle_y - body_y)
+
+        if circle_dist_x > (self.hitbox.width/2 + radius):
+            return False
+        if circle_dist_y > (self.hitbox.height/2 + radius):
+            return False
+        if circle_dist_x <= (self.hitbox.width/2):
+            return True
+        if circle_dist_y <= (self.hitbox.height/2):
+            return True
+
+        corner_dist_squared = (circle_dist_x - self.hitbox.width/2)**2 + \
+                                (circle_dist_y - self.hitbox.height/2)**2
+        
+        return corner_dist_squared <= radius**2
         
 
 class Trigger(PhysicalObj):
@@ -45,10 +72,10 @@ class Trigger(PhysicalObj):
         triggers.remove(self)
 
 class Body(PhysicalObj):
-    def __init__(self, x=hitbox_x, y=hitbox_y, width=hitbox_width, height=hitbox_height, blocks_vision=False):
+    def __init__(self, x=hitbox_x, y=hitbox_y, width=hitbox_width, height=hitbox_height, blocks_vision=False, is_solid=True):
         super().__init__(x, y, width, height)
         bodies.append(self)
-        self.is_solid = True
+        self.is_solid = is_solid
         self.blocks_vision = blocks_vision
         # TODO: add a components args field (e.g. to hold blocks_vision) and use add() function to add them to the  body (see entity.py for logic)
     
