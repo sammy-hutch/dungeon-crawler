@@ -17,7 +17,6 @@ conda activate dungeoncrawler
 
 ## this feature branch
 - mouse clicks need to be boxed, same as key presses
-- disable hittable attribute of enemies
 
 ## Ten-minute Tasks
 - duplicated code for loading and writing of files (level.py, levelmaker.py, mapmaker.py?)

@@ -11,28 +11,28 @@ class Usable:
     def on(self, other, distance):
         print("Base on function called")
     
-class Hittable(Usable):
-    def __init__(self, obj_name):
-        super().__init__(obj_name)
+# class Hittable(Usable): # Currently disabled
+#     def __init__(self, obj_name):
+#         super().__init__(obj_name)
     
-    def on(self, other, distance):
-        from components.player import Player, inventory
-        player = other.get(Player)
-        hit_best = inventory.get_best("hit_power")
+#     def on(self, other, distance):
+#         from components.player import Player, inventory
+#         player = other.get(Player)
+#         hit_best = inventory.get_best("hit_power")
 
-        # If in range
-        if distance > 46:
-            player.show_message("I need to get closer")
-        # Check if player has something they can use to hit
-        elif hit_best["power"] <= 0:
-            player.show_message("I need a weapon to hit this " + self.obj_name)
-            return
-        else:
-            player.show_message("hitting " + self.obj_name)
-            from core.engine import engine
-            engine.remove_entity(self.entity)
-            from core.effect import Effect
-            Effect(self.entity.x, self.entity.y, 0, 0, 10, "cloud_misery0.png")
+#         # If in range
+#         if distance > 46:
+#             player.show_message("I need to get closer")
+#         # Check if player has something they can use to hit
+#         elif hit_best["power"] <= 0:
+#             player.show_message("I need a weapon to hit this " + self.obj_name)
+#             return
+#         else:
+#             player.show_message("hitting " + self.obj_name)
+#             from core.engine import engine
+#             engine.remove_entity(self.entity)
+#             from core.effect import Effect
+#             Effect(self.entity.x, self.entity.y, 0, 0, 10, "cloud_misery0.png")
 
 class Changeable(Usable):
     def __init__(self, obj_name, default_state=0):

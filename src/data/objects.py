@@ -6,7 +6,7 @@ from components.player import Player
 from components.sprite import Sprite
 from components.navigator import Navigator
 from components.npc import NPC
-from components.usable import Hittable, Changeable
+from components.usable import Changeable
 
 from data.config import TILE_SIZE
 from data.item_types import item_types
@@ -26,7 +26,7 @@ entity_factories = [
     lambda args: Entity(Sprite("dngn", "closed_door.png"), Body(blocks_vision=True), Changeable("door")),
 
     # 4 - Makes a Mob
-    lambda args: Entity(Sprite("char", "draconian_green.png"), Enemy(20, 1), Body(), Hittable("draconian")),
+    lambda args: Entity(Sprite("char", "draconian_green.png"), Enemy(20, 1), Body()),
 
     # 5 - Makes an Item
     lambda args: Entity(

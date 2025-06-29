@@ -29,7 +29,9 @@ class Effect:
         self.x_speed = x_speed
         self.y_speed = y_speed
         self.life = life
-        self.image = image # pygame.image.load(effect_image_folder + "/" + image) # TODO: other effects will be broken, review them
+        self.image = image
+        if type(self.image) == str:
+            self.image = pygame.image.load(effect_image_folder + "/" + self.image)
         global effects
         effects.append(self)
     

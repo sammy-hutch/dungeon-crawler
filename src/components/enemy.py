@@ -14,6 +14,8 @@ movement_speed = TILE_SIZE
 def on_enemy_death(entity):
     from core.engine import engine
     engine.remove_entity(entity)
+    from core.effect import Effect
+    Effect(entity.x, entity.y, 0, 0, 10, "cloud_misery0.png")
 
 class Enemy:
     def __init__(self, health, weapon_item_id) -> None:
