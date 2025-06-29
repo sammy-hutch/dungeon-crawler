@@ -7,7 +7,7 @@ from data.config import ARTWORK_IMAGE_FOLDER, DNGN_IMAGE_FOLDER, ITEM_IMAGE_FOLD
 loaded = {}
 
 class Sprite:
-    def __init__(self, type, image, is_ui=False):
+    def __init__(self, type, image, is_ui=False, is_permanent=True):
         from core.engine import engine
 
         self.set_image(type, image)
@@ -19,6 +19,7 @@ class Sprite:
         
         self.is_ui = is_ui
         self.type = type
+        self.is_permanent = is_permanent
     
     def set_image(self, type, image):
         """
@@ -46,10 +47,22 @@ class Sprite:
             engine.drawables.remove(self)
     
     def draw(self, screen):
+        tile_size = TILE_SIZE
         pos = (self.entity.x - camera.x, self.entity.y - camera.y) \
                 if not self.is_ui \
                 else (self.entity.x, self.entity.y)
-        screen.blit(self.image, pos)
+        # Always draw permanent sprites
+        if self.is_permanent:
+            screen.blit(self.image, pos)
+        # Conditionally draw non-permanent sprites if in player field of vision
+        else:
+            from components.player import player_vision
+            for tile in player_vision:
+                if self.entity.y == tile["y"]*tile_size \
+                    and self.entity.x == tile["x"]*tile_size \
+                    and tile["is_visible"]:
+                    screen.blit(self.image, pos)
+
     
     def line_of_sight(self, target, field_of_vision: list, obstacles: list):
         """

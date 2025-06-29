@@ -76,11 +76,12 @@ class Level:
     
     def update(self):
         from core.engine import engine
+        from components.player import player_vision
         from components.sprite import Sprite
         visible_tiles = []
         for e in engine.entities:
             if e.id == 0:
-                visible_tiles = e.get(Sprite).field_of_vision()
+                visible_tiles = player_vision
         for y, row in enumerate(self.fog):
             for x, tile in enumerate(row):
                 if tile == " " or tile == "o":

@@ -19,6 +19,7 @@ from data.key_binds import key_binds
 # player moves one tile per key press
 movement_speed = TILE_SIZE
 message_time_seconds = 3
+player_vision = []
 
 inventory = Inventory(20)
 
@@ -61,6 +62,7 @@ class Player:
         self.health_bar.entity.y = camera.height - self.health_bar.height
     
     def update(self):
+        global player_vision
         from core.engine import engine
         from core.level import level
 
@@ -168,6 +170,7 @@ class Player:
         
         camera.x = self.entity.x - camera.width/2 + sprite.image.get_width()/2
         camera.y = self.entity.y - camera.height/2 + sprite.image.get_height()/2
+        player_vision = self.entity.get(Sprite).field_of_vision()
     
     def show_message(self, message):
         self.message_label.set_text(message)
