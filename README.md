@@ -29,7 +29,6 @@ conda activate dungeoncrawler
 - should the player act first? how to handle player as a special entity? should it have its own type?
 - equipped items are unequipped when navigating between levels
 - enemy health bars lag behind them
-- duplicated code in player.py interact (make new function)
 
 ## short-term tasks
 - persist state of objects in level save file (open doors currently default to being closed)
@@ -43,5 +42,4 @@ conda activate dungeoncrawler
 - player classes
 - mobs
 - puzzle rooms (e.g. moving levers/blocks to open secret door, gap to cross, sacrificial altar)
-
 - window layout
