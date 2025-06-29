@@ -1,6 +1,6 @@
 # Key Bindings
 
-Key bindings are handled by the `key_binds.py` filed, which reads from the `keybinds.json` file (default location `content/data/`). 
+Key bindings are handled by the `key_binds.py` file, which reads from the `keybinds.json` file (default location `content/data/`). 
 
 User can edit key binds by updating the values in the `keybinds.json` file. 
 

@@ -18,19 +18,22 @@
 - **src**
   - **components**
     - **ui**
+      - **bar.py**: creates bar, for health of player, enemies, etc
       - **dialog_view.py**: creates a dialog window
       - **inventory_view.py**: creates a view of inventory, from window class and sprites
       - **window.py**: creates a window within UI
     - **button.py**: button class for buttons triggered by mouse clicks
+    - **combat.py**: combat class attached to objects, handles attacks
+    - **enemy.py**: enemy class handling movement etc
     - **entity.py**: entity class for managing player and sprite entities.
     - **inventory.py**: classes for item types, item slots and inventory, as well as class for dropped item trigger which is assigned to items on map which can be picked up.
     - **label.py**: label class for handling text labels on screen
     - **navigator.py**: functionality for managing the dungeon level number, and navigating between levels
     - **npc.py**: functionality for npc entities
-    - **physics.py**: body class for collision detection.
+    - **physics.py**: body class for collision detection, interactions between entities.
     - **player.py**: player class for handling user inputs to player position, interactions with objects, as well as holding & persisting inventory.
     - **sprite.py**: sprite class for all sprites (including UI features such as backgrounds), including sprite image handling.
-    - **usable.py**: class for usable objects (such as doors) (currently also interactable objects (such as mobs))
+    - **usable.py**: class for usable objects (such as doors)
   - **core**
     - **camera.py**: the view of the game, allows for repositioning map as player moves around.
     - **effect.py**: Effect class for temporary visual effects

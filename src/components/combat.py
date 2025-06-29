@@ -30,7 +30,7 @@ class Combat:
 
     def attack(self, other):
         if self.equipped == None:
-            # Code for unarmed attacks. TODO: make unarmed damage stat and pass it in
+            # TODO: make unarmed damage stat and pass it in
             damage = 1
             other.health -= damage
         else:
