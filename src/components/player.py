@@ -175,6 +175,8 @@ class Player:
     
     def interact(self, mouse_pos):
         from core.engine import engine
+        attempted_attack = False
+        target_entity = None
         # TODO: tidy this, remove repetitive code
 
         # Check if interacting with a usable
@@ -229,9 +231,12 @@ class Player:
 
                         # Call the attack function
                         if range > d:
-                            from components.combat import Combat
                             target_entity = a.entity
-                            self.combat.attack(target_entity.get(Combat))
-                            target_entity = None
+                            attempted_attack = True
             except:
                 pass
+        
+        if attempted_attack:
+            from components.combat import Combat
+            self.combat.attack(target_entity.get(Combat))
+            target_entity = None

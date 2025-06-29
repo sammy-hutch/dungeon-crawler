@@ -46,9 +46,9 @@ class Engine:
         func()
 
     def run(self):
-        from core.input import keys_down, keys_just_pressed, mouse_buttons_just_pressed
+        from core.input import keys_down, keys_just_pressed, mouse_buttons_down, mouse_buttons_just_pressed
         movement_delay = 100  # milliseconds between movements
-        last_movement_time = {} # Dictionary to store last movement time for each key
+        last_active_time = {} # Dictionary to store last active time for each key
 
         self.running = True
         while self.running:
@@ -72,25 +72,36 @@ class Engine:
                 elif event.type == pygame.KEYDOWN:
                     keys_down.add(event.key)
                     keys_just_pressed.add(event.key)
-                    last_movement_time[event.key] = 0
+                    last_active_time[event.key] = 0
                 elif event.type == pygame.KEYUP:
                     if event.key in keys_down:
                         keys_down.remove(event.key)
-                    if event.key in last_movement_time:
-                        del last_movement_time[event.key]
+                    if event.key in last_active_time:
+                        del last_active_time[event.key]
                 
                 # Handle mouse click events
                 elif event.type == pygame.MOUSEBUTTONDOWN:
+                    mouse_buttons_down.add(event.button)
                     mouse_buttons_just_pressed.add(event.button)
-                    self.changed_player_state = True
+                    last_active_time[event.button] = 0
+                elif event.type == pygame.MOUSEBUTTONUP:
+                    if event.button in mouse_buttons_down:
+                        mouse_buttons_down.remove(event.button)
+                    if event.button in last_active_time:
+                        del last_active_time[event.button]
             
-                # Handle movement
+                # Handle actions
                 current_time = pygame.time.get_ticks()
                 for key in keys_down:
-                    if key in last_movement_time:
-                        if current_time - last_movement_time[key] >= movement_delay:
+                    if key in last_active_time:
+                        if current_time - last_active_time[key] >= movement_delay:
                             self.changed_player_state = True
-                            last_movement_time[key] = current_time
+                            last_active_time[key] = current_time
+                for button in mouse_buttons_down:
+                    if button in last_active_time:
+                        if current_time - last_active_time[button] >= movement_delay:
+                            self.changed_player_state = True
+                            last_active_time[button] = current_time
                 
                 # TODO: move this to a better place, or handle better
                 for f in self.fog_drawables:
