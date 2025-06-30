@@ -59,26 +59,24 @@ def add_predefined_entity(entity, map, data=None):
         map: matrix data of map
     
     Returns:
-        entity_data (list): list containing 3 items: entity factory number, x coord, y coord. e.g. [0, 26, 3]
+        entity_data (str(dict)): dict containing minimum entity factory number, x coord, y coord; and any additional data
     """
 
-    entity_list = []
+    entity_data = dict()
     try:
         for y, row in enumerate(map):
             for x, tile in enumerate(row):
                 if tile == entities[entity]["start"]:
-                    entity_data = []
-                    factory_type = str(entities[entity]["factory"])
-                    entity_data.append(factory_type)
-                    entity_data.append(str(x))
-                    entity_data.append(str(y))
+                    factory_type = entities[entity]["factory"]
+                    entity_data['entity_type'] = factory_type
+                    entity_data['x'] = x
+                    entity_data['y'] = y
                     if data != None:
-                        entity_data.append(data)
-                    entity_list.append(entity_data)
+                        entity_data['data'] = data
     except:
         logging.error(f"error whilst assigning {entity} entity during add_predefined_entity() func")
 
-    return entity_list
+    return str(entity_data)
 
 
 def add_random_entity(entity, map, coverage):
@@ -113,30 +111,30 @@ def add_random_entity(entity, map, coverage):
             y = randrange(0,map_height)
             if map[y][x] == valid_tile_type:
                 # TODO: tidy this code, to be more optimised
-                entity_data = []
-                factory_type = str(entities[entity]["factory"])
-                entity_data.append(factory_type)        # arg 0
-                entity_data.append(str(x))              # arg 1
-                entity_data.append(str(y))              # arg 2
+                entity_data = dict()
+                factory_type = entities[entity]["factory"]
+                entity_data['entity_type'] = factory_type   # arg 0
+                entity_data['x'] = x                        # arg 1
+                entity_data['y'] = y                        # arg 2
                 
                 if entity == "item":
-                    item_type = randrange(0,10)         # currently randomises item here.   TODO: make proper functionality for this
+                    item_type = randrange(0,10)             # currently randomises item here.   TODO: make proper functionality for this
                     if 0 <= item_type <= 7:
-                        entity_data.append(str(0))          # arg 3. currently hardcoded to gold item.     TODO: add more functionality
+                        entity_data['item_type'] = 0        # arg 3. currently hardcoded to gold item.     TODO: add more functionality
                         quantity = randrange(0,4)
-                        entity_data.append(str(quantity))   # arg 4. currently adding a random quantity.   TODO: add more functionality
+                        entity_data['quantity'] = quantity  # arg 4. currently adding a random quantity.   TODO: add more functionality
                     elif item_type == 8:
-                        entity_data.append(str(1))      # arg 3. longsword
-                        entity_data.append(str(1))      # arg 4. quantity
+                        entity_data['item_type'] = 1        # arg 3. longsword
+                        entity_data['quantity'] = 1         # arg 4. quantity
                     else:
-                        entity_data.append(str(2))      # arg 3. mace
-                        entity_data.append(str(1))      # arg 4. quantity
+                        entity_data['item_type'] = 2        # arg 3. mace
+                        entity_data['quantity'] = 1         # arg 4. quantity
                 
                 if entity == "npc":
                     npc_type = randrange(0, (len(npc_types)))
-                    entity_data.append(str(npc_type))   # arg 3. npc_type list number
+                    entity_data['npc_type'] = npc_type      # arg 3. npc_type list number
                 
-                entity_list.append(entity_data)
+                entity_list.append(str(entity_data))
                 entities_to_add -= 1
     except:
         logging.error(f"error whilst assigning {entity} entity during add_predefined_entity() func")
@@ -149,11 +147,11 @@ def populate_map(map):
     entity_list = []
 
     # Add stairs
-    entity_list.extend(add_predefined_entity("stairs_up", map, "^"))
-    entity_list.extend(add_predefined_entity("stairs_down", map, "v"))
+    entity_list.append(add_predefined_entity("stairs_up", map, "^"))
+    entity_list.append(add_predefined_entity("stairs_down", map, "v"))
 
     # Add doors
-    entity_list.extend(add_predefined_entity("door", map))
+    entity_list.append(add_predefined_entity("door", map))
 
     # Add items
     entity_list.extend(add_random_entity("item", map, 0.1))
@@ -165,7 +163,7 @@ def populate_map(map):
     entity_list.extend(add_random_entity("npc", map, 0.05))
 
     # Add Player
-    entity_list.extend(add_predefined_entity("player", map))
+    entity_list.append(add_predefined_entity("player", map))
 
     return entity_list
 
@@ -192,10 +190,7 @@ def write_level_to_file(fog, entities, lvl_num):
 
             # add entities
             for entity_counter, entity in enumerate(entities):
-                for item_counter, value in enumerate(entity):
-                    level_file.writelines(value)
-                    if item_counter != len(entity) - 1:
-                        level_file.write(',')
+                level_file.writelines(entity)
                 if entity_counter != len(entities) - 1:
                     level_file.write('\n')
 

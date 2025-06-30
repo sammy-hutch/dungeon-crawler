@@ -1,3 +1,4 @@
+import ast
 from core.map import Map
 from data.config import LEVEL_FOLDER, MAP_FOLDER, TILE_SIZE
 
@@ -46,11 +47,8 @@ class Level:
         entity_lines = entity_data.split('\n')[1:]
         for line in entity_lines:
             try:
-                items = line.split(',')
-                id = int(items[0])
-                x = int(items[1])
-                y = int(items[2])
-                entity = create_entity(id, x, y, items)
+                data = ast.literal_eval(line)
+                entity = create_entity(data)
                 engine.entities.append(entity)
             except:
                 print(f"Error parsing line: {line}")
@@ -77,7 +75,6 @@ class Level:
     def update(self):
         from core.engine import engine
         from components.player import player_vision
-        from components.sprite import Sprite
         visible_tiles = []
         for e in engine.entities:
             if e.id == 0:

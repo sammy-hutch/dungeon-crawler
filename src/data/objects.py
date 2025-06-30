@@ -17,10 +17,10 @@ entity_factories = [
     lambda args: Entity(Player(100), Sprite("char", "formicid.png"), Body()),
 
     # 1 - Makes an Up Stair
-    lambda args: Entity(Navigator(args[3]), Sprite("dngn", "stone_stairs_up.png")),
+    lambda args: Entity(Navigator(args['data']), Sprite("dngn", "stone_stairs_up.png")),
 
     # 2 - Makes a Down Stair
-    lambda args: Entity(Navigator(args[3]), Sprite("dngn", "stone_stairs_down.png")),
+    lambda args: Entity(Navigator(args['data']), Sprite("dngn", "stone_stairs_down.png")),
 
     # 3 - Makes a Door
     lambda args: Entity(Sprite("dngn", "closed_door.png"), Body(blocks_vision=True), Changeable("door")),
@@ -30,23 +30,23 @@ entity_factories = [
 
     # 5 - Makes an Item
     lambda args: Entity(
-                    DroppedItem(item_types[int(args[3])], int(args[4])), 
-                    Sprite("item", item_types[int(args[3])].icon_name)
+                    DroppedItem(item_types[args['item_type']], args['quantity']), 
+                    Sprite("item", item_types[args['item_type']].icon_name)
         ),
     
     # 6 - Makes an NPC
     lambda args: Entity(
-                    Sprite("char", npc_types[int(args[3])]["image"]), 
-                    NPC(npc_types[int(args[3])]["name"], npc_types[int(args[3])]["npc_file"])
+                    Sprite("char", npc_types[args['npc_type']]["image"]), 
+                    NPC(npc_types[args['npc_type']]["name"], npc_types[args['npc_type']]["npc_file"])
         )
 ]
 
 
-def create_entity(id, x, y, data=None):
-    factory = entity_factories[id]
-    e = factory(data)
-    e.id = id
-    e.x = x * TILE_SIZE
-    e.y = y * TILE_SIZE
-    e.data = data
+def create_entity(entity_data):
+    factory = entity_factories[entity_data['entity_type']]
+    e = factory(entity_data)
+    e.id = entity_data['entity_type']
+    e.x = entity_data['x'] * TILE_SIZE
+    e.y = entity_data['y'] * TILE_SIZE
+    e.data = entity_data
     return e
