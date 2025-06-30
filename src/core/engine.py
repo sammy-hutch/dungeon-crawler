@@ -109,9 +109,21 @@ class Engine:
 
             # Update code
             if engine.changed_player_state == True:
+                # update player entities first
                 for a in self.active_objs:
-                    if engine.valid_event:
-                        a.update()
+                    if hasattr(a, 'Entity') and a.entity.has(Player):
+                        if engine.valid_event:
+                            a.update()
+                # then update non-player entities
+                for a in self.active_objs:
+                    if hasattr(a, 'Entity') and not a.entity.has(Player):
+                        if engine.valid_event:
+                            a.update()
+                # finally update non-entities
+                for a in self.active_objs:
+                    if not hasattr(a, 'Entity'):
+                        if engine.valid_event:
+                            a.update()
                 engine.changed_player_state = False
 
             # Draw code

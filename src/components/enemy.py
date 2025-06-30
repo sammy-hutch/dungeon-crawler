@@ -35,6 +35,7 @@ class Enemy:
     def setup(self):
         # Setup combat
         from components.combat import Combat
+        from core.camera import camera
         self.entity.add(Combat(self.health, on_enemy_death))
         self.combat = self.entity.get(Combat)
         self.combat.equip(self.weapon)
@@ -73,7 +74,6 @@ class Enemy:
 
     def update(self):
         from core.camera import camera
-        from core.engine import engine
 
         self.health_bar.amount = self.combat.health
         self.update_ai()
@@ -104,5 +104,5 @@ class Enemy:
                 self.entity.x = prev_x
                 self.entity.y = prev_y
         
-        self.health_bar.entity.x = self.entity.x - camera.x
-        self.health_bar.entity.y = self.entity.y - camera.y
+        self.health_bar.entity.x = self.entity.x
+        self.health_bar.entity.y = self.entity.y

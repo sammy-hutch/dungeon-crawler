@@ -19,6 +19,8 @@ class Bar:
     def draw(self, screen):
         from core.camera import camera
         visible = False
+        draw_x = self.entity.x
+        draw_y = self.entity.y
         # Always draw player bars
         if self.type == "player":
             visible = True
@@ -26,10 +28,13 @@ class Bar:
         else:
             from components.player import player_vision
             for tile in player_vision:
-                if self.entity.y + camera.y == tile["y"]*tile_size \
-                    and self.entity.x + camera.x == tile["x"]*tile_size \
+                if self.entity.y == tile["y"]*tile_size \
+                    and self.entity.x == tile["x"]*tile_size \
                     and tile["is_visible"]:
                     visible = True
+        if self.type == "enemy":
+            draw_x -= camera.x
+            draw_y -= camera.y
         
         if visible:
             if self.type == "enemy" and self.amount == self.max:
@@ -39,14 +44,14 @@ class Bar:
                 # Draw background
                 pygame.draw.rect(screen, 
                                 self.back_color, 
-                                pygame.Rect(self.entity.x, 
-                                            self.entity.y, 
+                                pygame.Rect(draw_x, 
+                                            draw_y, 
                                             self.width, 
                                             self.height))
                 # Draw foreground
                 pygame.draw.rect(screen, 
                                 self.front_color, 
-                                pygame.Rect(self.entity.x, 
-                                            self.entity.y, 
+                                pygame.Rect(draw_x, 
+                                            draw_y, 
                                             self.width*filled, 
                                             self.height))
