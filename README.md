@@ -43,3 +43,8 @@ conda activate dungeoncrawler
 - mobs
 - puzzle rooms (e.g. moving levers/blocks to open secret door, gap to cross, sacrificial altar)
 - window layout
+
+# Design goals
+- use classes rather than dictionaries to improve type safety
+- use more enums
+- call down, signal up
